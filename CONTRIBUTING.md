@@ -1,16 +1,19 @@
-Want to contribute?
+## Want to contribute? 
 
 I would love the help! I want to make this open source as possible! So feel free to add more.
 
 The only requirements.
 
-- You must write the tests for whatever endpoints you create.
-- Follow the normal procedure for forking and pull requests.
-- Don't compromise user data.
+1. You must write the __tests__ for whatever endpoints you create.
+2. Follow the normal procedure for forking and pull requests.
+3. Don't compromise user data.
 
-To get started with the tests, you'll need to add a file to the __seeds folder__.
 
-__secret_login.js__ and inside there, you need the add the following data
+To get started with the tests, you'll need to add a file to the **seeds folder**.
+
+**secret_login.js**
+and inside there, you need the add the following data
+
 ```
 var bad_login_body = {
       "userName": "88888",
@@ -32,4 +35,5 @@ module.exports = {
   good_login_body,
   bad_login_body
 }
+
 ```
