@@ -16,10 +16,10 @@ You have to start with __/yl/login/__ before you can do anything. It will return
 
 - [/yl/login/](https://github.com/ethanbonin/YoungLivingAPI/wiki/YL-POST-login)
 - [/yl/profile](https://github.com/ethanbonin/YoungLivingAPI/wiki/YL-GET-profile)
+- [/yl/downline](https://github.com/ethanbonin/YoungLivingAPI/wiki/YL-GET-downline)
 - [/yl/report_data/](https://github.com/ethanbonin/YoungLivingAPI/wiki/YL-POST-report_data)
 - [/yl/about_to_go_inactive/](https://github.com/ethanbonin/YoungLivingAPI/wiki/YL-POST-about_go_inactive)
 - [/yl/rank_status](https://github.com/ethanbonin/YoungLivingAPI/wiki/YL-POST-rank_status)
 - [/yl/new_members](https://github.com/ethanbonin/YoungLivingAPI/wiki/YL-POST-NEW_MEMBERS)
-- [/yl/downline](https://github.com/ethanbonin/YoungLivingAPI/wiki/YL-GET-downline)
 
 
