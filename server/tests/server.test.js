@@ -202,3 +202,34 @@ describe("GET /yl/profile", () => {
       });
   });
 });
+
+
+describe("GET /yl/downline", () => {
+  var authtoken = "";
+  it("should return the users profile", function(done) {
+    request(app)
+      .post("/v0/yl/login")
+      .send(good_login_body)
+      .expect(200)
+      .expect(res => {
+        // This creates a custom Expect
+        expect(res.headers["authtoken"]).toExist();
+        authtoken = res.headers["authtoken"];
+      })
+      .end((err, res) => {
+        if (err) {
+          return done(e);
+        }
+        request(app)
+          .get("/v0/yl/downline")
+          .set("authtoken", res.headers["authtoken"])
+          .expect(200)
+          .expect(res => {
+            expect(res.text).toExist();
+            var object = JSON.parse(res.text)
+            expect(object).toIncludeKeys(["customerid", "currentperiodid", "legs", "totalchildren"])
+          })
+          .end(done);
+      });
+  });
+});

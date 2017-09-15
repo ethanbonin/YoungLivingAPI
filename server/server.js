@@ -64,6 +64,27 @@ app.get("/v0/yl/profile", (req, res) => {
     });
 });
 
+
+
+app.get('/v0/yl/downline', (req, res) => {
+  var periodid = get_period();
+  var uri = "https://www.youngliving.com/vo.dlv.api//downline/children/user/" + periodid
+  var request_options = {
+    method: "GET",
+    headers: {'authtoken':`${req.headers["authtoken"]}`},
+    uri: uri
+  };
+  rp(request_options)
+    .then(body => {
+      res.send(body);
+    })
+    .catch(e => {
+      res.send(e);
+    });
+});
+
+
+
 app.post("/v0/yl/report_data", uidrequest, (req, res) => {
   var uri =
     "https://www.youngliving.com/vo.dlv.api/reports/download/All Accounts/" +
@@ -154,6 +175,16 @@ app.post("/v0/yl/new_members", uidrequest, (req, res) => {
       res.send(e);
     });
 });
+
+
+//***************//
+//PRIVATE METHODS//
+//***************//
+
+get_period = function (date) {
+   date = date instanceof Date ? date : new Date();
+   return (date.getFullYear() * 12 + date.getMonth() + 1) - (2014 * 12 + 5) + 400;
+}
 
 app.listen(_PORT, () => {
   console.log("Running on port: " + _PORT);
