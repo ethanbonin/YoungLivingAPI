@@ -8,6 +8,11 @@ var rp = require("request-promise");
 const bodyParser = require("body-parser");
 
 var { uidrequest } = require("./middleware/uidrequest");
+var {
+  report_data_header,
+  about_to_go_inactive_header,
+  new_members_header
+} = require("./header_data/header_data");
 var app = express();
 
 const _PORT = process.env.PORT || 3000;
@@ -42,6 +47,23 @@ app.post("/v0/yl/login", (req, res) => {
     });
 });
 
+app.get("/v0/yl/profile", (req, res) => {
+  var uri = "https://www.youngliving.com/api/accounts/my-profile/my-profile";
+  var request_options = {
+    method: "GET",
+    headers: {'authtoken':`${req.headers["authtoken"]}`},
+    uri: uri
+  };
+  rp(request_options)
+    .then(body => {
+      // console.log(body);
+      res.send(body);
+    })
+    .catch(e => {
+      res.send(e);
+    });
+});
+
 app.post("/v0/yl/report_data", uidrequest, (req, res) => {
   var uri =
     "https://www.youngliving.com/vo.dlv.api/reports/download/All Accounts/" +
@@ -58,8 +80,7 @@ app.post("/v0/yl/report_data", uidrequest, (req, res) => {
       var csv_options = {
         deliemiter: ",",
         quote: '"', // optional
-        headers:
-          "name,level,memberid,pv,ogv,pgv,autoship,email,signupdate,lastorderdate,previousrank,pvassistant,hasautoship,sponsorid,lastorderpv,currentrank,forecastpv,status,addressline1,addressline2,city,state,postalcode,country,scheduledpv,rankchange,highestpaidrank,enrollerid,autoshippv"
+        headers: report_data_header
       };
       var result = csvjson.toObject(body, csv_options);
       res.send(result);
@@ -80,8 +101,7 @@ app.post("/v0/yl/about_to_go_inactive", uidrequest, (req, res) => {
       var csv_options = {
         deliemiter: ",",
         quote: '"', // optional
-        headers:
-          "name,level,memberid,pv,ogv,pgv,autoship,email,signupdate,lastorderdate,previousrank,pvassistant,status,forecastpv,currentrank,lastorderpv,sponsorid,hasautoship,autoshippv,enrollerid,highestpaidrank,rankchange,scheduledpv,addressline1,addressline2,city,state,postalcode,country"
+        headers: about_to_go_inactive_header
       };
       var result = csvjson.toObject(body, csv_options);
       res.send(result);
@@ -108,6 +128,27 @@ app.post("/v0/yl/rank_status", (req, res) => {
     .then(body => {
       var response = JSON.parse(body);
       res.send(body);
+    })
+    .catch(e => {
+      res.send(e);
+    });
+});
+
+app.post("/v0/yl/new_members", uidrequest, (req, res) => {
+  var uri = `https://www.youngliving.com/vo.dlv.api/reports/download/New Members/${req.reportid}/${req.guid}/1/en-US`;
+  var request_options = {
+    method: "GET",
+    uri: uri
+  };
+  rp(request_options)
+    .then(body => {
+      var csv_options = {
+        deliemiter: ",",
+        quote: '"', // optional
+        headers: new_members_header
+      };
+      var result = csvjson.toObject(body, csv_options);
+      res.send(result);
     })
     .catch(e => {
       res.send(e);

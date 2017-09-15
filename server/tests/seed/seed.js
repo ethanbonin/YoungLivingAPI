@@ -74,7 +74,47 @@ var report_values_inactive = {
   }
 };
 
+var report_values_new_members = {
+  values: {
+    reportid: "new-members",
+    periodid: 440,
+    sortby: "",
+    sortdesc: 1,
+    pagenumber: 1,
+    download: "true",
+    format: "CSV",
+    reportname: "New Members",
+    columns: [
+      { id: "name" },
+      { id: "memberid" },
+      { id: "level" },
+      { id: "signupdate" },
+      { id: "pv" },
+      { id: "ogv" },
+      { id: "pgv" },
+      { id: "autoship" },
+      { id: "lastorderdate" },
+      { id: "previousrank" },
+      { id: "email" },
+      { id: "pvassistant" },
+      { id: "status" },
+      { id: "forecastpv" },
+      { id: "currentrank" },
+      { id: "lastorderpv" },
+      { id: "sponsorid" },
+      { id: "hasautoship" },
+      { id: "autoshippv" },
+      { id: "enrollerid" },
+      { id: "highestpaidrank" },
+      { id: "rankchange" },
+      { id: "scheduledpv" },
+      { id: "address" }
+    ]
+  }
+};
+
 module.exports = {
   report_values_all,
-  report_values_inactive
+  report_values_inactive,
+  report_values_new_members
 };

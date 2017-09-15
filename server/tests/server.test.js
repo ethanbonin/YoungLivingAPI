@@ -8,7 +8,11 @@ const util = require("util");
 
 //1st party modules
 const { app } = require("./../server");
-const { report_values_all, report_values_inactive } = require("./seed/seed");
+const {
+  report_values_all,
+  report_values_inactive,
+  report_values_new_members
+} = require("./seed/seed");
 const { good_login_body, bad_login_body } = require("./seed/secret_login");
 
 describe("POST /yl/login", () => {
@@ -126,6 +130,70 @@ describe("POST /yl/rank_status", () => {
           .set("authtoken", res.headers["authtoken"])
           .set("content-type", "application/json")
           .send({ period: 440 })
+          .expect(200)
+          .expect(res => {
+            expect(res).toExist();
+          })
+          .end(done);
+      });
+  });
+});
+
+describe("POST /yl/new_members", () => {
+  var authtoken = "";
+  it("should return their new memebers that they have signed up", function(done) {
+    request(app)
+      .post("/v0/yl/login")
+      .send(good_login_body)
+      .expect(200)
+      .expect(res => {
+        // This creates a custom Expect
+        expect(res.headers["authtoken"]).toExist();
+        authtoken = res.headers["authtoken"];
+      })
+      .end((err, res) => {
+        if (err) {
+          return done(e);
+        }
+        request(app)
+          .post("/v0/yl/new_members")
+          .set("authtoken", res.headers["authtoken"])
+          .set("content-type", "application/json")
+          .send({ values: report_values_new_members })
+          .expect(200)
+          .expect(res => {
+            var data = res.body[0];
+            for (var key in data) {
+              var item = data[key];
+              expect(data[key]).toBe(item);
+            }
+          })
+          .end(done);
+      });
+  });
+});
+
+
+
+describe("GET /yl/profile", () => {
+  var authtoken = "";
+  it("should return the users profile", function(done) {
+    request(app)
+      .post("/v0/yl/login")
+      .send(good_login_body)
+      .expect(200)
+      .expect(res => {
+        // This creates a custom Expect
+        expect(res.headers["authtoken"]).toExist();
+        authtoken = res.headers["authtoken"];
+      })
+      .end((err, res) => {
+        if (err) {
+          return done(e);
+        }
+        request(app)
+          .get("/v0/yl/profile")
+          .set("authtoken", res.headers["authtoken"])
           .expect(200)
           .expect(res => {
             expect(res).toExist();
