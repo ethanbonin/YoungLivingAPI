@@ -14,7 +14,7 @@ You have to start with __/yl/login/__ before you can do anything. It will return
 ----------------
 ## END POINTS
 
-- [/yl/login/](https://github.com/ethanbonin/YoungLivingAPI/wiki/YL-LOGIN)
+- [/yl/login/](https://github.com/ethanbonin/YoungLivingAPI/wiki/YL-POST-login)
 - [/yl/profile](https://github.com/ethanbonin/YoungLivingAPI/wiki/YL-GET-profile)
 - [/yl/report_data/](https://github.com/ethanbonin/YoungLivingAPI/wiki/YL-POST-report_data)
 - [/yl/about_to_go_inactive/](https://github.com/ethanbonin/YoungLivingAPI/wiki/YL-POST-about_go_inactive)
