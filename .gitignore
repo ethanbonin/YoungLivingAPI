@@ -90,7 +90,7 @@ typings/
 #
 .env
 
-/server/tests/seed/secret_login.js
+/server/tests/seed/secret_data.js
 /server/config/config.json
 
 # End of https://www.gitignore.io/api/node,macos

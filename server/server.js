@@ -15,6 +15,9 @@ var {
   about_to_go_inactive_header,
   new_members_header
 } = require("./header_data/header_data");
+
+var { amount_made } = require("./amount_estimate/amountestimate");
+
 var app = express();
 
 const _PORT = process.env.PORT || 3000;
@@ -23,8 +26,6 @@ app.use(bodyParser.json());
 var website = {
   host: "youngliving.com"
 };
-
-var user_tokens = new Map();
 
 app.post("/v0/yl/login", (req, res) => {
   var _body = req.body;
@@ -102,7 +103,6 @@ app.post("/v0/yl/report_data", uidrequest, retailcustomers, (req, res) => {
         headers: report_data_header
       };
 
-
       var result = csvjson.toObject(body, csv_options);
       var all_members = is_retail_customer(req.retail_customers, result);
 
@@ -179,6 +179,39 @@ app.post("/v0/yl/new_members", uidrequest, (req, res) => {
     });
 });
 
+app.post("/v0/yl/amount_made", uidrequest, retailcustomers, (req, res) => {
+  var uri =
+    "https://www.youngliving.com/vo.dlv.api/reports/download/All Accounts/" +
+    req.reportid +
+    "/" +
+    req.guid +
+    "/1/en-us";
+  var request_options = {
+    method: "GET",
+    uri: uri
+  };
+  rp(request_options)
+    .then(body => {
+      var csv_options = {
+        deliemiter: ",",
+        quote: '"', // optional
+        headers: report_data_header
+      };
+
+      var result = csvjson.toObject(body, csv_options);
+      var all_members = is_retail_customer(req.retail_customers, result);
+
+      var current_date_formated = new Date(req.body.date);
+      var estimated_amount_made = amount_made(all_members,current_date_formated);
+
+      console.log(estimated_amount_made);
+      res.send({estimated_amount_made});
+    })
+    .catch(e => {
+      res.send(e);
+    });
+});
+
 //***************//
 //PRIVATE METHODS//
 //***************//
@@ -188,25 +221,24 @@ get_period = function(date) {
   return date.getFullYear() * 12 + date.getMonth() + 1 - (2014 * 12 + 5) + 400;
 };
 
-is_retail_customer = function(retail_customers, all_members) {
 
-  retail_customers.forEach((retail_customer) => {
-    all_members.forEach((person) => {
-      if (person.is_retail == true){
+is_retail_customer = function(retail_customers, all_members) {
+  retail_customers.forEach(retail_customer => {
+    all_members.forEach(person => {
+      if (person.is_retail == true) {
         return;
       }
-      if (retail_customer.memberid == person.memberid){
+      if (retail_customer.memberid == person.memberid) {
         person.is_retail = true;
         return;
       } else {
         person.is_retail = false;
       }
-    })
-
+    });
   });
 
   return all_members;
-}
+};
 
 app.listen(_PORT, () => {
   console.log("Running on port: " + _PORT);

@@ -28,13 +28,13 @@ var retailcustomers = (req, res, next) => {
     var response = JSON.parse(body);
     response.reportid;
     response.guid;
-    var uri = `https://www.youngliving.com/vo.dlv.api/reports/download/Retail%20Customers/${response.reportid}/${response.guid}/1/en-US`
+    var uri = `https://www.youngliving.com/vo.dlv.api/reports/download/Retail%20Customers/${response.reportid}/${response.guid}/1/en-US`;
 
     var retail_options = {
       method: "GET",
-      uri: uri,
+      uri: uri
     };
-    rp(retail_options).then((body) => {
+    rp(retail_options).then(body => {
       var csv_options = {
         deliemiter: ",",
         quote: '"', // optional
