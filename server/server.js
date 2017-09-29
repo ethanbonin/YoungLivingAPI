@@ -240,6 +240,26 @@ is_retail_customer = function(retail_customers, all_members) {
   return all_members;
 };
 
+
+
+//This only runs when on production
+if (process.env.NODE_ENV === 'production'){
+  //Express will serve  up production assets
+  //like our main.js file. or main.css file
+  app.use(express.static('client/build'));
+
+
+  //Express will serve up index.html file
+  //if it doesn't recongize the route
+  //This is the catch all case
+  const path = require('path');
+  app.get('*', (req, res) => {
+    res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'));
+  });
+};
+
+
+
 app.listen(_PORT, () => {
   console.log("Server is Running on port: " + _PORT);
 });
