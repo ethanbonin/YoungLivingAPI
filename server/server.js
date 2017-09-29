@@ -20,7 +20,7 @@ var { amount_made } = require("./amount_estimate/amountestimate");
 
 var app = express();
 
-const _PORT = process.env.PORT || 3000;
+const _PORT = process.env.PORT || 5000;
 app.use(bodyParser.json());
 
 var website = {
@@ -241,7 +241,7 @@ is_retail_customer = function(retail_customers, all_members) {
 };
 
 app.listen(_PORT, () => {
-  console.log("Running on port: " + _PORT);
+  console.log("Server is Running on port: " + _PORT);
 });
 
 module.exports = { app };
