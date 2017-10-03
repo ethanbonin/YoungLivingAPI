@@ -7,6 +7,8 @@ var csvjson = require("csvjson");
 var request = require("request");
 var rp = require("request-promise");
 const bodyParser = require("body-parser");
+var { mongoose } = require("./db/mongoose");
+var session = require("express-session");
 
 var { uidrequest } = require("./middleware/uidrequest");
 var { retailcustomers } = require("./middleware/retailcustomers");
@@ -16,38 +18,18 @@ var {
   new_members_header
 } = require("./header_data/header_data");
 
+const { User } = require("./db/models/Users");
+
 var { amount_made } = require("./amount_estimate/amountestimate");
 
 var app = express();
+var sess;
 
 const _PORT = process.env.PORT || 5000;
 app.use(bodyParser.json());
+app.use(session({ secret: process.env.SESSION_SECRET }));
 
-var website = {
-  host: "youngliving.com"
-};
-
-app.post("/v0/yl/login", (req, res) => {
-  var _body = req.body;
-  var options = {
-    method: "POST",
-    url: "https://www.youngliving.com/api/accounts/token",
-    body: _body,
-    json: true
-  };
-
-  rp(options, function(error, response, body) {
-    if (error) throw new Error(error + "error-login");
-  })
-    .then(body => {
-      var token = new Buffer(JSON.stringify(body)).toString("base64");
-      res.set("authtoken", token);
-      res.send(body);
-    })
-    .catch(e => {
-      console.log("ERROR: " + e);
-    });
-});
+require("./routes/authRoutes")(app);
 
 app.get("/v0/yl/profile", (req, res) => {
   var uri = "https://www.youngliving.com/api/accounts/my-profile/my-profile";
@@ -202,10 +184,13 @@ app.post("/v0/yl/amount_made", uidrequest, retailcustomers, (req, res) => {
       var all_members = is_retail_customer(req.retail_customers, result);
 
       var current_date_formated = new Date(req.body.date);
-      var estimated_amount_made = amount_made(all_members,current_date_formated);
+      var estimated_amount_made = amount_made(
+        all_members,
+        current_date_formated
+      );
 
       console.log(estimated_amount_made);
-      res.send({estimated_amount_made});
+      res.send({ estimated_amount_made });
     })
     .catch(e => {
       res.send(e);
@@ -220,7 +205,6 @@ get_period = function(date) {
   date = date instanceof Date ? date : new Date();
   return date.getFullYear() * 12 + date.getMonth() + 1 - (2014 * 12 + 5) + 400;
 };
-
 
 is_retail_customer = function(retail_customers, all_members) {
   retail_customers.forEach(retail_customer => {
@@ -240,8 +224,6 @@ is_retail_customer = function(retail_customers, all_members) {
   return all_members;
 };
 
-
-
 //This only runs when on production
 if (process.env.NODE_ENV === 'production'){
   //Express will serve  up production assets
@@ -257,8 +239,6 @@ if (process.env.NODE_ENV === 'production'){
     res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'));
   });
 };
-
-
 
 app.listen(_PORT, () => {
   console.log("Server is Running on port: " + _PORT);
