@@ -5,11 +5,11 @@ import * as actions from "../actions";
 
 import Header from "./Header";
 import Landing from "./Landing";
-import Dashboard from "./Dashboard";
+import Dashboard from "./dashboard/Dashboard";
 
 //container adds borders on the side
 class App extends Component {
-  constructor() {
+  constructor(props) {
     super();
     this.state = { isLoggedIn: false };
     this.checkIfLoggedIn = this.checkIfLoggedIn.bind(this);
@@ -29,7 +29,7 @@ class App extends Component {
         <div className="container">
           <Route>
             <div>
-              <Header checkIfLoggedIn={this.checkIfLoggedIn} />
+              <Header checkIfLoggedIn={this.checkIfLoggedIn} loggedIn={this.state.isLoggedIn} />
             {this.state.isLoggedIn ? <Dashboard /> : <Landing />}
             </div>
           </Route>
