@@ -77,7 +77,6 @@ module.exports = app => {
 
   app.delete('/v0/yl/prospects/delete', (req, res) => {
     var id = req.body._id
-    //Responde if it's not VALID
 
     Prospects.findOneAndRemove({_id: id}).then((doc) => {
       if (!doc) {
