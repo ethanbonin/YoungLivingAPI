@@ -25,7 +25,6 @@ class Tooltip extends Component {
         this.state = {
           message: "Need to write"
         };
-        console.log("theo there");
     }
   }
   render() {

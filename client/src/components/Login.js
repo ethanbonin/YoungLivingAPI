@@ -123,7 +123,6 @@ class Login extends Component {
     axios
       .post("/v0/yl/login", body)
       .then(body => {
-        console.log(body);
         this.setState({ showLoading: false });
         this.props.removeCard(false);
         this.props.fetchUser();

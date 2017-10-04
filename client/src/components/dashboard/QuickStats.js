@@ -9,12 +9,6 @@ class TopBar extends Component {
         <Segment inverted className="center" style={{ marginTop: "7px" }}>
           <Statistic inverted>
             <Statistic.Value>
-              <Tooltip name="Rank" />
-              SILVER
-            </Statistic.Value>
-          </Statistic>
-          <Statistic inverted>
-            <Statistic.Value>
               <Tooltip name="users" />
               363
             </Statistic.Value>
@@ -45,13 +39,13 @@ class TopBar extends Component {
           </Statistic>
           <Statistic inverted>
             <Statistic.Value>
-              <Tooltip name="warning" />
+              <Tooltip name="object group" />
               5
             </Statistic.Value>
           </Statistic>
           <Statistic inverted>
             <Statistic.Value>
-              <Tooltip name="warning" />
+              <Tooltip name="object group" />
               5
             </Statistic.Value>
           </Statistic>

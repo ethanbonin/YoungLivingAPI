@@ -30,6 +30,7 @@ app.use(bodyParser.json());
 app.use(session({ secret: process.env.SESSION_SECRET }));
 
 require("./routes/authRoutes")(app);
+require("./routes/prospectsRoute")(app);
 
 app.get("/v0/yl/profile", (req, res) => {
   var uri = "https://www.youngliving.com/api/accounts/my-profile/my-profile";

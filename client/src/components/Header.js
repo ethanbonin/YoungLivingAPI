@@ -19,9 +19,6 @@ class Header extends Component {
       case false:
         return <li><a onClick={() => this.setState({showCard: !this.state.showCard})}>Login</a></li>;
       default:
-      if (!this.props.loggedIn){
-        this.props.checkIfLoggedIn();
-      }
         return [
           <li key="2"><a href="/v0/yl/logout">Logout</a></li>
         ];

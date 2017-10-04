@@ -1,5 +1,5 @@
 import axios from "axios";
-import { FETCH_USER } from "./types";
+import { FETCH_USER, FETCH_PROSPECTS } from "./types";
 
 //SAME THING AS BELOW
 // export const fetchUser = () => async dispatch => {
@@ -18,8 +18,16 @@ export const fetchUser = () => {
   };
 };
 
-
-export const handleToken = token => async dispatch => {
-  const res = await axios.post('/api/stripe', token);
-  dispatch({ type: FETCH_USER, payload: res.data });
+export const fetchProspects = () => {
+  return function(dispatch) {
+    axios
+      .get("/v0/yl/prospects")
+      .then(res => dispatch({ type: FETCH_PROSPECTS, payload: res.data}));
+  };
 };
+
+
+// export const handleToken = token => async dispatch => {
+//   const res = await axios.post('/api/stripe', token);
+//   dispatch({ type: FETCH_USER, payload: res.data });
+// };

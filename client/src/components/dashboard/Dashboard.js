@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Card, Icon, Image } from "semantic-ui-react";
+import { Card } from "semantic-ui-react";
 import TopBar from "./QuickStats";
 import Tab from "./Tab";
 import _ from "lodash";
@@ -16,7 +16,7 @@ const _TABS = [
   { name: "Stats", color: "blue", image: imageSrc.stats  },
   { name: "Prospects", color: "pink", image: imageSrc.pros  },
   { name: "Downline", color: "green", image: imageSrc.down },
-  { name: "Alerts", color: "gray", image: imageSrc.alerts }
+  { name: "Alerts", color: "grey", image: imageSrc.alerts }
 ];
 
 class DashBoard extends Component {

@@ -51,7 +51,7 @@ module.exports = app => {
         User.findByCredentials(body.memberId).then(
           user => {
             sess = req.session;
-            var info = {user: user, body: body};
+            var info = {user: user, body: body, token: token};
             sess.user = info;
             res.send({user:user, body:body});
           },
