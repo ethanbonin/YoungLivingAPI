@@ -1,12 +1,13 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
-import { Button, Checkbox, Table } from "semantic-ui-react";
+import { Button, Checkbox, Table, Label } from "semantic-ui-react";
 import _ from "lodash";
 import * as actions from "../../actions";
 
 
 import ProspectsPerson from "./ProspectsPerson";
+import {box_values} from './raw_data';
 
 class Prospects extends Component {
   constructor() {
@@ -40,13 +41,11 @@ class Prospects extends Component {
   renderHeaders() {
     const headerTitles = [
       "View",
+      "Lead Status",
       "Name",
       "Email",
       "Phone Number",
-      "Follow Up",
-      "First Call",
       "Invited to Class",
-      "Mail Sample",
       "Text Marketing",
       "Added to FB group",
       "Host a Class",
@@ -59,7 +58,37 @@ class Prospects extends Component {
     });
   }
 
+
+  renderCheckBoxes(prospect){
+
+      return _.map(box_values, ({ value, message }) => {
+        return (
+          <Table.Cell>
+          <p key={value}>
+            <input
+              type="checkbox"
+              id={value}
+              name={value}
+              checked={prospect[value]}
+              disabled="disabled"
+            />
+            <label for={value}>{message}</label>
+          </p>
+        </Table.Cell>
+        );
+
+      });
+
+  }
+
   renderList() {
+    const lead_colors = {
+      cold: "black",
+      warm: "orange",
+      hot: "red"
+    }
+
+
     switch (this.props.prospects) {
       case null:
         return;
@@ -73,36 +102,21 @@ class Prospects extends Component {
           return (
             <Table.Row>
               <Table.Cell>
-                <Button color="green" onClick={() => this.popUpPerson(prospect)}>
+                <Button color="teal" onClick={() => this.popUpPerson(prospect)}>
                   View
                 </Button>
+              </Table.Cell>
+              <Table.Cell>
+                <Label color={lead_colors[prospect.lead]} horizontal style={{marginLeft: "10px", width: 60}}>
+                  {prospect.lead}
+                </Label>
               </Table.Cell>
               <Table.Cell>
                 {prospect.first} {prospect.last}
               </Table.Cell>
               <Table.Cell>{prospect.email}</Table.Cell>
               <Table.Cell>{prospect.phone}</Table.Cell>
-              <Table.Cell>
-                <Checkbox checked={prospect.follow_up} />
-              </Table.Cell>
-              <Table.Cell>
-                <Checkbox checked={prospect.first_call} />
-              </Table.Cell>
-              <Table.Cell>
-                <Checkbox checked={prospect.invite_to_class} />
-              </Table.Cell>
-              <Table.Cell>
-                <Checkbox checked={prospect.mail_sample} />
-              </Table.Cell>
-              <Table.Cell>
-                <Checkbox checked={prospect.texting_marketing} />
-              </Table.Cell>
-              <Table.Cell>
-                <Checkbox checked={prospect.add_facebook_group} />
-              </Table.Cell>
-              <Table.Cell>
-                <Checkbox checked={prospect.host_a_class} />
-              </Table.Cell>
+              {this.renderCheckBoxes(prospect)}
               <Table.Cell>{formatted_date_met}</Table.Cell>
               <Table.Cell>{formatted_date_closed}</Table.Cell>
             </Table.Row>

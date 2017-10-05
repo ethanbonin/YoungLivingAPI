@@ -38,6 +38,7 @@ export const deleteProspects = (_id) => {
 
 
 export const postProspects = (body) => {
+  console.log("THE BODY",body);
   return function(dispatch) {
     axios
       .post("/v0/yl/prospect_new", {values: body})

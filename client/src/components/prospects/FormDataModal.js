@@ -1,10 +1,18 @@
 import React, { Component } from "react";
-import { Checkbox, Segment, Label, Grid, Item } from "semantic-ui-react";
+import {
+  Checkbox,
+  Segment,
+  Label,
+  Grid,
+  Item,
+  Divider,
+  Button
+} from "semantic-ui-react";
 import moment from "moment";
 import { connect } from "react-redux";
 import _ from "lodash";
-
 import "react-datepicker/dist/react-datepicker.css";
+import {box_values} from './raw_data';
 
 class FormDataModal extends Component {
   constructor(props) {
@@ -52,35 +60,25 @@ class FormDataModal extends Component {
   }
 
   renderCheckBoxes() {
-    const headerValue = {
-      invite_to_class: "Invted to a Class",
-      add_facebook_group: "Added To Facebook Group",
-      texting_marketing: "Added To Automated Texting",
-      host_a_class: "Asked a host a class"
-    };
-    return _.map(this.props.data, (value, key) => {
-      var truth = false;
-      truth = _.hasIn(headerValue, key);
-      if (truth) {
-        return (
-          <Item key={headerValue[key]}>
-            <Item.Header>
-              <Label color="violet" ribbon>
-                {headerValue[key]}
-              </Label>
-            </Item.Header>
-            <Item.Meta>
-              <Checkbox checked={this.state[key]} />
-            </Item.Meta>
-          </Item>
-        );
-      }
+    return _.map(box_values, ({ value, message }) => {
+      return (
+        <p key={value}>
+          <input
+            type="checkbox"
+            id={value}
+            name={value}
+            checked={this.state[value]}
+            onChange={()=>console.log('hello wolrd')}
+          />
+          <label for={value}>{message}</label>
+        </p>
+      );
     });
   }
 
   renderStaticInfo() {
     const headerValue = {
-      know_them: "Know Them",
+      know_them: "How do you Know Them",
       health_needs: "Health Needs",
       family: "Family Details",
       occupation: "Occupation",
@@ -94,12 +92,57 @@ class FormDataModal extends Component {
         return (
           <Item key={headerValue[key]}>
             <Item.Header>
-              <Label color="violet" ribbon>
-                {headerValue[key]}
-              </Label>
+              <Label color="grey">{headerValue[key]}</Label>
             </Item.Header>
-            <Item.Meta>{value}</Item.Meta>
+            <Item.Meta style={{ marginLeft: "15px" }}>{value}</Item.Meta>
           </Item>
+        );
+      }
+    });
+  }
+
+  formatDate(date) {
+    const date_format = new Date(date);
+    const day = date_format.getDate();
+    const month = date_format.getMonth() + 1;
+    const year = date_format.getYear();
+    return month + "/" + day + "/" + year;
+  }
+
+  renderSpecificNote(value) {
+    value = _.sortBy(value, function(note) {
+      if (note.date == null) {
+        return;
+      }
+      return new Date(note.date);
+    });
+    value = _.reverse(value);
+    console.log("MADE IT HERE?", value);
+
+    return _.map(value, ({ message, date }) => {
+      return (
+        <Segment key={date}>
+          <Item.Meta>
+            <Label size="huge">{this.formatDate(date)}</Label>
+            <Divider />
+            {message}
+          </Item.Meta>
+        </Segment>
+      );
+    });
+  }
+
+  renderNotes() {
+    const headerValue = {
+      additional_notes: "Current Notes"
+    };
+
+    return _.map(this.props.data, (value, key) => {
+      var truth = false;
+      truth = _.hasIn(headerValue, key);
+      if (truth) {
+        return (
+          <Item key={headerValue[key]}>{this.renderSpecificNote(value)}</Item>
         );
       }
     });
@@ -107,26 +150,32 @@ class FormDataModal extends Component {
 
   renderPersonalInfo() {
     const headerValue = {
-      phone: "Phone",
-      first: "First Name",
-      last: "Last Name",
-      email: "Email"
+      phone: {
+        header: "Phone",
+        icon: "phone"
+      },
+      email: {
+        header: "Email",
+        icon: "mail"
+      }
     };
-
-    console.log(this.props.data);
-
     return _.map(this.props.data, (value, key) => {
       var truth = false;
       truth = _.hasIn(headerValue, key);
       if (truth) {
         return (
           <Item key={headerValue[key]}>
-            <Item.Header>
-              <Label color="violet" ribbon>
-                {headerValue[key]}
-              </Label>
-            </Item.Header>
-            <Item.Meta>{value}</Item.Meta>
+            <Item.Header />
+            <Segment>
+              <Item.Meta>
+                <Label
+                  color="grey"
+                  icon={headerValue[key].icon}
+                  content={headerValue[key].header}
+                />{" "}
+                {value}
+              </Item.Meta>
+            </Segment>
           </Item>
         );
       }
@@ -138,23 +187,31 @@ class FormDataModal extends Component {
       <div style={{ marginTop: "3em", marginLeft: "1em", marginRight: "1em" }}>
         <Grid columns={2} padded="horizontally">
           <Grid.Column>
-              <Label size="huge" color="teal">Personal Info</Label>
-              <Segment>
-                {this.renderPersonalInfo()}
-              </Segment>
+            <Label size="huge" color="teal">
+              Personal Info
+            </Label>
+            <Segment>{this.renderPersonalInfo()}</Segment>
             <Label ribbon={false} size="huge" color="teal">
               Check-List
             </Label>
             <Segment>{this.renderCheckBoxes()}</Segment>
-            <Label size="huge" color="teal">Personal Details</Label>
-            <Segment>
-              {this.renderStaticInfo()}
-            </Segment>
+            <Label size="huge" color="teal">
+              Personal Details
+            </Label>
+            <Segment>{this.renderStaticInfo()}</Segment>
           </Grid.Column>
           <Grid.Column>
             <Segment>
-              <h1>Hello World</h1>
+              <Label>New Note</Label>
+              <textarea style={{ height: 150 }} />
+              <Button>Submit</Button>
             </Segment>
+            <br />
+            <br />
+            <Label ribbon={false} size="huge" color="teal">
+              Notes
+            </Label>
+            <Segment>{this.renderNotes()}</Segment>
           </Grid.Column>
         </Grid>
       </div>

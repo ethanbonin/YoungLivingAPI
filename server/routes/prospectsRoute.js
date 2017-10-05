@@ -18,18 +18,22 @@ var {
   new_members_header
 } = require("../header_data/header_data");
 
-
 const { User } = require("../db/models/Users");
 const { Prospects } = require("../db/models/Prospects");
 var { amount_made } = require("../amount_estimate/amountestimate");
 
-
-
 module.exports = app => {
-  app.post('/v0/yl/prospect_new', (req, res) => {
+  const formatNotes = function(note) {
+    const n = {
+      message: note,
+      date: new Date()
+    };
+    return n;
+  };
 
-    if (!req.session.user){
-      res.status(401).send({error: "unauthorized"})
+  app.post("/v0/yl/prospect_new", (req, res) => {
+    if (!req.session.user) {
+      res.status(401).send({ error: "unauthorized" });
     }
 
     var prospect = new Prospects({
@@ -46,48 +50,77 @@ module.exports = app => {
       family: req.body.values.family,
       occupation: req.body.values.occupation,
       recreation: req.body.values.recreation,
-      additional_notes: req.body.values.additional_notes,
+      additional_notes: [formatNotes(req.body.values.additional_notes)],
       closedDeal: req.body.values.closedDeal,
       met_date: req.body.values.met_date,
+      lead: req.body.values.lead,
       _creator: req.session.user.user.memberid
     });
 
-    prospect.save().then((doc) => {
-       res.send(doc);
-    }, (e) => {
-      res.status(400).send(e);
-    })
+    prospect.save().then(
+      doc => {
+        res.send(doc);
+      },
+      e => {
+        res.status(400).send(e);
+      }
+    );
   });
 
-
-  app.get('/v0/yl/prospects', (req, res) => {
-    if (!req.session.user){
+  app.get("/v0/yl/prospects", (req, res) => {
+    if (!req.session.user) {
       res.send({});
-    }else {
-      Prospects
-      .find({
-      _creator: req.session.user.user.memberid
+    } else {
+      Prospects.find({
+        _creator: req.session.user.user.memberid
       })
-      .then((prospects) => {
-        res.send({prospects});
-      })
-      .catch((e) => {
-        console.log("Error", e);
-      });
+        .then(prospects => {
+          res.send({ prospects });
+        })
+        .catch(e => {
+          console.log("Error", e);
+        });
     }
   });
 
-
-  app.delete('/v0/yl/prospects/delete', (req, res) => {
-    var id = req.body._id
-    Prospects.findOneAndRemove({_id: id}).then((doc) => {
-      if (!doc) {
-        return res.status(404).send();
-      };
-      res.send({doc});
-    }).catch((e) => {
-      res.status(400).send();
-    });
+  app.delete("/v0/yl/prospects/delete", (req, res) => {
+    var id = req.body._id;
+    Prospects.findOneAndRemove({ _id: id })
+      .then(doc => {
+        if (!doc) {
+          return res.status(404).send();
+        }
+        res.send({ doc });
+      })
+      .catch(e => {
+        res.status(400).send();
+      });
   });
 
-}
+  app.patch("/v0/yl/prospects/update", (req, res) => {
+    const id = req.body.message._id;
+    const message = req.body.message.message;
+    const date = req.body.message.date;
+
+    const new_note = {
+      message,
+      date
+    };
+
+    console.log(new_note, id);
+
+    Prospects.findOneAndUpdate(
+      { _id: id },
+      { $push: { additional_notes: new_note } }
+    )
+      .then(prospect => {
+        if (!prospect) {
+          return res.status(404).send({ err: "not found" });
+        }
+        res.send({ prospect });
+      })
+      .catch(e => {
+        res.status(400).send();
+      });
+  });
+};

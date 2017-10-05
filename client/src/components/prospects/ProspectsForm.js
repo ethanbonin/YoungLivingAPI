@@ -4,10 +4,10 @@ import DatePicker from "react-datepicker";
 import moment from "moment";
 import { connect } from "react-redux";
 import * as actions from "../../actions";
-import { Redirect } from 'react-router'
-
-
+import { Redirect } from "react-router";
+import _ from "lodash";
 import "react-datepicker/dist/react-datepicker.css";
+import { box_values, info, lead, details } from "./raw_data";
 
 class ProspectsNew extends Component {
   constructor(props) {
@@ -23,6 +23,7 @@ class ProspectsNew extends Component {
       texting_marketing: false,
       host_a_class: false,
       know_them: "",
+      lead: "",
       health_needs: "",
       family: "",
       occupation: "",
@@ -40,9 +41,9 @@ class ProspectsNew extends Component {
     this.setState({ [name]: value });
   };
 
-  toggle = (e, { name }) => {
-    const truthy = !this.state[name];
-    this.setState({ [name]: truthy });
+  toggle = e => {
+    const truthy = !this.state[e.target.id];
+    this.setState({ [e.target.id]: truthy });
   };
 
   handleDateChange(date) {
@@ -52,124 +53,111 @@ class ProspectsNew extends Component {
   }
 
   handleSubmit = () => {
+    console.log("Submitting", this.state);
     this.props.postProspects(this.state);
     this.setState({
       goBack: true
     });
+    this.props.fetchProspects();
   };
 
+  renderCheckBoxes() {
+    return _.map(box_values, ({ value, message }) => {
+      return (
+        <p key={value}>
+          <input
+            type="checkbox"
+            id={value}
+            name={value}
+            onChange={this.toggle}
+          />
+          <label for={value}>{message}</label>
+        </p>
+      );
+    });
+  }
 
+  renderPersonalInfo() {
+    return _.map(info, ({ value, label }) => {
+      return (
+        <Form.Input
+          label={label}
+          placeholder={label}
+          name={value}
+          onChange={this.handleChange}
+        />
+      );
+    });
+  }
+
+  renderRadioButtons() {
+    return _.map(lead, ({ value, label }) => {
+      const v = value;
+      return (
+        <p>
+          <input
+            name="group1"
+            type="radio"
+            id={value}
+            onChange={() => this.setState({ lead: v })}
+          />
+          <label for={value}>{label}</label>
+        </p>
+      );
+    });
+  }
+
+  renderPersonalDetails() {
+    return _.map(details, ({ value, label, placeholder }) => {
+      return (
+        <Form.TextArea
+          label={label}
+          placeholder={placeholder}
+          name={value}
+          onChange={this.handleChange}
+        />
+      );
+    });
+  }
 
   render() {
     return (
-      <div style={{ marginTop: "3em", marginLeft: "1em", marginRight: "1em" }}>
-        <Form onSubmit={this.handleSubmit}>
-          <Form.Group widths="equal">
-            <Form.Input
-              label="First name"
-              placeholder="First name"
-              name="first"
-              onChange={this.handleChange}
-            />
-            <Form.Input
-              label="Last name"
-              placeholder="Last name"
-              name="last"
-              onChange={this.handleChange}
-            />
-          </Form.Group>
-          <Form.Group widths="equal">
-            <Form.Input
-              label="Email"
-              placeholder="example@example.com"
-              name="email"
-              onChange={this.handleChange}
-            />
-            <Form.Input
-              label="Phone Number"
-              placeholder="555-555-555"
-              name="phone"
-              onChange={this.handleChange}
-            />
-          </Form.Group>
-          <Form.Group>
-            <Form.Field width={5}>
+      <Segment
+        style={{ marginTop: "3em", marginLeft: "6em", marginRight: "6em" }}
+      >
+        <div>
+          <Form onSubmit={this.handleSubmit}>
+            <Form.Group widths="equal">{this.renderPersonalInfo()}</Form.Group>
+            <Form.Field width={4}>
               <label>Date that you met</label>
               <DatePicker
                 selected={this.state.met_date}
                 onChange={this.handleDateChange}
               />
             </Form.Field>
-            <Segment compact>
-            <Label basic color="blue">
-              Invite to Class
-            </Label>
-            <Checkbox name={"invite_to_class"} onChange={this.toggle} />
-              <Label basic color="blue">
-                Add to Facebook Group
-              </Label>
-              <Checkbox name={"add_facebook_group"} onChange={this.toggle} />
-              <Label basic color="blue">
-                Add to Texting{" "}
-              </Label>
-              <Checkbox name={"texting_marketing"} onChange={this.toggle} />
-              <Label basic color="blue">
-                Will Host a Class
-              </Label>
-              <Checkbox name={"host_a_class"} onChange={this.toggle} />
+            <Segment>
+              <label>LEAD</label>
+              {this.renderRadioButtons()}
             </Segment>
-          </Form.Group>
-
-          <Form.TextArea
-            label="How do you know them?"
-            placeholder="I met them at Whole Foods Market...."
-            name={"know_them"}
-            onChange={this.handleChange}
-          />
-          <Form.TextArea
-            label="Health Needs"
-            placeholder="Very anxious and sneezy..."
-            name={"health_needs"}
-            onChange={this.handleChange}
-          />
-          <Form.TextArea
-            label="Family"
-            placeholder="They have 11 kids, two dogs and 4 cats..."
-            name={"family"}
-            onChange={this.handleChange}
-          />
-          <Form.TextArea
-            label="Occupation"
-            placeholder="Retired..."
-            name="phone"
-            onChange={this.handleChange}
-          />
-          <Form.TextArea
-            label="Recreation"
-            placeholder="Their hobbies include swimming and sky diving on a normal basis..."
-            name={"recreation"}
-            onChange={this.handleChange}
-          />
-          <Form.TextArea
-            label="Additional Notes"
-            placeholder="Totally forgot to add a note about this..."
-            name={"additional_notes"}
-            onChange={this.handleChange}
-          />
-          <Form.Group>
-            <div style={{ margin: "auto auto" }}>
-              <Button.Group>
-                <Button href="/dashboard/prospects">Cancel</Button>
-                <Button.Or />
-                <Button color="blue" positive>
-                  Save
-                </Button>
-              </Button.Group>
-            </div>
-          </Form.Group>
-        </Form>
-        {this.state.goBack ? <Redirect push to="/dashboard/prospects"/> : null }
-      </div>
+            <Segment>{this.renderCheckBoxes()}</Segment>
+            {this.renderPersonalDetails()}
+            <Form.Group>
+              <div style={{ margin: "auto auto" }}>
+                <Button.Group>
+                  <Button href="/dashboard/prospects">Cancel</Button>
+                  <Button.Or />
+                  <Button color="teal" positive>
+                    Save
+                  </Button>
+                </Button.Group>
+              </div>
+            </Form.Group>
+          </Form>
+          {this.state.goBack ? (
+            <Redirect push to="/dashboard/prospects" />
+          ) : null}
+        </div>
+      </Segment>
     );
   }
 }

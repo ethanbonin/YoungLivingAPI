@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Button, Header, Modal} from "semantic-ui-react";
+import { Button, Header, Modal, Label} from "semantic-ui-react";
 import FormDataModal from "./FormDataModal";
 import { connect } from "react-redux";
 import * as actions from "../../actions";
@@ -23,9 +23,21 @@ class ProspectsPerson extends Component {
   }
 
   render() {
+
+    const lead_colors = {
+      cold: "black",
+      warm: "orange",
+      hot: "red"
+    }
+
     return (
       <Modal dimmer open>
-        <Modal.Header>{this.props.prospect.first} {this.props.prospect.Bonin}</Modal.Header>
+        <Modal.Header>
+          {this.props.prospect.first} {this.props.prospect.last}
+          <Label color={lead_colors[this.props.prospect.lead]}>
+            {this.props.prospect.lead}
+          </Label>
+        </Modal.Header>
         <Modal.Content >
           <Modal.Description>
             <Header>Prospect Information</Header>

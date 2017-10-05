@@ -6,9 +6,6 @@ const prospectSchema = new Schema({
   last: String,
   email: String,
   phone: String,
-  first_call: Boolean,
-  mail_sample: Boolean,
-  follow_up: Boolean,
   invite_to_class: Boolean,
   add_facebook_group: Boolean,
   texting_marketing: Boolean,
@@ -21,6 +18,7 @@ const prospectSchema = new Schema({
   additional_notes: [{}],
   closedDeal: String,
   met_date: Date,
+  lead: String,
   _creator: {
     type: String,
     required: true,
