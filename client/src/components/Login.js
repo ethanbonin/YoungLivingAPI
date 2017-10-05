@@ -2,6 +2,8 @@ import React, { Component } from "react";
 import axios from "axios";
 import * as actions from "../actions";
 import { connect } from "react-redux";
+import { Redirect } from 'react-router'
+
 
 class Login extends Component {
   constructor(props) {
@@ -11,7 +13,8 @@ class Login extends Component {
       password: "",
       showLoading: false,
       showWarning: false,
-      showError: false
+      showError: false,
+      goBack: false
     };
     this.handleUserNameChange = this.handleUserNameChange.bind(this);
     this.handlePasswordChange = this.handlePasswordChange.bind(this);
@@ -100,6 +103,7 @@ class Login extends Component {
               Sign In
             </a>
             {this.state.showLoading ? this.renderLoading() : null}
+            {this.state.goBack ? <Redirect push to="/dashboard/"/> : null }
           </div>
         </div>
       </div>
@@ -124,14 +128,13 @@ class Login extends Component {
       .post("/v0/yl/login", body)
       .then(body => {
         this.setState({ showLoading: false });
+        this.setState({ goBack: true });
         this.props.removeCard(false);
-        this.props.fetchUser();
       })
       .catch(err => {
         this.setState({ showLoading: false });
         this.setState({ showWarning: false });
         this.setState({ showError: true });
-        this.props.fetchUser();
       });
   }
 

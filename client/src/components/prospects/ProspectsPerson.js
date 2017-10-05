@@ -1,20 +1,30 @@
 import React, { Component } from "react";
 import { Button, Header, Modal} from "semantic-ui-react";
 import FormDataModal from "./FormDataModal";
+import { connect } from "react-redux";
+import * as actions from "../../actions";
+
 
 class ProspectsPerson extends Component {
   constructor(props) {
     super();
     this.closeModal = this.closeModal.bind(this);
+    this.deletePerson = this.deletePerson.bind(this);
   }
 
   closeModal(){
     this.props.popUp();
   }
 
+  deletePerson(){
+    this.props.deleteProspects(this.props.prospect._id);
+    this.props.fetchProspects();
+    this.closeModal();
+  }
+
   render() {
     return (
-      <Modal open>
+      <Modal dimmer open>
         <Modal.Header>{this.props.prospect.first} {this.props.prospect.Bonin}</Modal.Header>
         <Modal.Content >
           <Modal.Description>
@@ -24,7 +34,7 @@ class ProspectsPerson extends Component {
         </Modal.Content>
         <Modal.Actions>
           <div className="left">
-            <Button negative labelPosition="right" icon="warning" content="Delete"/>
+            <Button negative labelPosition="right" icon="warning" content="Delete" onClick={()=>this.deletePerson()}/>
           </div>
           <Button negative onClick={this.closeModal}>Back</Button>
           <Button
@@ -39,4 +49,4 @@ class ProspectsPerson extends Component {
   }
 }
 
-export default ProspectsPerson;
+export default  connect(null, actions)(ProspectsPerson);

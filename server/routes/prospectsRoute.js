@@ -27,14 +27,16 @@ var { amount_made } = require("../amount_estimate/amountestimate");
 
 module.exports = app => {
   app.post('/v0/yl/prospect_new', (req, res) => {
+
+    if (!req.session.user){
+      res.status(401).send({error: "unauthorized"})
+    }
+
     var prospect = new Prospects({
       first: req.body.values.first,
       last: req.body.values.last,
       email: req.body.values.email,
-      first_call: req.body.values.first_call,
       phone: req.body.values.phone,
-      mail_sample: req.body.values.mail_sample,
-      follow_up: req.body.values.follow_up,
       invite_to_class: req.body.values.invite_to_class,
       add_facebook_group: req.body.values.add_facebook_group,
       texting_marketing: req.body.values.texting_marketing,
@@ -47,10 +49,11 @@ module.exports = app => {
       additional_notes: req.body.values.additional_notes,
       closedDeal: req.body.values.closedDeal,
       met_date: req.body.values.met_date,
-      _creator: req.body.values._creator
+      _creator: req.session.user.user.memberid
     });
+
     prospect.save().then((doc) => {
-      res.send(doc);
+       res.send(doc);
     }, (e) => {
       res.status(400).send(e);
     })
@@ -77,7 +80,6 @@ module.exports = app => {
 
   app.delete('/v0/yl/prospects/delete', (req, res) => {
     var id = req.body._id
-
     Prospects.findOneAndRemove({_id: id}).then((doc) => {
       if (!doc) {
         return res.status(404).send();
@@ -86,10 +88,6 @@ module.exports = app => {
     }).catch((e) => {
       res.status(400).send();
     });
-
   });
-
-
-
 
 }

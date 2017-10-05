@@ -21,7 +21,6 @@ class App extends Component {
   }
   componentDidMount() {
     this.props.fetchUser();
-    this.props.fetchProspects();
   }
   checkIfLoggedIn() {
     this.setState({ isLoggedIn: !this.state.isLoggedIn });

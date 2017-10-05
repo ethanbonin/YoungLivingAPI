@@ -1,8 +1,8 @@
 import React, { Component } from "react";
-import { Form, Checkbox, Segment, Label } from "semantic-ui-react";
-import DatePicker from "react-datepicker";
+import { Checkbox, Segment, Label, Grid, Item } from "semantic-ui-react";
 import moment from "moment";
 import { connect } from "react-redux";
+import _ from "lodash";
 
 import "react-datepicker/dist/react-datepicker.css";
 
@@ -36,9 +36,7 @@ class FormDataModal extends Component {
   }
 
   handleChange = (e, { name, value }) => {
-    console.log(name, value);
     this.setState({ [name]: value });
-    console.log(this.state);
   };
 
   toggle = (e, { name }) => {
@@ -53,153 +51,112 @@ class FormDataModal extends Component {
     });
   }
 
-  handleSubmit = () => {
-    console.log(this.state);
-  };
+  renderCheckBoxes() {
+    const headerValue = {
+      invite_to_class: "Invted to a Class",
+      add_facebook_group: "Added To Facebook Group",
+      texting_marketing: "Added To Automated Texting",
+      host_a_class: "Asked a host a class"
+    };
+    return _.map(this.props.data, (value, key) => {
+      var truth = false;
+      truth = _.hasIn(headerValue, key);
+      if (truth) {
+        return (
+          <Item key={headerValue[key]}>
+            <Item.Header>
+              <Label color="violet" ribbon>
+                {headerValue[key]}
+              </Label>
+            </Item.Header>
+            <Item.Meta>
+              <Checkbox checked={this.state[key]} />
+            </Item.Meta>
+          </Item>
+        );
+      }
+    });
+  }
+
+  renderStaticInfo() {
+    const headerValue = {
+      know_them: "Know Them",
+      health_needs: "Health Needs",
+      family: "Family Details",
+      occupation: "Occupation",
+      recreation: "Hobbies"
+    };
+
+    return _.map(this.props.data, (value, key) => {
+      var truth = false;
+      truth = _.hasIn(headerValue, key);
+      if (truth) {
+        return (
+          <Item key={headerValue[key]}>
+            <Item.Header>
+              <Label color="violet" ribbon>
+                {headerValue[key]}
+              </Label>
+            </Item.Header>
+            <Item.Meta>{value}</Item.Meta>
+          </Item>
+        );
+      }
+    });
+  }
+
+  renderPersonalInfo() {
+    const headerValue = {
+      phone: "Phone",
+      first: "First Name",
+      last: "Last Name",
+      email: "Email"
+    };
+
+    console.log(this.props.data);
+
+    return _.map(this.props.data, (value, key) => {
+      var truth = false;
+      truth = _.hasIn(headerValue, key);
+      if (truth) {
+        return (
+          <Item key={headerValue[key]}>
+            <Item.Header>
+              <Label color="violet" ribbon>
+                {headerValue[key]}
+              </Label>
+            </Item.Header>
+            <Item.Meta>{value}</Item.Meta>
+          </Item>
+        );
+      }
+    });
+  }
 
   render() {
     return (
       <div style={{ marginTop: "3em", marginLeft: "1em", marginRight: "1em" }}>
-        <Form onSubmit={this.handleSubmit}>
-          <Form.Group widths="equal">
-            <Form.Input
-              label="First name"
-              placeholder="First name"
-              name="first"
-              value={this.props.data.first}
-              onChange={this.handleChange}
-            />
-            <Form.Input
-              label="Last name"
-              placeholder="Last name"
-              name="last"
-              value={this.props.data.last}
-              onChange={this.handleChange}
-            />
-          </Form.Group>
-          <Form.Group widths="equal">
-            <Form.Input
-              label="Email"
-              placeholder="example@example.com"
-              name="email"
-              value={this.props.data.email}
-              onChange={this.handleChange}
-            />
-            <Form.Input
-              label="Phone Number"
-              placeholder="555-555-555"
-              name="phone"
-              value={this.props.data.phone}
-              onChange={this.handleChange}
-            />
-          </Form.Group>
-          <Form.Group>
-            <Form.Field width={5}>
-              <label>Date that you met</label>
-              <DatePicker
-                selected={this.state.met_date}
-                onChange={this.handleDateChange}
-              />
-            </Form.Field>
-            <div style={{ marginTop: "21px" }}>
-              <Segment compact>
-                <Label basic color="blue">
-                  First Call
-                </Label>
-                <Checkbox
-                  name={"first_call"}
-                  onChange={this.toggle}
-                  checked={this.state.first_call}
-                />
-                <Label basic color="blue">
-                  Mail Sample
-                </Label>
-                <Checkbox
-                  name={"mail_sample"}
-                  onChange={this.toggle}
-                  checked={this.state.mail_sample}
-                />
-                <Label basic color="blue">
-                  Follow Up
-                </Label>
-                <Checkbox
-                  name={"follow_up"}
-                  onChange={this.toggle}
-                  checked={this.state.follow_up}
-                />
-                <Label basic color="blue">
-                  Invite to Class
-                </Label>
-                <Checkbox
-                  name={"invite_to_class"}
-                  onChange={this.toggle}
-                  checked={this.state.invite_to_class}
-                />
+        <Grid columns={2} padded="horizontally">
+          <Grid.Column>
+              <Label size="huge" color="teal">Personal Info</Label>
+              <Segment>
+                {this.renderPersonalInfo()}
               </Segment>
-            </div>
-          </Form.Group>
-          <Form.Group>
-            <div style={{ margin: "auto auto" }}>
-              <Segment compact>
-                <Label basic color="blue">
-                  Add to Facebook Group
-                </Label>
-                <Checkbox
-                  name={"add_facebook_group"}
-                  onChange={this.toggle}
-                  checked={this.state.add_facebook_group}
-                />
-                <Label basic color="blue">
-                  Add to Texting{" "}
-                </Label>
-                <Checkbox
-                  name={"texting_marketing"}
-                  onChange={this.toggle}
-                  checked={this.state.texting_marketing}
-                />
-                <Label basic color="blue">
-                  Will Host a Class
-                </Label>
-                <Checkbox
-                  name={"host_a_class"}
-                  onChange={this.toggle}
-                  checked={this.state.host_a_class}
-                />
-              </Segment>
-            </div>
-          </Form.Group>
-
-          <Form.TextArea
-            label="How do you know them?"
-            placeholder="I met them at Whole Foods Market...."
-            value={this.state.know_them}
-          />
-          <Form.TextArea
-            label="Health Needs"
-            placeholder="Very anxious and sneezy..."
-            value={this.state.health_needs}
-          />
-          <Form.TextArea
-            label="Family"
-            placeholder="They have 11 kids, two dogs and 4 cats..."
-            value={this.state.family}
-          />
-          <Form.TextArea
-            label="Occupation"
-            placeholder="Retired..."
-            value={this.state.occupation}
-          />
-          <Form.TextArea
-            label="Recreation"
-            placeholder="Their hobbies include swimming and sky diving on a normal basis..."
-            value={this.state.recreation}
-          />
-          <Form.TextArea
-            label="Additional Notes"
-            placeholder="Totally forgot to add a note about this..."
-            value={this.state.additional_notes}
-          />
-        </Form>
+            <Label ribbon={false} size="huge" color="teal">
+              Check-List
+            </Label>
+            <Segment>{this.renderCheckBoxes()}</Segment>
+            <Label size="huge" color="teal">Personal Details</Label>
+            <Segment>
+              {this.renderStaticInfo()}
+            </Segment>
+          </Grid.Column>
+          <Grid.Column>
+            <Segment>
+              <h1>Hello World</h1>
+            </Segment>
+          </Grid.Column>
+        </Grid>
       </div>
     );
   }

@@ -1,5 +1,5 @@
 import axios from "axios";
-import { FETCH_USER, FETCH_PROSPECTS } from "./types";
+import { FETCH_USER, FETCH_PROSPECTS, DELETE_PROSPECTS, POST_PROSPECTS } from "./types";
 
 //SAME THING AS BELOW
 // export const fetchUser = () => async dispatch => {
@@ -23,6 +23,28 @@ export const fetchProspects = () => {
     axios
       .get("/v0/yl/prospects")
       .then(res => dispatch({ type: FETCH_PROSPECTS, payload: res.data}));
+  };
+};
+
+
+export const deleteProspects = (_id) => {
+  console.log("ID IS", _id);
+  return function(dispatch) {
+    axios
+      .delete("/v0/yl/prospects/delete", {data:{_id}})
+      .then(res => dispatch({ type: DELETE_PROSPECTS, payload: res.data}));
+  };
+};
+
+
+export const postProspects = (body) => {
+  return function(dispatch) {
+    axios
+      .post("/v0/yl/prospect_new", {values: body})
+      .then(res => {
+        dispatch({ type: POST_PROSPECTS, payload: res.data});
+        console.log("Redirecting");
+      });
   };
 };
 

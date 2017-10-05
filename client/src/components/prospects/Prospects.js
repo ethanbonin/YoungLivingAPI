@@ -3,6 +3,8 @@ import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import { Button, Checkbox, Table } from "semantic-ui-react";
 import _ from "lodash";
+import * as actions from "../../actions";
+
 
 import ProspectsPerson from "./ProspectsPerson";
 
@@ -12,6 +14,12 @@ class Prospects extends Component {
     this.state = { modalOpen: false, prospect: {} };
     this.popUpPerson = this.popUpPerson.bind(this);
   }
+
+
+  componentDidMount() {
+    this.props.fetchProspects();
+  }
+
 
   formatDate(date) {
     const year = date.getFullYear();
@@ -129,4 +137,4 @@ function mapStateToProps({ prospects }) {
   return { prospects };
 }
 
-export default connect(mapStateToProps)(Prospects);
+export default connect(mapStateToProps, actions)(Prospects);

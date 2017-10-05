@@ -1,6 +1,7 @@
 var mongoose = require('mongoose');
+const { Schema } = mongoose;
 
-var Prospects = mongoose.model('Prospects', {
+const prospectSchema = new Schema({
   first: String,
   last: String,
   email: String,
@@ -17,14 +18,17 @@ var Prospects = mongoose.model('Prospects', {
   family: String,
   occupation: String,
   recreation: String,
-  additional_notes: String,
+  additional_notes: [{}],
   closedDeal: String,
-  met_date: String,
+  met_date: Date,
   _creator: {
     type: String,
     required: true,
   }
 });
+
+var Prospects = mongoose.model("prospects", prospectSchema);
+
 
 module.exports = {
   Prospects: Prospects,

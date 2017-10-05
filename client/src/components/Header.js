@@ -33,7 +33,7 @@ class Header extends Component {
             to={this.props.auth ? '/dashboard' : '/'}
             className="left brand-logo" style={{marginLeft: '1em'}}
           >
-            Only Essential
+            Essential Assistant
           </Link>
           <ul className="right" style={{marginRight:'1em'}}>
             {this.renderContent()}
