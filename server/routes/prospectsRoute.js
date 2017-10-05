@@ -100,14 +100,12 @@ module.exports = app => {
   app.patch("/v0/yl/prospects/update", (req, res) => {
     const id = req.body.message._id;
     const message = req.body.message.message;
-    const date = req.body.message.date;
+    const date = new Date();
 
     const new_note = {
       message,
       date
     };
-
-    console.log(new_note, id);
 
     Prospects.findOneAndUpdate(
       { _id: id },
