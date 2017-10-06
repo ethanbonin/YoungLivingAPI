@@ -8,7 +8,6 @@ import Landing from "./dashboard/Landing";
 import Dashboard from "./dashboard/Dashboard";
 import Prospects from "./prospects/Prospects";
 import ProspectsNew from "./prospects/ProspectsForm";
-import ProspectsPerson from "./prospects/ProspectsPerson";
 
 
 
@@ -33,8 +32,7 @@ class App extends Component {
           <Header />
             <Route exact path="/" component={Landing} />
             <Route exact path="/dashboard" component={Dashboard} />
-            <Route path="/dashboard/prospects" component={Prospects} />
-            <Route path="/dashboard/prospects/:id" component={ProspectsPerson} />
+            <Route exact path="/dashboard/prospects" component={Prospects} />
             <Route exact path="/prospects/new" component={ProspectsNew} />
         </div>
       </BrowserRouter>
