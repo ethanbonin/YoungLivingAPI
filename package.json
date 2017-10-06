@@ -36,7 +36,8 @@
     "request-promise": "^4.2.1",
     "requestify": "^0.2.5",
     "strip": "^3.0.0",
-    "validator": "^8.1.0"
+    "validator": "^8.1.0",
+    "yarn": "^1.1.0"
   },
   "devDependencies": {
     "expect": "^1.20.2",
