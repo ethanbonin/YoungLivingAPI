@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Form, Segment, Button } from "semantic-ui-react";
+import { Form, Segment, Button, Label } from "semantic-ui-react";
 import DatePicker from "react-datepicker";
 import moment from "moment";
 import { connect } from "react-redux";
@@ -23,17 +23,24 @@ class ProspectsNew extends Component {
       texting_marketing: false,
       host_a_class: false,
       know_them: "",
-      lead: "",
+      lead: "cold",
       health_needs: "",
       family: "",
       occupation: "",
       recreation: "",
       additional_notes: {},
       closedDeal: "",
+      first_error: false,
+      last_error: false,
+      email_error: false,
+      phone_error: false,
+      email_error_format: false,
+      phone_error_format: false,
       goBack: false
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleDateChange = this.handleDateChange.bind(this);
+    this.renderPersonalInfo = this.renderPersonalInfo.bind(this);
     this.toggle = this.toggle.bind(this);
   }
 
@@ -54,6 +61,36 @@ class ProspectsNew extends Component {
 
   handleSubmit = () => {
     console.log("Submitting", this.state);
+
+    var error_in_form = false;
+
+    for (var key in info){
+      let error_value = info[key].value + "_error"
+      if (this.state[info[key].value] === ""){
+        error_in_form = true
+        this.setState({[error_value]: true})
+        console.log(this.state[error_value]);
+      }
+    }
+
+    if (error_in_form){
+      console.log(this.state);
+      console.log("Found a field empy!");
+      return
+    }
+
+    const regex_email = /^([A-Z|a-z|0-9](\.|_){0,1})+[A-Z|a-z|0-9]@([A-Z|a-z|0-9])+((\.){0,1}[A-Z|a-z|0-9]){2}\.[a-z]{2,3}$/
+    const regex_number = /(\+?( |-|\.)?\d{1,2}( |-|\.)?)?(\(?\d{3}\)?|\d{3})( |-|\.)?(\d{3}( |-|\.)?\d{4})/
+    const result_email = regex_email.test(this.state.email);
+    const result_number = regex_number.test(this.state.phone);
+    if (!result_email || !result_number){
+      console.log("EMAIL", !result_email);
+      console.log("PHONE", !result_number);
+      this.setState({email_error_format: !result_email});
+      this.setState({phone_error_format: !result_number});
+      return
+    }
+
     this.props.postProspects(this.state);
     this.setState({
       goBack: true
@@ -79,13 +116,20 @@ class ProspectsNew extends Component {
 
   renderPersonalInfo() {
     return _.map(info, ({ value, label }) => {
+      const v = value + "_error";
+      const v_format = value + "_error_format";
       return (
+        <div style={{margin: "1em"}}>
         <Form.Input
           label={label}
           placeholder={label}
           name={value}
           onChange={this.handleChange}
+          error={this.state[v]}
         />
+        {this.state[v] ?   <Label basic color='red' pointing>Please enter a value</Label> : null}
+        {this.state[v_format] ?  <Label basic color='red' pointing>Please enter the correct format</Label> : null}
+      </div>
       );
     });
   }
@@ -127,7 +171,9 @@ class ProspectsNew extends Component {
       >
         <div>
           <Form onSubmit={this.handleSubmit}>
-            <Form.Group widths="equal">{this.renderPersonalInfo()}</Form.Group>
+            <Form.Group widths="equal">
+              {this.renderPersonalInfo()}
+            </Form.Group>
             <Form.Field width={4}>
               <label>Date that you met</label>
               <DatePicker

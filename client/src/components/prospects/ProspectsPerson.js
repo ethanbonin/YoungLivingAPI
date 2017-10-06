@@ -18,8 +18,8 @@ class ProspectsPerson extends Component {
 
   deletePerson(){
     this.props.deleteProspects(this.props.prospect._id);
-    this.props.fetchProspects();
     this.closeModal();
+    this.props.fetchProspects();
   }
 
 
