@@ -229,7 +229,7 @@ is_retail_customer = function(retail_customers, all_members) {
 if (process.env.NODE_ENV === 'production'){
   //Express will serve  up production assets
   //like our main.js file. or main.css file
-  // app.use(express.static('client/build'));
+  app.use(express.static('client/build'));
 
 
   //Express will serve up index.html file
@@ -240,6 +240,7 @@ if (process.env.NODE_ENV === 'production'){
   //   res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'));
   // });
 
+  const path = require('path');
   app.get('*', (req, res) => {
     res.sendFile(path.join(__dirname+'/client/build/index.html'));
   });
