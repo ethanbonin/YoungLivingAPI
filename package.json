@@ -9,7 +9,7 @@
     "start": "node server/server.js",
     "client": "npm run start --prefix client",
     "dev": "concurrently \"npm start\" \"npm run client\"",
-    "heroku-postbuild": "cd client && npm install --only=dev && npm install && npm run build"
+    "heroku-postbuild": "cd client && yarn --production=false && yarn run build"
   },
   "engines": {
     "node": "8.4.0",
