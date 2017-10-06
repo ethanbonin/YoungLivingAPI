@@ -40,16 +40,4 @@ class App extends Component {
   }
 }
 
-//
-// <BrowserRouter>
-//   <div className="container">
-//     <Route>
-//       <div>
-//         <Header checkIfLoggedIn={this.checkIfLoggedIn} loggedIn={this.state.isLoggedIn} />
-//       {this.state.isLoggedIn ? <Dashboard /> : <Landing />}
-//       </div>
-//     </Route>
-//   </div>
-// </BrowserRouter>
-
 export default connect(null, actions)(App);
