@@ -230,8 +230,8 @@ if (process.env.NODE_ENV === 'production'){
   //Express will serve  up production assets
   //like our main.js file. or main.css file
   const path = require('path');
-  app.use(express.static('client/build'));
   // app.use(express.static(path.resolve(__dirname, 'client', 'build')));
+  app.use(express.static(path.join(__dirname, 'client/build')));
 
 
   //Express will serve up index.html file
