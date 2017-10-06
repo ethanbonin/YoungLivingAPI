@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Form, Checkbox, Segment, Label, Button } from "semantic-ui-react";
+import { Form, Segment, Button } from "semantic-ui-react";
 import DatePicker from "react-datepicker";
 import moment from "moment";
 import { connect } from "react-redux";
@@ -71,7 +71,7 @@ class ProspectsNew extends Component {
             name={value}
             onChange={this.toggle}
           />
-          <label for={value}>{message}</label>
+          <label htmlFor={value}>{message}</label>
         </p>
       );
     });
@@ -101,7 +101,7 @@ class ProspectsNew extends Component {
             id={value}
             onChange={() => this.setState({ lead: v })}
           />
-          <label for={value}>{label}</label>
+          <label htmlFor={value}>{label}</label>
         </p>
       );
     });

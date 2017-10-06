@@ -1,22 +1,16 @@
 import React, { Component } from "react";
-import {
-  Checkbox,
-  Segment,
-  Label,
-  Grid,
-  Item,
-  Divider,
-  Button
-} from "semantic-ui-react";
+import { Segment, Label, Grid, Item, Divider, Button } from "semantic-ui-react";
 import moment from "moment";
 import { connect } from "react-redux";
 import _ from "lodash";
 import "react-datepicker/dist/react-datepicker.css";
-import {box_values} from './raw_data';
+import { box_values } from "./raw_data";
+import * as actions from "../../actions";
 
 class FormDataModal extends Component {
   constructor(props) {
     super(props);
+
     this.state = {
       met_date: moment(),
       first: this.props.data.first,
@@ -36,27 +30,46 @@ class FormDataModal extends Component {
       occupation: this.props.data.occupation,
       recreation: this.props.data.recreation,
       additional_notes: this.props.data.additional_notes,
-      closedDeal: this.props.data.closedDeal
+      closedDeal: this.props.data.closedDeal,
+      new_note: ""
     };
-    this.handleChange = this.handleChange.bind(this);
-    this.handleDateChange = this.handleDateChange.bind(this);
-    this.toggle = this.toggle.bind(this);
+
+    this.handleNoteSubmission = this.handleNoteSubmission.bind(this);
   }
 
-  handleChange = (e, { name, value }) => {
-    this.setState({ [name]: value });
-  };
 
-  toggle = (e, { name }) => {
-    const truthy = !this.state[name];
-    this.setState({ [name]: truthy });
-  };
-
-  handleDateChange(date) {
-    console.log(typeof date);
-    this.setState({
-      met_date: date
+  handleNoteSubmission() {
+    this.props.patchProspects({
+      _id: this.props.data._id,
+      message: this.state.new_note
     });
+    this.props.fetchProspects();
+
+    const new_note = {
+      message: this.state.new_note,
+      date: new Date()
+    };
+
+    const n_a = this.state.additional_notes.slice();
+    n_a.push(new_note);
+    this.setState({ new_note: "" });
+    this.setState({ additional_notes: n_a });
+  }
+
+  toggleSubmission(e){
+    console.log(this.props.data._id)
+    console.log(e.target.id);
+
+    this.props.toggleProspects({
+      _id: this.props.data._id,
+      value_to_toggle: e.target.id,
+      truthy: !this.state[e.target.id]
+    })
+
+    this.props.fetchProspects();
+    this.setState({[e.target.id]: !this.state[e.target.id]})
+
+
   }
 
   renderCheckBoxes() {
@@ -68,9 +81,9 @@ class FormDataModal extends Component {
             id={value}
             name={value}
             checked={this.state[value]}
-            onChange={()=>console.log('hello wolrd')}
+            onChange={(e)=> this.toggleSubmission(e)}
           />
-          <label for={value}>{message}</label>
+          <label htmlFor={value}>{message}</label>
         </p>
       );
     });
@@ -92,7 +105,9 @@ class FormDataModal extends Component {
         return (
           <Item key={headerValue[key]}>
             <Item.Header>
-              <Label color="grey">{headerValue[key]}</Label>
+              <Label color="grey" size={"medium"}>
+                {headerValue[key]}
+              </Label>
             </Item.Header>
             <Item.Meta style={{ marginLeft: "15px" }}>{value}</Item.Meta>
           </Item>
@@ -109,17 +124,18 @@ class FormDataModal extends Component {
     return month + "/" + day + "/" + year;
   }
 
-  renderSpecificNote(value) {
-    value = _.sortBy(value, function(note) {
+  renderNotes() {
+    var notes_array = this.state.additional_notes;
+    notes_array = _.sortBy(notes_array, function(note) {
       if (note.date == null) {
         return;
       }
       return new Date(note.date);
     });
-    value = _.reverse(value);
-    console.log("MADE IT HERE?", value);
 
-    return _.map(value, ({ message, date }) => {
+    notes_array = _.reverse(notes_array);
+
+    return _.map(notes_array, ({ message, date }) => {
       return (
         <Segment key={date}>
           <Item.Meta>
@@ -129,22 +145,6 @@ class FormDataModal extends Component {
           </Item.Meta>
         </Segment>
       );
-    });
-  }
-
-  renderNotes() {
-    const headerValue = {
-      additional_notes: "Current Notes"
-    };
-
-    return _.map(this.props.data, (value, key) => {
-      var truth = false;
-      truth = _.hasIn(headerValue, key);
-      if (truth) {
-        return (
-          <Item key={headerValue[key]}>{this.renderSpecificNote(value)}</Item>
-        );
-      }
     });
   }
 
@@ -159,24 +159,24 @@ class FormDataModal extends Component {
         icon: "mail"
       }
     };
+
     return _.map(this.props.data, (value, key) => {
       var truth = false;
       truth = _.hasIn(headerValue, key);
+
       if (truth) {
         return (
-          <Item key={headerValue[key]}>
-            <Item.Header />
+          <div key={key}>
             <Segment>
-              <Item.Meta>
-                <Label
-                  color="grey"
-                  icon={headerValue[key].icon}
-                  content={headerValue[key].header}
-                />{" "}
-                {value}
-              </Item.Meta>
+              <Label
+                color="grey"
+                icon={headerValue[key].icon}
+                content={headerValue[key].header}
+                key={headerValue[key]}
+              />
+              <span style={{ marginLeft: "4px" }}>{value}</span>
             </Segment>
-          </Item>
+          </div>
         );
       }
     });
@@ -190,7 +190,7 @@ class FormDataModal extends Component {
             <Label size="huge" color="teal">
               Personal Info
             </Label>
-            <Segment>{this.renderPersonalInfo()}</Segment>
+            <Segment key={1}>{this.renderPersonalInfo()}</Segment>
             <Label ribbon={false} size="huge" color="teal">
               Check-List
             </Label>
@@ -203,8 +203,14 @@ class FormDataModal extends Component {
           <Grid.Column>
             <Segment>
               <Label>New Note</Label>
-              <textarea style={{ height: 150 }} />
-              <Button>Submit</Button>
+              <textarea
+                value={this.state.new_note}
+                style={{ height: 150 }}
+                onChange={e => this.setState({ new_note: e.target.value })}
+              />
+              <Button onClick={this.handleNoteSubmission} color={"teal"}>
+                Submit
+              </Button>
             </Segment>
             <br />
             <br />
@@ -223,4 +229,4 @@ function mapStateToProps({ auth }) {
   return { auth };
 }
 
-export default connect(mapStateToProps)(FormDataModal);
+export default connect(mapStateToProps, actions)(FormDataModal);

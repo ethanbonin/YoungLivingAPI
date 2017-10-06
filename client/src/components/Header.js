@@ -28,7 +28,7 @@ class Header extends Component {
   headerBar(){
     return (
       <nav>
-        <div className="nav-wrapper blue-grey lighten-1">
+        <div className="nav-wrapper teal">
           <Link
             to={this.props.auth ? '/dashboard' : '/'}
             className="left brand-logo" style={{marginLeft: '1em'}}

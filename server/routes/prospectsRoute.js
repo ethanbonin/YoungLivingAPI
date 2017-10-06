@@ -121,4 +121,33 @@ module.exports = app => {
         res.status(400).send();
       });
   });
+
+    app.patch("/v0/yl/prospects/toggle", (req, res) => {
+
+      const id = req.body.toggle._id;
+      const value_to_toggle = req.body.toggle.value_to_toggle;
+      const truthy = req.body.toggle.truthy;
+
+      const obj = {};
+      obj[value_to_toggle] = truthy;
+
+      Prospects.findOneAndUpdate(
+        { _id: id },
+        { $set: obj }
+      )
+        .then(prospect => {
+          if (!prospect) {
+            return res.status(404).send({ err: "not found" });
+          }
+          res.send({ prospect });
+        })
+        .catch(e => {
+          res.status(400).send();
+        });
+
+
+    });
+
+
+
 };

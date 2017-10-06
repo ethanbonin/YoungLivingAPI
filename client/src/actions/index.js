@@ -1,5 +1,5 @@
 import axios from "axios";
-import { FETCH_USER, FETCH_PROSPECTS, DELETE_PROSPECTS, POST_PROSPECTS } from "./types";
+import { FETCH_USER, FETCH_PROSPECTS, DELETE_PROSPECTS, POST_PROSPECTS, PATCH_PROSPECTS, TOGGLE_PROSPECTS } from "./types";
 
 //SAME THING AS BELOW
 // export const fetchUser = () => async dispatch => {
@@ -28,7 +28,6 @@ export const fetchProspects = () => {
 
 
 export const deleteProspects = (_id) => {
-  console.log("ID IS", _id);
   return function(dispatch) {
     axios
       .delete("/v0/yl/prospects/delete", {data:{_id}})
@@ -38,13 +37,32 @@ export const deleteProspects = (_id) => {
 
 
 export const postProspects = (body) => {
-  console.log("THE BODY",body);
   return function(dispatch) {
     axios
       .post("/v0/yl/prospect_new", {values: body})
       .then(res => {
         dispatch({ type: POST_PROSPECTS, payload: res.data});
-        console.log("Redirecting");
+      });
+  };
+};
+
+
+export const patchProspects = (messsage) => {
+  return function(dispatch) {
+    axios
+      .patch("/v0/yl/prospects/update", {message: messsage})
+      .then(res => {
+        dispatch({ type: PATCH_PROSPECTS, payload: res.data});
+      });
+  };
+};
+
+export const toggleProspects = (toggle) => {
+  return function(dispatch) {
+    axios
+      .patch("/v0/yl/prospects/toggle", {toggle: toggle})
+      .then(res => {
+        dispatch({ type: TOGGLE_PROSPECTS, payload: res.data});
       });
   };
 };

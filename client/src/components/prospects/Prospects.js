@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
-import { Button, Checkbox, Table, Label } from "semantic-ui-react";
+import { Button, Table, Label } from "semantic-ui-react";
 import _ from "lodash";
 import * as actions from "../../actions";
 
@@ -38,6 +38,7 @@ class Prospects extends Component {
     this.setState({ prospect: person });
   }
 
+
   renderHeaders() {
     const headerTitles = [
       "View",
@@ -54,25 +55,24 @@ class Prospects extends Component {
     ];
 
     return _.map(headerTitles, header => {
-      return <Table.HeaderCell>{header}</Table.HeaderCell>;
+      return <Table.HeaderCell key={header}>{header}</Table.HeaderCell>;
     });
   }
 
 
   renderCheckBoxes(prospect){
-
       return _.map(box_values, ({ value, message }) => {
         return (
-          <Table.Cell>
+          <Table.Cell key={value}>
           <p key={value}>
             <input
+              readOnly
               type="checkbox"
-              id={value}
+              id={prospect._id}
               name={value}
               checked={prospect[value]}
-              disabled="disabled"
             />
-            <label for={value}>{message}</label>
+            <label htmlFor={prospect._id}></label>
           </p>
         </Table.Cell>
         );
@@ -91,7 +91,7 @@ class Prospects extends Component {
 
     switch (this.props.prospects) {
       case null:
-        return;
+        return
       default:
         const prospects = this.props.prospects;
         return _.map(prospects.prospects, prospect => {
@@ -100,7 +100,7 @@ class Prospects extends Component {
           const date_closed = new Date(prospect.dateClosed);
           const formatted_date_closed = this.formatDate(date_closed);
           return (
-            <Table.Row>
+            <Table.Row key={prospect._id}>
               <Table.Cell>
                 <Button color="teal" onClick={() => this.popUpPerson(prospect)}>
                   View

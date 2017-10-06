@@ -22,8 +22,9 @@ class ProspectsPerson extends Component {
     this.closeModal();
   }
 
-  render() {
 
+
+  render() {
     const lead_colors = {
       cold: "black",
       warm: "orange",
@@ -34,8 +35,8 @@ class ProspectsPerson extends Component {
       <Modal dimmer open>
         <Modal.Header>
           {this.props.prospect.first} {this.props.prospect.last}
-          <Label color={lead_colors[this.props.prospect.lead]}>
-            {this.props.prospect.lead}
+          <Label size={"large"} horizontal style={{width: 100, marginLeft: "15px"}} color={lead_colors[this.props.prospect.lead]}>
+            {this.props.prospect.lead.toUpperCase()}
           </Label>
         </Modal.Header>
         <Modal.Content >
@@ -48,17 +49,11 @@ class ProspectsPerson extends Component {
           <div className="left">
             <Button negative labelPosition="right" icon="warning" content="Delete" onClick={()=>this.deletePerson()}/>
           </div>
-          <Button negative onClick={this.closeModal}>Back</Button>
-          <Button
-            positive
-            labelPosition="right"
-            icon="checkmark"
-            content="Save"
-          />
+          <Button onClick={this.closeModal}>Done</Button>
         </Modal.Actions>
       </Modal>
     );
   }
 }
 
-export default  connect(null, actions)(ProspectsPerson);
+export default connect(null, actions)(ProspectsPerson);
