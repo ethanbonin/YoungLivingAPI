@@ -119,7 +119,7 @@ class ProspectsNew extends Component {
       const v = value + "_error";
       const v_format = value + "_error_format";
       return (
-        <div style={{margin: "1em"}}>
+        <div style={{margin: "1em"}} key={value}>
         <Form.Input
           label={label}
           placeholder={label}
@@ -138,7 +138,7 @@ class ProspectsNew extends Component {
     return _.map(lead, ({ value, label }) => {
       const v = value;
       return (
-        <p>
+        <p key={value}>
           <input
             name="group1"
             type="radio"
@@ -159,6 +159,7 @@ class ProspectsNew extends Component {
           placeholder={placeholder}
           name={value}
           onChange={this.handleChange}
+          key={value}
         />
       );
     });
