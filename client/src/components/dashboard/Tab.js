@@ -28,16 +28,18 @@ class Tab extends Component {
   render() {
     return (
       <div style={{marginTop: "3em"}}>
-        <Link to={`/${this.props.name.toLowerCase()}`}>{this.props.name}</Link>
-      </div>
-      // <Card
-      //   href={this.state.link}
-      //   style={{ margin: "1em" }}
-      //   raised
-      //   color={this.props.color}
-      //   image={this.props.image}
-      //   header={this.props.name}
-      // />
+
+      <Card
+        href={`${this.props.name.toLowerCase()}`}
+        style={{ margin: "1em" }}
+        raised
+        color={this.props.color}
+        image={this.props.image}
+        header={this.props.name}
+      />
+      <Link to={`/${this.props.name.toLowerCase()}`}>{this.props.name}</Link>
+
+        </div>
     );
   }
 }
