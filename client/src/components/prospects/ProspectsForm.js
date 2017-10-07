@@ -5,6 +5,7 @@ import moment from "moment";
 import { connect } from "react-redux";
 import * as actions from "../../actions";
 import { Redirect } from "react-router";
+import {Link} from 'react-router-dom';
 import _ from "lodash";
 import "react-datepicker/dist/react-datepicker.css";
 import { box_values, info, lead, details } from "./raw_data";
@@ -191,7 +192,7 @@ class ProspectsNew extends Component {
             <Form.Group>
               <div style={{ margin: "auto auto" }}>
                 <Button.Group>
-                  <Button href="/dashboard/prospects">Cancel</Button>
+                  <Button as={Link} to={"/dashboard/prospects"}>Cancel</Button>
                   <Button.Or />
                   <Button color="teal" positive>
                     Save
