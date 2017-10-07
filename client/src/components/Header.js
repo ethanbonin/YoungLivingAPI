@@ -1,15 +1,29 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
+import React, { Component } from "react";
+import { connect } from "react-redux";
+import { Link } from "react-router-dom";
+import { Button } from "semantic-ui-react";
+import * as actions from "../actions";
+import axios from "axios";
 
-import Login from './Login';
+import Login from "./Login";
 
 class Header extends Component {
   constructor(props) {
     super();
-    this.state = {showCard: false};
+    this.state = { showCard: false, auth: props.auth };
     this.renderContent = this.renderContent.bind(this);
     this.removeCard = this.removeCard.bind(this);
+  }
+
+  handleLogout() {
+    axios
+      .get("/v0/yl/logout")
+      .then(body => {
+        console.log("LOGGED OUT", body);
+      })
+      .catch(err => {
+        console.log("There was an error logging out", err);
+      });
   }
 
   renderContent() {
@@ -17,44 +31,54 @@ class Header extends Component {
       case null:
         return;
       case false:
-        return <li><a onClick={() => this.setState({showCard: !this.state.showCard})}>Login</a></li>;
+        return (
+          <li>
+            <a
+              onClick={() => this.setState({ showCard: !this.state.showCard })}
+            >
+              Login
+            </a>
+          </li>
+        );
       default:
         return [
-          <li key="2"><a href="/v0/yl/logout">Logout</a></li>
+          <li key="2">
+            <Button onClick={this.handleLogout}>Logout</Button>
+          </li>
         ];
     }
-  };
+  }
 
-  headerBar(){
+  headerBar() {
     return (
       <nav>
         <div className="nav-wrapper teal">
           <Link
-            to={this.props.auth ? '/dashboard' : '/'}
-            className="left brand-logo" style={{marginLeft: '1em'}}
+            to={this.props.auth ? "/dashboard" : "/"}
+            className="left brand-logo"
+            style={{ marginLeft: "1em" }}
           >
             Essential Assistant
           </Link>
-          <ul className="right" style={{marginRight:'1em'}}>
+          <ul className="right" style={{ marginRight: "1em" }}>
             {this.renderContent()}
           </ul>
         </div>
       </nav>
     );
-  };
-
+  }
 
   render() {
     return (
       <div>
         {this.headerBar()}
-        {this.state.showCard ? <Login removeCard={this.removeCard}/> : null}
+        {this.state.showCard ? <Login removeCard={this.removeCard} /> : null}
       </div>
     );
   }
 
-  removeCard(value){
-    this.setState({showCard: false});
+  removeCard(value) {
+    this.setState({ showCard: false });
     this.props.checkIfLoggedIn();
   }
 }
@@ -63,7 +87,7 @@ function mapStateToProps({ auth }) {
   return { auth };
 }
 
-export default connect(mapStateToProps)(Header);
+export default connect(mapStateToProps, actions)(Header);
 
 // OLD VERSION
 // function mapStateToProps(state){

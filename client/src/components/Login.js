@@ -127,7 +127,9 @@ class Login extends Component {
     axios
       .post("/v0/yl/login", body)
       .then(body => {
+        //Order of setting states matter!
         this.setState({ showLoading: false });
+        this.props.fetchUser();
         this.setState({ goBack: true });
         this.props.removeCard(false);
       })
