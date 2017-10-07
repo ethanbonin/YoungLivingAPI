@@ -30,14 +30,15 @@ class Tab extends Component {
       <div style={{marginTop: "3em"}}>
 
       <Card
-        href={`${this.props.name.toLowerCase()}`}
         style={{ margin: "1em" }}
         raised
         color={this.props.color}
         image={this.props.image}
         header={this.props.name}
+        as={Link}
+        to={`/dashboard/${this.props.name.toLowerCase()}`}
       />
-      <Link to={`/${this.props.name.toLowerCase()}`}>{this.props.name}</Link>
+      <Link to={`/dashboard/${this.props.name.toLowerCase()}`}>{this.props.name}</Link>
 
         </div>
     );
