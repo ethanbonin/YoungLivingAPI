@@ -5,6 +5,8 @@ import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import { createStore, applyMiddleware } from 'redux';
 import reduxThunk from 'redux-thunk';
+import { BrowserRouter } from 'react-router-dom'
+
 
 import App from './components/App';
 import reducers from './reducers';
@@ -16,6 +18,8 @@ window.axios = axios;
 const store = createStore(reducers, {}, applyMiddleware(reduxThunk));
 
 ReactDOM.render(
-  <Provider store={store}><App /></Provider>,
+  <BrowserRouter>
+    <Provider store={store}><App /></Provider>
+  </BrowserRouter>,
   document.querySelector('#root')
 );
