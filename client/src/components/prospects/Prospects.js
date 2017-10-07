@@ -138,7 +138,7 @@ class Prospects extends Component {
         </Table>
 
         <Link
-          to="/prospects/new"
+          to="/dashboard/prospects/new"
           className="btn-floating btn-large red"
         >
           <i className="material-icons">add</i>

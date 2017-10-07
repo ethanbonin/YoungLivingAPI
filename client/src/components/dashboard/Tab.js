@@ -27,8 +27,6 @@ class Tab extends Component {
 
   render() {
     return (
-      <div style={{marginTop: "3em"}}>
-
       <Card
         style={{ margin: "1em" }}
         raised
@@ -38,9 +36,6 @@ class Tab extends Component {
         as={Link}
         to={`/dashboard/${this.props.name.toLowerCase()}`}
       />
-      <Link to={`/dashboard/${this.props.name.toLowerCase()}`}>{this.props.name}</Link>
-
-        </div>
     );
   }
 }
