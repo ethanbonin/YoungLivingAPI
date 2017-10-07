@@ -36,6 +36,7 @@ class DashBoard extends Component {
     return (
       <div>
         <div className="container">
+          <Route path="/dashboard/prospects" component={Prospects} />
           <Card.Group itemsPerRow={2} style={{}}>
             {this.renderTabs()}
           </Card.Group>
