@@ -52,4 +52,8 @@ class App extends Component {
 //   </div>
 // </BrowserRouter>
 
-export default connect(null, actions)(App);
+function mapStateToProps({ auth }) {
+  return { auth };
+}
+
+export default connect(mapStateToProps, actions)(App);

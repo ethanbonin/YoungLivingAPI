@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
+import { Redirect } from 'react-router'
 import { Link } from "react-router-dom";
 import { Button } from "semantic-ui-react";
 import * as actions from "../actions";
@@ -10,9 +11,11 @@ import Login from "./Login";
 class Header extends Component {
   constructor(props) {
     super();
-    this.state = { showCard: false, auth: props.auth };
+    this.state = { showCard: false, goBack: false };
     this.renderContent = this.renderContent.bind(this);
     this.removeCard = this.removeCard.bind(this);
+    this.handleLogout = this.handleLogout.bind(this);
+
   }
 
   handleLogout() {
@@ -20,6 +23,7 @@ class Header extends Component {
       .get("/v0/yl/logout")
       .then(body => {
         console.log("LOGGED OUT", body);
+        this.props.fetchUser();
       })
       .catch(err => {
         console.log("There was an error logging out", err);
@@ -72,6 +76,7 @@ class Header extends Component {
     return (
       <div>
         {this.headerBar()}
+        {this.state.goBack ? <Redirect push to="/"/> : null }
         {this.state.showCard ? <Login removeCard={this.removeCard} /> : null}
       </div>
     );
