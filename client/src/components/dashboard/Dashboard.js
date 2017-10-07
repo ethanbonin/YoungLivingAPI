@@ -1,12 +1,12 @@
 import React, { Component } from "react";
-import { Route } from "react-router-dom";
 import { Card } from "semantic-ui-react";
-import TopBar from "./QuickStats";
+import { connect } from "react-redux";
+import * as actions from "../../actions";
+import {Redirect} from 'react-router';
+
 import Tab from "./Tab";
 import _ from "lodash";
 
-
-import Prospects from '../prospects/Prospects';
 
 // https://images.pexels.com/photos/36717/amazing-animal-beautiful-beautifull.jpg?h=350&auto=compress&cs=tinysrgb
 const imageSrc = {
@@ -26,6 +26,15 @@ const _TABS = [
 class DashBoard extends Component {
   constructor(props) {
     super();
+    this.state = {isLoggedIn: false}
+  }
+
+  componentWillMount() {
+    console.log("Checking if Logged in", this.props.auth);
+    if (this.props.auth !== false && this.props.auth !== null){
+      console.log("Passed!");
+      this.setState({isLoggedIn: true});
+    }
   }
 
   renderTabs() {
@@ -42,9 +51,14 @@ class DashBoard extends Component {
             {this.renderTabs()}
           </Card.Group>
         </div>
+        {this.state.isLoggedIn ? null : <Redirect to="/"/>}
       </div>
     );
   }
 }
 
-export default DashBoard;
+function mapStateToProps({ auth }) {
+  return { auth };
+}
+
+export default connect(mapStateToProps, actions)(DashBoard);

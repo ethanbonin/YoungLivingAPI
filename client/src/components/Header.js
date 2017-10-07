@@ -22,7 +22,6 @@ class Header extends Component {
     axios
       .get("/v0/yl/logout")
       .then(body => {
-        console.log("LOGGED OUT", body);
         this.props.fetchUser();
       })
       .catch(err => {

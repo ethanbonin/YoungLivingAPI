@@ -1,15 +1,16 @@
+import createHistory from "history/createBrowserHistory";
 import React, { Component } from "react";
-import { BrowserRouter, Route } from "react-router-dom";
+import { Router, Route } from "react-router-dom";
 import { connect } from "react-redux";
 import * as actions from "../actions";
 
 import Header from "./Header";
 import Landing from "./dashboard/Landing";
-import Dashboard from "./dashboard/Dashboard";
-import Prospects from './prospects/Prospects';
+import DashBoard from "./dashboard/Dashboard";
+import Prospects from "./prospects/Prospects";
 import ProspectsNew from "./prospects/ProspectsForm";
 
-
+const history = createHistory();
 
 //container adds borders on the side
 class App extends Component {
@@ -17,40 +18,43 @@ class App extends Component {
     super();
     this.state = { isLoggedIn: false };
     this.checkIfLoggedIn = this.checkIfLoggedIn.bind(this);
+    this.requireAuth = this.requireAuth.bind(this);
   }
   componentDidMount() {
     this.props.fetchUser();
+    this.requireAuth();
   }
   checkIfLoggedIn() {
     this.setState({ isLoggedIn: !this.state.isLoggedIn });
   }
 
+  requireAuth(nextState, Replace) {
+    console.log("LOGGED IN??", this.state.isLoggedIn);
+    if (!this.props.auth) {
+      this.setState({ isLoggedIn: false });
+    } else {
+      this.setState({ isLoggedIn: true });
+    }
+  }
+
   render() {
     return (
-      <BrowserRouter>
+      <Router history={history}>
         <div className="">
           <Header />
-            <Route exact path="/" component={Landing} />
-            <Route exact path="/dashboard" component={Dashboard} />
-            <Route exact path={`/dashboard/prospects`} component={Prospects}/>
-            <Route exact path={`/dashboard/prospects/new`} component={ProspectsNew}/>
+          <Route exact path="/" component={Landing} />
+          <Route exact path="/dashboard" component={DashBoard} />
+          <Route exact path={`/dashboard/prospects`} component={Prospects} />
+          <Route
+            exact
+            path={`/dashboard/prospects/new`}
+            component={ProspectsNew}
+          />
         </div>
-      </BrowserRouter>
+      </Router>
     );
   }
 }
-
-//
-// <BrowserRouter>
-//   <div className="container">
-//     <Route>
-//       <div>
-//         <Header checkIfLoggedIn={this.checkIfLoggedIn} loggedIn={this.state.isLoggedIn} />
-//       {this.state.isLoggedIn ? <Dashboard /> : <Landing />}
-//       </div>
-//     </Route>
-//   </div>
-// </BrowserRouter>
 
 function mapStateToProps({ auth }) {
   return { auth };

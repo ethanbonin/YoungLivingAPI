@@ -2,10 +2,10 @@
   "name": "client",
   "version": "0.1.0",
   "private": true,
-  "proxy": "http://localhost:5000"
-  ,
+  "proxy": "http://localhost:5000",
   "dependencies": {
     "axios": "^0.16.2",
+    "history": "^4.7.2",
     "materialize-css": "^0.100.2",
     "moment": "^2.18.1",
     "react": "^16.0.0",
