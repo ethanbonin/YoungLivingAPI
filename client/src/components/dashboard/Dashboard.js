@@ -26,15 +26,15 @@ class DashBoard extends Component {
   }
 
   renderTabs() {
+    console.log("THIS IS MATCH",this.props.match.url)
     return _.map(_TABS, ({ name, color, image }) => {
-      return <Tab key={name} name={name} color={color} image={image} />;
+      return <Tab key={name} name={name} color={color} image={image} url={this.props.match.url} />;
     });
   }
 
   render() {
     return (
       <div>
-        <TopBar />
         <div className="container">
           <Card.Group itemsPerRow={2} style={{}}>
             {this.renderTabs()}

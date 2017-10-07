@@ -18,8 +18,6 @@ window.axios = axios;
 const store = createStore(reducers, {}, applyMiddleware(reduxThunk));
 
 ReactDOM.render(
-  <BrowserRouter>
-    <Provider store={store}><App /></Provider>
-  </BrowserRouter>,
+    <Provider store={store}><App /></Provider>,
   document.querySelector('#root')
 );

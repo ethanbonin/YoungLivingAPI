@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { Card } from "semantic-ui-react";
+import {Link} from "react-router-dom";
 
 class Tab extends Component {
   constructor(props) {
@@ -7,6 +8,7 @@ class Tab extends Component {
     this.pickURL = this.pickURL.bind(this);
     const link = this.pickURL(props.name);
     this.state = {link: link};
+    console.log("MATCH", props.match)
   }
 
   pickURL(name) {
@@ -14,7 +16,7 @@ class Tab extends Component {
       case "stats":
         return "/dashboard/stats";
       case "prospects":
-        return "/prospects";
+        return "/dashboard/prospects";
       case "downline":
         return "/dashboard/downline";
       case "alerts":
@@ -26,14 +28,17 @@ class Tab extends Component {
 
   render() {
     return (
-      <Card
-        href={"http://tranquil-plateau-96474.herokuapp.com/prospects"}
-        style={{ margin: "1em" }}
-        raised
-        color={this.props.color}
-        image={this.props.image}
-        header={this.props.name}
-      />
+      <Link to={`${this.props.url}/prospects`}>
+      Components
+    </Link>
+      // <Card
+      //   href={this.state.link}
+      //   style={{ margin: "1em" }}
+      //   raised
+      //   color={this.props.color}
+      //   image={this.props.image}
+      //   header={this.props.name}
+      // />
     );
   }
 }
