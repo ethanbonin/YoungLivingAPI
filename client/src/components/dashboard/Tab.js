@@ -14,7 +14,7 @@ class Tab extends Component {
       case "stats":
         return "/dashboard/stats";
       case "prospects":
-        return "/dashboard/prospects";
+        return "/prospects";
       case "downline":
         return "/dashboard/downline";
       case "alerts":
