@@ -227,29 +227,18 @@ is_retail_customer = function(retail_customers, all_members) {
 
 //This only runs when on production
 if (process.env.NODE_ENV === 'production'){
-  const path = require('path');
-
   //Express will serve  up production assets
   //like our main.js file. or main.css file
-  // app.use(express.static('client/build'));
-  app.use(express.static(path.join(__dirname, 'client/build')));
+  app.use(express.static('client/build'));
+
 
   //Express will serve up index.html file
   //if it doesn't recongize the route
   //This is the catch all case
-  // app.get('*', (req, res) => {
-  //   res.sendFile(path.join(__dirname, '/client/build/index.html'));
-  // });
-
-  // The "catchall" handler: for any request that doesn't
-// match one above, send back React's index.html file.
-
-  app.get('*', function (req, res) {
-    const index = path.join(__dirname, 'client', 'build', 'index.html');
-    res.sendFile(index);
+  const path = require('path');
+  app.get('*', (req, res) => {
+    res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'));
   });
-
-
 };
 
 app.listen(_PORT, () => {
