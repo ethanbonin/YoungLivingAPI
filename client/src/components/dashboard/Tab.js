@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { Card } from "semantic-ui-react";
+import {Link} from "react-router-dom";
 
 class Tab extends Component {
   constructor(props) {
@@ -26,14 +27,17 @@ class Tab extends Component {
 
   render() {
     return (
-      <Card
-        href={this.state.link}
-        style={{ margin: "1em" }}
-        raised
-        color={this.props.color}
-        image={this.props.image}
-        header={this.props.name}
-      />
+      <div style={{marginTop: "3em"}}>
+        <Link to={`/${this.props.name.toLowerCase()}`}>{this.props.name}</Link>
+      </div>
+      // <Card
+      //   href={this.state.link}
+      //   style={{ margin: "1em" }}
+      //   raised
+      //   color={this.props.color}
+      //   image={this.props.image}
+      //   header={this.props.name}
+      // />
     );
   }
 }

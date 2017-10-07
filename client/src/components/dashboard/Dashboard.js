@@ -5,6 +5,9 @@ import TopBar from "./QuickStats";
 import Tab from "./Tab";
 import _ from "lodash";
 
+
+import Prospects from '../prospects/Prospects';
+
 // https://images.pexels.com/photos/36717/amazing-animal-beautiful-beautifull.jpg?h=350&auto=compress&cs=tinysrgb
 const imageSrc = {
   stats: "https://images.unsplash.com/photo-1457904375453-3e1fc2fc76f4?dpr=1&auto=compress,format&fit=crop&w=1650&h=&q=80&cs=tinysrgb&crop=",
@@ -27,14 +30,13 @@ class DashBoard extends Component {
 
   renderTabs() {
     return _.map(_TABS, ({ name, color, image }) => {
-      return <Tab key={name} name={name} color={color} image={image} />;
+      return <Tab key={name} name={name} color={color} image={image} url={this.props.match.url}/>;
     });
   }
 
   render() {
     return (
       <div>
-        <TopBar />
         <div className="container">
           <Card.Group itemsPerRow={2} style={{}}>
             {this.renderTabs()}

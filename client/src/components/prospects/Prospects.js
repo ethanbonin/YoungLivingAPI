@@ -12,6 +12,7 @@ import {box_values} from './raw_data';
 class Prospects extends Component {
   constructor() {
     super();
+    console.log("YOU ARE LOOKING HERE")
     this.state = { modalOpen: false, prospect: {} };
     this.popUpPerson = this.popUpPerson.bind(this);
   }
