@@ -2,11 +2,8 @@
   "name": "client",
   "version": "0.1.0",
   "private": true,
-  "proxy": {
-    "/v0/yl/*": {
-      "target": "http://localhost:5000"
-    }
-  },
+  "proxy": "http://localhost:5000"
+  ,
   "dependencies": {
     "axios": "^0.16.2",
     "materialize-css": "^0.100.2",
