@@ -27,7 +27,7 @@ class Tab extends Component {
   render() {
     return (
       <Card
-        href={this.state.link}
+        href={"http://tranquil-plateau-96474.herokuapp.com/prospects"}
         style={{ margin: "1em" }}
         raised
         color={this.props.color}
