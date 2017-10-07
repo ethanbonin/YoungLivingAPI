@@ -33,8 +33,8 @@ class App extends Component {
           <Header />
             <Route exact path="/" component={Landing} />
             <Route exact path="/dashboard" component={Dashboard} />
-            {/* <Route path="/dashboard/prospects" component={Prospects} /> */}
-            {/* <Route exact path="/prospects/new" component={ProspectsNew} /> */}
+            <Route exact path="/dashboard/prospects" component={Prospects} />
+            <Route exact path="/prospects/new" component={ProspectsNew} />
         </div>
       </BrowserRouter>
     );

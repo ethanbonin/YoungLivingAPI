@@ -26,17 +26,16 @@ class DashBoard extends Component {
   }
 
   renderTabs() {
-    console.log("THIS IS MATCH",this.props.match.url)
     return _.map(_TABS, ({ name, color, image }) => {
-      return <Tab key={name} name={name} color={color} image={image} url={this.props.match.url} />;
+      return <Tab key={name} name={name} color={color} image={image} />;
     });
   }
 
   render() {
     return (
       <div>
+        <TopBar />
         <div className="container">
-          <Route path="/dashboard/prospects" component={Prospects} />
           <Card.Group itemsPerRow={2} style={{}}>
             {this.renderTabs()}
           </Card.Group>
