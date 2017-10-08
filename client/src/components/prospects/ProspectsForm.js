@@ -24,7 +24,7 @@ class ProspectsNew extends Component {
       texting_marketing: false,
       host_a_class: false,
       know_them: "",
-      lead: "cold",
+      lead: "warm",
       health_needs: "",
       family: "",
       occupation: "",
@@ -40,6 +40,7 @@ class ProspectsNew extends Component {
       goBack: false
     };
     this.handleChange = this.handleChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
     this.handleDateChange = this.handleDateChange.bind(this);
     this.renderPersonalInfo = this.renderPersonalInfo.bind(this);
     this.toggle = this.toggle.bind(this);
@@ -61,35 +62,28 @@ class ProspectsNew extends Component {
   }
 
   handleSubmit = () => {
-    console.log("Submitting", this.state);
 
-    var error_in_form = false;
-
-    for (var key in info){
-      let error_value = info[key].value + "_error"
-      if (this.state[info[key].value] === ""){
-        error_in_form = true
-        this.setState({[error_value]: true})
-        console.log(this.state[error_value]);
+    if (this.state.email !== ""){
+      const regex_email = /^([A-Z|a-z|0-9](\.|_){0,1})+[A-Z|a-z|0-9]@([A-Z|a-z|0-9])+((\.){0,1}[A-Z|a-z|0-9]){2}\.[a-z]{2,3}$/
+      const result_email = regex_email.test(this.state.email);
+      if (!result_email){
+        this.setState({email_error_format: !result_email});
+        return
       }
     }
 
-    if (error_in_form){
-      console.log(this.state);
-      console.log("Found a field empy!");
-      return
+    if (this.state.phone !== ""){
+      const regex_number = /(\+?( |-|\.)?\d{1,2}( |-|\.)?)?(\(?\d{3}\)?|\d{3})( |-|\.)?(\d{3}( |-|\.)?\d{4})/
+      const result_number = regex_number.test(this.state.phone);
+      if (!result_number){
+        this.setState({phone_error_format: !result_number});
+        return
+      }
     }
 
-    const regex_email = /^([A-Z|a-z|0-9](\.|_){0,1})+[A-Z|a-z|0-9]@([A-Z|a-z|0-9])+((\.){0,1}[A-Z|a-z|0-9]){2}\.[a-z]{2,3}$/
-    const regex_number = /(\+?( |-|\.)?\d{1,2}( |-|\.)?)?(\(?\d{3}\)?|\d{3})( |-|\.)?(\d{3}( |-|\.)?\d{4})/
-    const result_email = regex_email.test(this.state.email);
-    const result_number = regex_number.test(this.state.phone);
-    if (!result_email || !result_number){
-      console.log("EMAIL", !result_email);
-      console.log("PHONE", !result_number);
-      this.setState({email_error_format: !result_email});
-      this.setState({phone_error_format: !result_number});
-      return
+    if (this.state.phone === ""){
+      console.log("Setting the phone number");
+      this.setState({phone: "0000000000"})
     }
 
     this.props.postProspects(this.state);
