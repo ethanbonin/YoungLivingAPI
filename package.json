@@ -9,7 +9,7 @@
     "start": "node server/server.js",
     "client": "npm run start --prefix client",
     "dev": "concurrently \"npm start\" \"npm run client\"",
-    "heroku-postbuild": "heroku-postbuild": "cd react-ui/ && npm install && npm install --only=dev --no-shrinkwrap && npm run build"
+    "heroku-postbuild": "cd client/ && npm install && npm install --only=dev --no-shrinkwrap && npm run build"
   },
   "engines": {
     "node": "8.4.0",
