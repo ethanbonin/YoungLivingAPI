@@ -21,5 +21,10 @@ You have to start with __/yl/login/__ before you can do anything. It will return
 - [/yl/about_to_go_inactive/](https://github.com/ethanbonin/YoungLivingAPI/wiki/YL-POST-about_go_inactive)
 - [/yl/rank_status](https://github.com/ethanbonin/YoungLivingAPI/wiki/YL-POST-rank_status)
 - [/yl/new_members](https://github.com/ethanbonin/YoungLivingAPI/wiki/YL-POST-NEW_MEMBERS)
-
+- [/yl/prospects](www.google.com)
+- [/yl/prospects_new](www.google.com) <--- NEED TO CHANGE THIS.
+- [/yl/prospects/update](www.google.com)
+- [/yl/prospects/delete](www.google.com)
+- [/yl/prospects/toggle](www.google.com)
+- [/yl/prospects/close_deal](www.google.com)
 
