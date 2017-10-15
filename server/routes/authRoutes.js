@@ -60,7 +60,7 @@ module.exports = app => {
             var is_trial = true;
             signed_up = new Date();
             is_member = new Date();
-            var b = {
+            let b = {
               memberid: memberid,
               is_trial: is_trial,
               signed_up: signed_up,
@@ -68,7 +68,7 @@ module.exports = app => {
             }
 
             sess = req.session;
-            var info = {user: user, body: body};
+            var info = {user: b, body: body};
             sess.user = info
 
             var user = new User(b);

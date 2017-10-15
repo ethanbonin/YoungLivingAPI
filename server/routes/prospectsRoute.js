@@ -68,6 +68,7 @@ module.exports = app => {
   });
 
   app.get("/v0/yl/prospects", (req, res) => {
+    console.log("THIS IS THE REQ", req.session);
     if (!req.session.user) {
       res.send({});
     } else {
