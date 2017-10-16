@@ -1,6 +1,7 @@
 //SurveyField contains logic to render text input and bleh
 import React from 'react';
 
+
 //{...input}
 //is the name as
 //<input onBlur={props.onBlur} onChange={props.onChange} />
@@ -16,6 +17,9 @@ export default (props) => {
   return (
     <div>
       <label>{label}</label>
+
+
+
     <input {...input}  style={{ marginBottom: '5px'}}/>
     <div className="red-text" style={{ marginBottom:'20px'}}>
       {touched && error}

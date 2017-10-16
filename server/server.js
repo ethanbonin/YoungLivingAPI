@@ -28,6 +28,7 @@ var sess;
 const _PORT = process.env.PORT || 5000;
 app.use(bodyParser.json());
 app.use(session({ secret: process.env.SESSION_SECRET }));
+app.use(express.static('client/src/assets'));
 
 require("./routes/authRoutes")(app);
 require("./routes/prospectsRoute")(app);

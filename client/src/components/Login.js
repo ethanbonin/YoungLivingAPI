@@ -1,9 +1,8 @@
 import React, { Component } from "react";
+import { Input, Card } from "semantic-ui-react";
 import axios from "axios";
 import * as actions from "../actions";
 import { connect } from "react-redux";
-import { Redirect } from 'react-router'
-
 
 class Login extends Component {
   constructor(props) {
@@ -63,38 +62,35 @@ class Login extends Component {
 
   renderInputFields() {
     return (
-      <div className="white-text" style={{ marginBottom: "15px" }}>
-        <input
-          id="username"
-          type="text"
-          className="center-align"
+      <div>
+        <Input
+          label={{ icon: "asterisk" }}
+          labelPosition="left corner"
+          placeholder="Username or Member ID"
           onChange={this.handleUserNameChange}
         />
-        <label className="center-align">Member ID or Username</label>
-        <input
-          id="password"
+        <br />
+        <Input
+          label={{ icon: "asterisk" }}
+          labelPosition="left corner"
+          placeholder="Password"
           type="password"
-          className="center-align"
           onChange={this.handlePasswordChange}
         />
-        <label className="center-align" style={{ marginBottom: "3em" }}>
-          Password
-        </label>
       </div>
     );
   }
 
   render() {
     return (
-      <div className="container z-depth-5">
-        <div className="card blue-grey darken-1">
-          <div className="card-content white-text">
-            <span className="card-title center">Young Living Login</span>
-          </div>
-          <div className="card-action center-align">
-            {this.state.showWarning ? this.renderWarning() : null}
-            {this.state.showError ? this.renderError() : null}
-            {this.renderInputFields()}
+      <div style={{ display: "flex", justifyContent: "flex-end", clear:'both' }}>
+        <Card.Group>
+          <Card>
+            <div className="card-action center-align">
+              {this.state.showWarning ? this.renderWarning() : null}
+              {this.state.showError ? this.renderError() : null}
+              {this.renderInputFields()}
+            </div>
             <a
               className="btn waves-effect waves-light"
               name="action"
@@ -102,10 +98,8 @@ class Login extends Component {
             >
               Sign In
             </a>
-            {this.state.showLoading ? this.renderLoading() : null}
-            {this.state.goBack ? <Redirect push to="/dashboard/"/> : null }
-          </div>
-        </div>
+          </Card>
+        </Card.Group>
       </div>
     );
   }
@@ -148,6 +142,5 @@ class Login extends Component {
     this.setState({ password: event.target.value });
   }
 }
-
 
 export default connect(null, actions)(Login);
