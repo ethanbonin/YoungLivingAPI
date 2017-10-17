@@ -45,6 +45,7 @@ module.exports = app => {
       add_facebook_group: req.body.values.add_facebook_group,
       texting_marketing: req.body.values.texting_marketing,
       host_a_class: req.body.values.host_a_class,
+      emailed: req.body.values.emailed,
       know_them: req.body.values.know_them,
       health_needs: req.body.values.health_needs,
       family: req.body.values.family,

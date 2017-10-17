@@ -14,6 +14,9 @@ const box_values = [
   {
     value: "host_a_class",
     message: "Asked if willing to host a class"
+  },{
+    value: "emailed",
+    message: "Emailed"
   }
 ];
 

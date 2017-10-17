@@ -10,6 +10,7 @@ const prospectSchema = new Schema({
   add_facebook_group: Boolean,
   texting_marketing: Boolean,
   host_a_class: Boolean,
+  emailed: Boolean,
   know_them: String,
   health_needs: String,
   family: String,

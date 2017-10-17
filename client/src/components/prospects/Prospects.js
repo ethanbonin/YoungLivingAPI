@@ -70,6 +70,7 @@ class Prospects extends Component {
       "Text Marketing",
       "Added to FB group",
       "Host a Class",
+      "Emailed",
       "Date Met",
       "Date Closed"
     ];

@@ -20,6 +20,7 @@ class FormDataModal extends Component {
       first_call: this.props.data.first_call,
       mail_sample: this.props.data.mail_sample,
       follow_up: this.props.data.follow_up,
+      emailed: this.props.data.emailed,
       invite_to_class: this.props.data.invite_to_class,
       add_facebook_group: this.props.data.add_facebook_group,
       texting_marketing: this.props.data.texting_marketing,
@@ -122,6 +123,12 @@ class FormDataModal extends Component {
     return month + "/" + day + "/" + year;
   }
 
+  checkedIfEmailed(emailed){
+    if (emailed === undefined){
+      this.setState({emailed: false});
+    }
+  }
+
   renderNotes() {
     var notes_array = this.state.additional_notes;
     notes_array = _.sortBy(notes_array, function(note) {
@@ -179,6 +186,8 @@ class FormDataModal extends Component {
       }
     });
   }
+
+
 
   render() {
     return (

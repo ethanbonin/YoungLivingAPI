@@ -22,6 +22,7 @@ class ProspectsNew extends Component {
       invite_to_class: false,
       add_facebook_group: false,
       texting_marketing: false,
+      emailed: false,
       host_a_class: false,
       know_them: "",
       lead: "warm",
