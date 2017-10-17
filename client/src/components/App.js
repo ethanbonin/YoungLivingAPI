@@ -29,7 +29,6 @@ class App extends Component {
   }
 
   requireAuth(nextState, Replace) {
-    console.log("LOGGED IN??", this.state.isLoggedIn);
     if (!this.props.auth) {
       this.setState({ isLoggedIn: false });
     } else {
