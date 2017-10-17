@@ -38,6 +38,7 @@ class ProspectsPerson extends Component {
           <Label size={"large"} horizontal style={{width: 100, marginLeft: "15px"}} color={lead_colors[this.props.prospect.lead]}>
             {this.props.prospect.lead.toUpperCase()}
           </Label>
+          <Button style={{float:'right'}} color="teal" onClick={this.closeModal}>Done</Button>
         </Modal.Header>
         <Modal.Content >
           <Modal.Description>
@@ -49,7 +50,6 @@ class ProspectsPerson extends Component {
           <div className="left">
             <Button negative labelPosition="right" icon="warning" content="Delete" onClick={()=>this.deletePerson()}/>
           </div>
-          <Button onClick={this.closeModal}>Done</Button>
         </Modal.Actions>
       </Modal>
     );
