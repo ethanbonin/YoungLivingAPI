@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import { Button } from "semantic-ui-react";
 import * as actions from "../actions";
 import axios from "axios";
+import './header.css'
 
 import Login from "./Login";
 
@@ -45,6 +46,9 @@ class Header extends Component {
         );
       default:
         return [
+          <li key="3">
+            <p className="welcomeText">{`Welcome, ${this.props.auth.user.body.displayName}`}</p>
+          </li>,
           <li key="2">
             <Button onClick={this.handleLogout}>Logout</Button>
           </li>
