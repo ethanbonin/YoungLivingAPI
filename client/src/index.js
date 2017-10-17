@@ -10,9 +10,18 @@ import reduxThunk from 'redux-thunk';
 import App from './components/App';
 import reducers from './reducers';
 
+import WebFont from 'webfontloader';
+
 // Development only axios helpers!
 import axios from 'axios';
 window.axios = axios;
+
+
+WebFont.load({
+  google: {
+    families: ['Tangerine', 'sans-serif']
+  }
+});
 
 const store = createStore(reducers, {}, applyMiddleware(reduxThunk));
 

@@ -30,9 +30,7 @@ class DashBoard extends Component {
   }
 
   componentWillMount() {
-    console.log("Checking if Logged in", this.props.auth);
     if (this.props.auth !== false && this.props.auth !== null){
-      console.log("Passed!");
       this.setState({isLoggedIn: true});
     }
   }
@@ -47,7 +45,7 @@ class DashBoard extends Component {
     return (
       <div>
         <div className="container">
-          <Card.Group itemsPerRow={2} style={{}}>
+          <Card.Group itemsPerRow={2}>
             {this.renderTabs()}
           </Card.Group>
         </div>

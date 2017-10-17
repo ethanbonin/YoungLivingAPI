@@ -1,15 +1,18 @@
 import React, { Component } from "react";
+import './dashboardcss/landing.css';
+
 import {
   Button,
   Container,
   Divider,
   Grid,
   Header,
-  Label,
   Image,
   List,
   Segment
 } from "semantic-ui-react";
+
+
 
 const image = require("../../assets/white-image.png");
 const cover_image = require("../../assets/cover_image.jpg");
@@ -26,19 +29,19 @@ export default class HomepageLayout extends Component {
           style={{ minHeight: 700, padding: "0em 0em" }}
           vertical
         >
-          <Image src={cover_image} />
-          <div
-            style={{
-              position: "absolute",
-              bottom: 0,
-              width: "100%",
-              height: "auto"
-            }}
-          >
-            <Label basic size="huge">
-              We are here to help grow your business with YoungLiving.
-            </Label>
-          </div>
+            <Image src={cover_image} />
+            <div
+              style={{
+                position: "absolute",
+                bottom: "300px",
+                width: "100%",
+                height: "auto"
+              }}
+            >
+              <p className="coverText">
+                We are here to help grow your business with YoungLiving.
+              </p>
+            </div>
         </Segment>
 
         <Segment style={{ padding: "8em 0em" }} vertical>

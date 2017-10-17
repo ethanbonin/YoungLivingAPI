@@ -3,10 +3,10 @@
   "version": "0.1.0",
   "private": true,
   "proxy": {
-      "/v0/*": {
-        "target": "http://localhost:5000"
-     }
-   },
+    "/v0/*": {
+      "target": "http://localhost:5000"
+    }
+  },
   "dependencies": {
     "axios": "^0.16.2",
     "history": "^4.7.2",
@@ -22,7 +22,8 @@
     "redux": "^3.7.2",
     "redux-thunk": "^2.2.0",
     "semantic-ui-css": "^2.2.12",
-    "semantic-ui-react": "^0.74.2"
+    "semantic-ui-react": "^0.74.2",
+    "webfontloader": "^1.6.28"
   },
   "scripts": {
     "start": "react-scripts start",

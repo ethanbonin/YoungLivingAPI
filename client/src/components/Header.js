@@ -76,7 +76,7 @@ class Header extends Component {
       <div>
         {this.headerBar()}
         {this.state.goBack ? <Redirect push to="/"/> : null }
-        {this.state.showCard ? <Login removeCard={this.removeCard} style={{clear: 'both'}} /> : null}
+        {this.state.showCard ? <Login removeCard={this.removeCard} /> : null}
       </div>
     );
   }

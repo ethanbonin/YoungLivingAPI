@@ -57,8 +57,6 @@ class FormDataModal extends Component {
   }
 
   toggleSubmission(e){
-    console.log(this.props.data._id)
-    console.log(e.target.id);
 
     this.props.toggleProspects({
       _id: this.props.data._id,

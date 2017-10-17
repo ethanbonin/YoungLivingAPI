@@ -83,9 +83,16 @@ class Login extends Component {
 
   render() {
     return (
-      <div style={{ display: "flex", justifyContent: "flex-end", clear:'both' }}>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "flex-end",
+          clear: "both",
+          height: "0px"
+        }}
+      >
         <Card.Group>
-          <Card>
+          <Card style={{ "z-index": "1", height: "200px" }}>
             <div className="card-action center-align">
               {this.state.showWarning ? this.renderWarning() : null}
               {this.state.showError ? this.renderError() : null}

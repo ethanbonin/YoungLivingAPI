@@ -40,7 +40,7 @@ class App extends Component {
   render() {
     return (
       <Router history={history}>
-        <div className="">
+        <div>
           <Header />
           <Route exact path="/" component={Landing} />
           <Route exact path="/dashboard" component={DashBoard} />
