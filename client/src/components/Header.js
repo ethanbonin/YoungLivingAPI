@@ -47,7 +47,7 @@ class Header extends Component {
       default:
         return [
           <li key="3">
-            <p className="welcomeText">{`Welcome, ${this.props.auth.user.body.displayName}`}</p>
+            <p className="welcomeText">{`${this.props.auth.user.body.displayName}`}</p>
           </li>,
           <li key="2">
             <Button onClick={this.handleLogout}>Logout</Button>
