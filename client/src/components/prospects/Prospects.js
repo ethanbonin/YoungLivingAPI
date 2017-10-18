@@ -6,13 +6,15 @@ import _ from "lodash";
 import * as actions from "../../actions";
 
 import ProspectsPerson from "./ProspectsPerson";
+import SendEmailModal from "./SendEmailModal";
 import { box_values } from "./raw_data";
 
 class Prospects extends Component {
   constructor() {
     super();
-    this.state = { modalOpen: false, prospect: {} };
+    this.state = { modalOpen: false, prospect: {}, emailModalOpen: false };
     this.popUpPerson = this.popUpPerson.bind(this);
+    this.emailModal = this.emailModal.bind(this);
   }
 
   componentDidMount() {
@@ -35,7 +37,7 @@ class Prospects extends Component {
       return "-";
     }
 
-    const regex_number = /(^(\+|00)?(9[976]\d|8[987530]\d|6[987]\d|5[90]\d|42\d|3[875]\d|2[98654321]\d|9[8543210]|8[6421]|6[6543210]|5[87654321]|4[987654310]|3[9643210]|2[70]|7|1)\W*\d\W*\d\W*\d\W*\d\W*\d\W*\d\W*\d\W*\d\W*(\d{0,2})$)/
+    const regex_number = /(^(\+|00)?(9[976]\d|8[987530]\d|6[987]\d|5[90]\d|42\d|3[875]\d|2[98654321]\d|9[8543210]|8[6421]|6[6543210]|5[87654321]|4[987654310]|3[9643210]|2[70]|7|1)\W*\d\W*\d\W*\d\W*\d\W*\d\W*\d\W*\d\W*\d\W*(\d{0,2})$)/;
     const result_number = regex_number.test(s);
     if (result_number) {
       return s;
@@ -46,12 +48,18 @@ class Prospects extends Component {
     return !m ? null : "(" + m[1] + ") " + m[2] + "-" + m[3];
   }
 
-  formatEmail(e){
-    if (e === ""){
+  formatEmail(e) {
+    if (e === "") {
       return "-";
     }
     return e;
   }
+
+  emailModal() {
+    this.setState({emailModalOpen: !this.state.emailModalOpen})
+  }
+
+
 
   popUpPerson = person => {
     this.setState({ modalOpen: !this.state.modalOpen });
@@ -147,11 +155,17 @@ class Prospects extends Component {
 
   render() {
     return (
-      <div style={{}}>
+      <div>
         {this.state.modalOpen ? (
           <ProspectsPerson
             popUp={this.popUpPerson}
             prospect={this.state.prospect}
+          />
+        ) : null}
+
+        {this.state.emailModalOpen ? (
+          <SendEmailModal
+            emailModal={this.emailModal}
           />
         ) : null}
         <Table celled size="large">
@@ -167,6 +181,9 @@ class Prospects extends Component {
         >
           <i className="material-icons">add</i>
         </Link>
+        <Button color="blue" onClick={() => this.emailModal()}>
+          Send Greeting Emails
+        </Button>
       </div>
     );
   }
