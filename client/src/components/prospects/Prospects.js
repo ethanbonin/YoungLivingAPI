@@ -118,7 +118,10 @@ class Prospects extends Component {
         return;
       default:
         const prospects = this.props.prospects;
-        return _.map(prospects.prospects, prospect => {
+        if (prospects.prospects == undefined){
+          return
+        }
+        return _.map(prospects.prospects.reverse(), prospect => {
           const date_met = new Date(prospect.met_date);
           const formatted_date_met = this.formatDate(date_met);
           const date_closed = new Date(prospect.dateClosed);
