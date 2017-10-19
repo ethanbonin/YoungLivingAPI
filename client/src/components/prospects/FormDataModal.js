@@ -44,7 +44,11 @@ class FormDataModal extends Component {
       _id: this.props.data._id,
       message: this.state.new_note
     });
-    this.props.fetchProspects();
+
+    
+    // this.props.fetchProspects();
+
+
 
     const new_note = {
       message: this.state.new_note,

@@ -55,6 +55,7 @@ module.exports = app => {
       closedDeal: req.body.values.closedDeal,
       met_date: req.body.values.met_date,
       lead: req.body.values.lead,
+      prospect_created: new Date(),
       _creator: req.session.user.user.memberid
     });
 

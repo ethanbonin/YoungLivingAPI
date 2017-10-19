@@ -83,7 +83,6 @@ class ProspectsNew extends Component {
     }
 
     if (this.state.phone === ""){
-      console.log("Setting the phone number");
       this.setState({phone: "0000000000"})
     }
 

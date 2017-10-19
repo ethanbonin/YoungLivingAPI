@@ -10,15 +10,12 @@ import SendEmailModal from "./SendEmailModal";
 import { box_values } from "./raw_data";
 
 class Prospects extends Component {
-  constructor() {
-    super();
-    this.state = { modalOpen: false, prospect: {}, emailModalOpen: false };
+  constructor(props) {
+    super(props);
+    this.state = { modalOpen: false, prospect: {}, emailModalOpen: false, prospectsList: this.props.prospects };
     this.popUpPerson = this.popUpPerson.bind(this);
     this.emailModal = this.emailModal.bind(this);
-  }
-
-  componentDidMount() {
-    this.props.fetchProspects();
+    this.sortByDate = this.sortByDate.bind(this);
   }
 
   formatDate(date) {
@@ -58,8 +55,6 @@ class Prospects extends Component {
   emailModal() {
     this.setState({emailModalOpen: !this.state.emailModalOpen})
   }
-
-
 
   popUpPerson = person => {
     this.setState({ modalOpen: !this.state.modalOpen });
@@ -106,6 +101,18 @@ class Prospects extends Component {
     });
   }
 
+  sortByDate(prospects){
+    let prospects_array = _.sortBy(prospects, function(person) {
+      if (person.prospect_created == null) {
+        return;
+      }
+      return new Date(person.prospect_created);
+    });
+
+    console.log("SORED BY DATE", prospects_array);
+    return {prospects: prospects_array};
+  }
+
   renderList() {
     const lead_colors = {
       cold: "black",
@@ -113,15 +120,17 @@ class Prospects extends Component {
       hot: "red"
     };
 
-    switch (this.props.prospects) {
+    switch (this.state.prospectsList) {
       case null:
         return;
       default:
-        const prospects = this.props.prospects;
-        if (prospects.prospects == undefined){
+        let prospects = this.state.prospectsList;
+        prospects = this.sortByDate(prospects.prospects);
+        const truth = _.isEmpty(prospects);
+        if (prospects === null || truth){
           return
         }
-        return _.map(prospects.prospects.reverse(), prospect => {
+        return _.map(prospects.prospects, prospect => {
           const date_met = new Date(prospect.met_date);
           const formatted_date_met = this.formatDate(date_met);
           const date_closed = new Date(prospect.dateClosed);
