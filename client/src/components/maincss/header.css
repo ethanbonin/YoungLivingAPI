@@ -1,0 +1,28 @@
+.welcomeText {
+  position: sticky;
+  padding-right: 10px;
+  padding-top: 15px;
+  font-size: 23px;
+}
+
+.inputbox {
+  padding-bottom: 10px
+}
+
+.inputboxes {
+    padding-top: 2em;
+}
+
+.signinbox {
+  z-index: 100;
+  height: 300px;
+}
+
+.signinbutton {
+  position: absolute;
+  bottom: 0;
+  height: 42px;
+  text-align: auto;
+  font-size: 48px;
+  width: inherit;
+}

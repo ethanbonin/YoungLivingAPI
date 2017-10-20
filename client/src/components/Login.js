@@ -3,6 +3,7 @@ import { Input, Card } from "semantic-ui-react";
 import axios from "axios";
 import * as actions from "../actions";
 import { connect } from "react-redux";
+import "./maincss/header.css"
 
 class Login extends Component {
   constructor(props) {
@@ -62,12 +63,13 @@ class Login extends Component {
 
   renderInputFields() {
     return (
-      <div>
+      <div className="inputboxes">
         <Input
           label={{ icon: "asterisk" }}
           labelPosition="left corner"
           placeholder="Username or Member ID"
           onChange={this.handleUserNameChange}
+          className="inputbox"
         />
         <br />
         <Input
@@ -92,14 +94,14 @@ class Login extends Component {
         }}
       >
         <Card.Group>
-          <Card style={{ "z-index": "1", height: "200px" }}>
-            <div className="card-action center-align">
+          <Card className=" signinbox ">
+            <div className="inputboxes card-action center-align ">
               {this.state.showWarning ? this.renderWarning() : null}
               {this.state.showError ? this.renderError() : null}
-              {this.renderInputFields()}
+                {this.renderInputFields()}
             </div>
             <a
-              className="btn waves-effect waves-light"
+              className="btn waves-effect waves-light signinbutton"
               name="action"
               onClick={this.login_status}
             >
