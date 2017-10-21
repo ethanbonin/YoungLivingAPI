@@ -15,7 +15,7 @@ import {
 
 
 const image = require("../../assets/white-image.png");
-const cover_image = require("../../assets/cover_image.jpg");
+const cover_image = require("../../assets/cover_image0.jpg");
 
 export default class HomepageLayout extends Component {
   state = {};
@@ -26,10 +26,10 @@ export default class HomepageLayout extends Component {
         <Segment
           inverted
           textAlign="center"
-          style={{ minHeight: 700, padding: "0em 0em" }}
+          style={{ padding: "0em 0em" }}
           vertical
         >
-            <Image src={cover_image} />
+            <img src={cover_image} className="coverImage" />
             <div
               style={{
                 position: "absolute",

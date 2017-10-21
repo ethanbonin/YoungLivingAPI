@@ -1,4 +1,13 @@
 .coverText {
   font-family: 'Tangerine', serif;
   font-size: 72px;
+  left: 0;
+  position:absolute;
+  text-align:center;
+  top: 30px;
+  width: 100%
+}
+
+.coverImage {
+  width:90%;
 }
