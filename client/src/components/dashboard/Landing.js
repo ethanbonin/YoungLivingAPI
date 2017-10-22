@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import './dashboardcss/landing.css';
+import "./dashboardcss/landing.css";
 
 import {
   Button,
@@ -12,10 +12,8 @@ import {
   Segment
 } from "semantic-ui-react";
 
-
-
 const image = require("../../assets/white-image.png");
-const cover_image = require("../../assets/cover_image0.jpg");
+const cover_image = require("../../assets/cover_image.jpg");
 
 export default class HomepageLayout extends Component {
   state = {};
@@ -25,23 +23,16 @@ export default class HomepageLayout extends Component {
       <div>
         <Segment
           inverted
-          textAlign="center"
           style={{ padding: "0em 0em" }}
           vertical
         >
-            <img src={cover_image} className="coverImage" />
-            <div
-              style={{
-                position: "absolute",
-                bottom: "300px",
-                width: "100%",
-                height: "auto"
-              }}
-            >
-              <p className="coverText">
-                We are here to help grow your business with YoungLiving.
-              </p>
-            </div>
+
+            <Image src={cover_image} className="coverImage" />
+            <p className="coverText">
+              We are here to help grow your business with YoungLiving.
+            </p>
+
+
         </Segment>
 
         <Segment style={{ padding: "8em 0em" }} vertical>

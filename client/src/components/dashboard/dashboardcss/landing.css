@@ -1,13 +1,94 @@
-.coverText {
-  font-family: 'Tangerine', serif;
-  font-size: 72px;
-  left: 0;
-  position:absolute;
-  text-align:center;
-  top: 30px;
-  width: 100%
+
+
+
+
+@media (min-width: 320px) {
+  .coverText {
+    font-family: 'Tangerine', serif;
+    font-size: 30px;
+    position: absolute;
+    top: 4em;
+    text-align: center;
+  }
 }
 
+
+@media (min-width: 360px) {
+  .coverText {
+    font-family: 'Tangerine', serif;
+    font-size: 35px;
+    position: absolute;
+    top: 4em;
+    text-align: center;
+  }
+}
+
+
+@media (min-width: 412px) {
+  .coverText {
+    font-family: 'Tangerine', serif;
+    font-size: 40px;
+    position: absolute;
+    top: 4em;
+    text-align: center;
+  }
+}
+
+/*// Medium devices (tablets, 768px and up)*/
+@media (min-width: 768px) {
+  .coverText {
+    font-family: 'Tangerine', serif;
+    font-size: 72px;
+    position: absolute;
+    top: 4em;
+  }
+}
+
+@media (min-width: 992px) {
+  .coverText {
+    font-family: 'Tangerine', serif;
+    font-size: 72px;
+    position: absolute;
+    width: inherit;
+    top: 5em;
+    left: 55px;
+    right: 75px;
+  }
+}
+
+@media (min-width: 1200px) {
+  .coverText {
+    font-family: 'Tangerine', serif;
+    font-size: 72px;
+    position: absolute;
+    width: inherit;
+    top: 8em;
+  }
+  .coverImage {
+    width: stretch;
+  }
+}
+
+@media (min-width: 2560px) {
+  .coverText {
+    font-family: 'Tangerine', serif;
+    font-size: 124px;
+    position: absolute;
+    width: inherit;
+    top: 8em;
+  }
+  .coverImage {
+    width: stretch;
+  }
+}
+
+
+/*// Large devices (desktops, 992px and up)
+
+
+// Extra large devices (large desktops, 1200px and up)
+*/*/
+
 .coverImage {
-  width:90%;
+  width: stretch;
 }
