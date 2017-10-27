@@ -33,7 +33,7 @@ class DashBoard extends Component {
     if (this.props.auth !== false && this.props.auth !== null){
       this.setState({isLoggedIn: true});
       this.props.fetchProspects();
-    }  
+    }
   }
 
   renderTabs() {

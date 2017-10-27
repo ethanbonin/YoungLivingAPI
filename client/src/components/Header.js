@@ -47,7 +47,7 @@ class Header extends Component {
       default:
         return [
           <li key="3">
-            <p className="welcomeText">{`${this.props.auth.user.body.displayName}`}</p>
+            {/* <p className="welcomeText">{`${this.props.auth.user.body.displayName}`}</p> */}
           </li>,
           <li key="2">
             <Button onClick={this.handleLogout}>Logout</Button>
@@ -62,9 +62,8 @@ class Header extends Component {
         <div className="nav-wrapper teal">
           <Link
             to={this.props.auth ? "/dashboard" : "/"}
-            className="left brand-logo"
-            style={{ marginLeft: "1em" }}
-          >
+            className="headerLogo left brand-logo"
+        >
             Essential Assistant
           </Link>
           <ul className="right" style={{ marginRight: "1em" }}>

@@ -26,3 +26,41 @@
   font-size: 48px;
   width: inherit;
 }
+
+
+@media (min-width: 320px) {
+  .headerLogo {
+    margin-left: 0;
+    font-size: 18px;
+  }
+}
+
+@media (min-width: 768px) {
+  .headerLogo {
+    margin-left: 1em;
+  }
+}
+
+/*
+@media (min-width: 360px) {
+
+}
+
+
+@media (min-width: 412px) {
+
+}
+
+
+
+@media (min-width: 992px) {
+
+}
+
+@media (min-width: 1200px) {
+
+}
+
+@media (min-width: 2560px) {
+
+}*/

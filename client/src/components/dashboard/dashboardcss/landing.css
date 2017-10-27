@@ -10,6 +10,9 @@
     top: 4em;
     text-align: center;
   }
+  .coverImage {
+    width: stretch;
+  }
 }
 
 
@@ -20,6 +23,9 @@
     position: absolute;
     top: 4em;
     text-align: center;
+  }
+  .coverImage {
+    width: stretch;
   }
 }
 
@@ -32,6 +38,9 @@
     top: 4em;
     text-align: center;
   }
+  .coverImage {
+    width: stretch;
+  }
 }
 
 /*// Medium devices (tablets, 768px and up)*/
@@ -41,6 +50,9 @@
     font-size: 72px;
     position: absolute;
     top: 4em;
+  }
+  .coverImage {
+    width: stretch;
   }
 }
 
@@ -53,6 +65,9 @@
     top: 5em;
     left: 55px;
     right: 75px;
+  }
+  .coverImage {
+    width: stretch;
   }
 }
 
@@ -80,15 +95,4 @@
   .coverImage {
     width: stretch;
   }
-}
-
-
-/*// Large devices (desktops, 992px and up)
-
-
-// Extra large devices (large desktops, 1200px and up)
-*/*/
-
-.coverImage {
-  width: stretch;
 }
