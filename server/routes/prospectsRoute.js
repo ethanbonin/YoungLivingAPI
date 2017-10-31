@@ -37,6 +37,7 @@ module.exports = app => {
     }
 
     var prospect = new Prospects({
+      _id: req.body.values._id,
       first: req.body.values.first,
       last: req.body.values.last,
       email: req.body.values.email,

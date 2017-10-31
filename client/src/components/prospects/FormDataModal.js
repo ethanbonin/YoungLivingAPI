@@ -45,11 +45,6 @@ class FormDataModal extends Component {
       message: this.state.new_note
     });
 
-    
-    // this.props.fetchProspects();
-
-
-
     const new_note = {
       message: this.state.new_note,
       date: new Date()
@@ -62,7 +57,6 @@ class FormDataModal extends Component {
   }
 
   toggleSubmission(e){
-
     this.props.toggleProspects({
       _id: this.props.data._id,
       value_to_toggle: e.target.id,
@@ -71,8 +65,6 @@ class FormDataModal extends Component {
 
     this.props.fetchProspects();
     this.setState({[e.target.id]: !this.state[e.target.id]})
-
-
   }
 
   renderCheckBoxes() {

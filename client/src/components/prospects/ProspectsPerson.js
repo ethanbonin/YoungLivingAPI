@@ -18,11 +18,11 @@ class ProspectsPerson extends Component {
 
   deletePerson(){
     this.props.deleteProspects(this.props.prospect._id);
+    console.log("DELETING from prsoepctsPerson");
+    this.props.prospectToDelete(this.props.prospect._id);
     this.closeModal();
     this.props.fetchProspects();
   }
-
-
 
   render() {
     const lead_colors = {

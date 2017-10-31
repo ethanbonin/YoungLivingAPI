@@ -12,10 +12,27 @@ import { box_values } from "./raw_data";
 class Prospects extends Component {
   constructor(props) {
     super(props);
-    this.state = { modalOpen: false, prospect: {}, emailModalOpen: false, prospectsList: this.props.prospects };
+
+    this.state = {
+      modalOpen: false,
+      prospect: {},
+      emailModalOpen: false,
+      prospectsList: this.props.prospects
+    };
+
     this.popUpPerson = this.popUpPerson.bind(this);
     this.emailModal = this.emailModal.bind(this);
     this.sortByDate = this.sortByDate.bind(this);
+    this.prospectToDelete = this.prospectToDelete.bind(this);
+  }
+
+  componentWillMount(){
+    if (this.props.location.state !== undefined){
+      const prospect = this.props.location.state;
+      let p_list = this.state.prospectsList;
+      p_list.prospects.push(prospect);
+      this.setState({p_list});
+    }
   }
 
   formatDate(date) {
@@ -53,7 +70,7 @@ class Prospects extends Component {
   }
 
   emailModal() {
-    this.setState({emailModalOpen: !this.state.emailModalOpen})
+    this.setState({ emailModalOpen: !this.state.emailModalOpen });
   }
 
   popUpPerson = person => {
@@ -61,8 +78,17 @@ class Prospects extends Component {
     this.setState({ prospect: person });
   };
 
+  prospectToDelete(person) {
+    let list = this.state.prospectsList;
+    _.remove(list.prospects, function(prospect) {
+      return prospect._id === person;
+    });
+    this.setState({ prospectsList: list });
+  }
+
   renderHeaders() {
     const headerTitles = [
+      "#",
       "View",
       "Lead Status",
       "Name",
@@ -101,7 +127,7 @@ class Prospects extends Component {
     });
   }
 
-  sortByDate(prospects){
+  sortByDate(prospects) {
     let prospects_array = _.sortBy(prospects, function(person) {
       if (person.prospect_created == null) {
         return;
@@ -109,8 +135,7 @@ class Prospects extends Component {
       return new Date(person.prospect_created);
     });
 
-    console.log("SORED BY DATE", prospects_array);
-    return {prospects: prospects_array};
+    return { prospects: prospects_array };
   }
 
   renderList() {
@@ -125,18 +150,23 @@ class Prospects extends Component {
         return;
       default:
         let prospects = this.state.prospectsList;
-        prospects = this.sortByDate(prospects.prospects);
+        // prospects = this.sortByDate(prospects.prospects);
         const truth = _.isEmpty(prospects);
-        if (prospects === null || truth){
-          return
+        if (prospects === null || truth) {
+          return;
         }
+        let i = 0;
         return _.map(prospects.prospects, prospect => {
+          i = i + 1;
           const date_met = new Date(prospect.met_date);
           const formatted_date_met = this.formatDate(date_met);
           const date_closed = new Date(prospect.dateClosed);
           const formatted_date_closed = this.formatDate(date_closed);
           return (
             <Table.Row key={prospect._id}>
+              <Table.Cell>
+                {i}
+              </Table.Cell>
               <Table.Cell>
                 <Button color="teal" onClick={() => this.popUpPerson(prospect)}>
                   View
@@ -168,24 +198,6 @@ class Prospects extends Component {
   render() {
     return (
       <div>
-        {this.state.modalOpen ? (
-          <ProspectsPerson
-            popUp={this.popUpPerson}
-            prospect={this.state.prospect}
-          />
-        ) : null}
-
-        {this.state.emailModalOpen ? (
-          <SendEmailModal
-            emailModal={this.emailModal}
-          />
-        ) : null}
-        <Table celled size="large">
-          <Table.Header>
-            <Table.Row>{this.renderHeaders()}</Table.Row>
-          </Table.Header>
-          <Table.Body>{this.renderList()}</Table.Body>
-        </Table>
 
         <Link
           to="/dashboard/prospects/new"
@@ -196,6 +208,22 @@ class Prospects extends Component {
         <Button color="blue" onClick={() => this.emailModal()}>
           Send Greeting Emails
         </Button>
+        {this.state.modalOpen ? (
+          <ProspectsPerson
+            popUp={this.popUpPerson}
+            prospect={this.state.prospect}
+            prospectToDelete={this.prospectToDelete}
+          />
+        ) : null}
+        {this.state.emailModalOpen ? (
+          <SendEmailModal emailModal={this.emailModal} />
+        ) : null}
+        <Table celled size="large">
+          <Table.Header>
+            <Table.Row>{this.renderHeaders()}</Table.Row>
+          </Table.Header>
+          <Table.Body>{this.renderList()}</Table.Body>
+        </Table>
       </div>
     );
   }
