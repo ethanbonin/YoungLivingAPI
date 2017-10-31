@@ -38,7 +38,6 @@ class FormDataModal extends Component {
     this.handleNoteSubmission = this.handleNoteSubmission.bind(this);
   }
 
-
   handleNoteSubmission() {
     this.props.patchProspects({
       _id: this.props.data._id,
@@ -54,15 +53,21 @@ class FormDataModal extends Component {
     this.setState({ new_note: "" });
   }
 
-  toggleSubmission(e){
+  toggleSubmission(e) {
     this.props.toggleProspects({
       _id: this.props.data._id,
       value_to_toggle: e.target.id,
       truthy: !this.state[e.target.id]
-    })
+    });
+
+    this.props.togglePerson(
+      this.props.data._id,
+      e.target.id,
+      !this.state[e.target.id]
+    );
 
     this.props.fetchProspects();
-    this.setState({[e.target.id]: !this.state[e.target.id]})
+    this.setState({ [e.target.id]: !this.state[e.target.id] });
   }
 
   renderCheckBoxes() {
@@ -74,7 +79,7 @@ class FormDataModal extends Component {
             id={value}
             name={value}
             checked={this.state[value]}
-            onChange={(e)=> this.toggleSubmission(e)}
+            onChange={e => this.toggleSubmission(e)}
           />
           <label htmlFor={value}>{message}</label>
         </p>
@@ -117,9 +122,9 @@ class FormDataModal extends Component {
     return month + "/" + day + "/" + year;
   }
 
-  checkedIfEmailed(emailed){
-    if (emailed === undefined){
-      this.setState({emailed: false});
+  checkedIfEmailed(emailed) {
+    if (emailed === undefined) {
+      this.setState({ emailed: false });
     }
   }
 
@@ -180,8 +185,6 @@ class FormDataModal extends Component {
       }
     });
   }
-
-
 
   render() {
     return (
