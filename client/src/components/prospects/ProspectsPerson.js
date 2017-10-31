@@ -10,6 +10,11 @@ class ProspectsPerson extends Component {
     super();
     this.closeModal = this.closeModal.bind(this);
     this.deletePerson = this.deletePerson.bind(this);
+    this.addNote = this.addNote.bind(this);
+  }
+
+  addNote(_id, note){
+    this.props.addNote(_id, note);
   }
 
   closeModal(){
@@ -43,7 +48,7 @@ class ProspectsPerson extends Component {
         <Modal.Content >
           <Modal.Description>
             <Header>Prospect Information</Header>
-            <FormDataModal data={this.props.prospect} />
+            <FormDataModal data={this.props.prospect} addNote={this.addNote} />
           </Modal.Description>
         </Modal.Content>
         <Modal.Actions>

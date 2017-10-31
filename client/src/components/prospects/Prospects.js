@@ -24,6 +24,7 @@ class Prospects extends Component {
     this.emailModal = this.emailModal.bind(this);
     this.sortByDate = this.sortByDate.bind(this);
     this.prospectToDelete = this.prospectToDelete.bind(this);
+    this.addNote = this.addNote.bind(this);
   }
 
   componentWillMount(){
@@ -71,6 +72,25 @@ class Prospects extends Component {
 
   emailModal() {
     this.setState({ emailModalOpen: !this.state.emailModalOpen });
+  }
+
+  addNote(_id, note){
+    console.log("Note from Prospects",_id, note);
+
+
+    let list = this.state.prospectsList;
+    _.map(list.prospects, function(prospect) {
+      if (prospect._id === _id){
+        console.log("Found person");
+        console.log("Adding note");
+        console.log("notes", prospect.additional_notes)
+        prospect.additional_notes.push(note);
+        console.log("notes", prospect.additional_notes)
+        return
+      }
+      return ;
+    });
+    this.setState({ prospectsList: list });
   }
 
   popUpPerson = person => {
@@ -213,6 +233,7 @@ class Prospects extends Component {
             popUp={this.popUpPerson}
             prospect={this.state.prospect}
             prospectToDelete={this.prospectToDelete}
+            addNote={this.addNote}
           />
         ) : null}
         {this.state.emailModalOpen ? (

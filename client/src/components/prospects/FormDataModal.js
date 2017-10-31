@@ -50,10 +50,8 @@ class FormDataModal extends Component {
       date: new Date()
     };
 
-    const n_a = this.state.additional_notes.slice();
-    n_a.push(new_note);
+    this.props.addNote(this.props.data._id, new_note);
     this.setState({ new_note: "" });
-    this.setState({ additional_notes: n_a });
   }
 
   toggleSubmission(e){
