@@ -181,7 +181,7 @@ class Prospects extends Component {
   sortByDate(prospects) {
     let prospects_array = _.sortBy(prospects, function(person) {
       if (person.prospect_created == null) {
-        return new Date(person.additional_notes[person.additional_notes.length-1].date);
+        // return new Date(person.additional_notes[person.additional_notes.length-1].date);
       }
       return new Date(person.prospect_created);
     });
