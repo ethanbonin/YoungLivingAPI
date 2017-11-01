@@ -181,12 +181,14 @@ class Prospects extends Component {
   sortByDate(prospects) {
     let prospects_array = _.sortBy(prospects, function(person) {
       if (person.prospect_created == null) {
-        return;
+        return new Date(person.additional_notes[person.additional_notes.length-1].date);
       }
       return new Date(person.prospect_created);
     });
 
-    return { prospects: prospects_array };
+    let inverse_array = prospects_array.reverse();
+
+    return { prospects: inverse_array };
   }
 
   renderList() {
@@ -201,7 +203,7 @@ class Prospects extends Component {
         return;
       default:
         let prospects = this.state.prospectsList;
-        // prospects = this.sortByDate(prospects.prospects);
+        prospects = this.sortByDate(prospects.prospects);
         const truth = _.isEmpty(prospects);
         if (prospects === null || truth) {
           return;

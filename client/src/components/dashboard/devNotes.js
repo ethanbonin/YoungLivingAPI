@@ -14,6 +14,7 @@ const devNotes = [
         updated_features: [
           "The prospect page should be loading a lot faster now. You should see limited lag when viewing cards",
           "I moved the add button and email button to the top of the page so that you can easily reach it when your list gets big.",
+          "Sorted the list by who was added last. They will appear the top of the list now."
         ]
       },
   },
@@ -22,7 +23,7 @@ const devNotes = [
 
 const convert_to_normal = {
   bug_fixes: "Bug Fixes",
-  new_features: "New Featurs",
+  new_features: "New Features",
   updated_features: "Updated Features"
 }
 

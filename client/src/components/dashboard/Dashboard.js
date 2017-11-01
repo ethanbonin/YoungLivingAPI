@@ -58,35 +58,31 @@ class DashBoard extends Component {
     // //This returns the blob of information of the date, and the key is hte date itself.
     return _.map(date, (dev, key) => {
       return (
-        <div key="key">
+        <div key={key}>
           <h1 className="title">{key}</h1>
-          {this.createCardHeader(dev)}
+          <div className="ui three cards">{this.createCardHeader(dev)}</div>
         </div>
       );
     });
   }
 
   createCardHeader(dev) {
-    const date = Math.random();
-    const random = Math.random()
+    var i = 0;
     return _.map(dev, (value, key) => {
+      i = i + 1;
       return (
-        <Card.Group key={value} itemsPerRow={3}>
-          <Card key={date}>
-            <Card.Content key={random} className="title" header={convert_to_normal[key]} />
-            {this.createCardMessages(value)}
-          </Card>
-        </Card.Group>
+        <Card color="grey" key={i}>
+          <Card.Content className="title" header={convert_to_normal[key]} />
+          {this.createCardMessages(value)}
+        </Card>
       );
     });
   }
 
-  createCardMessages(value){
-    return _.map((value), (message) => {
-      return(
-          <Card.Content key="value" description={message} />
-      )
-    })
+  createCardMessages(value) {
+    return _.map(value, message => {
+      return <Card.Content key={message} description={message} />;
+    });
   }
 
   renderDevNotes() {
@@ -101,11 +97,11 @@ class DashBoard extends Component {
       <div>
         <div className="container">
           <Card.Group itemsPerRow={2}>{this.renderTabs()}</Card.Group>
+          <Segment basic color="teal">
+            <h1 className="title">Developer Notes</h1>
+            <div className="updateContainer">{this.renderDevNotes()}</div>
+          </Segment>
         </div>
-        <Segment>
-          <h1 className="title">Developer Notes</h1>
-          {this.renderDevNotes()}
-        </Segment>
         {this.state.isLoggedIn ? null : <Redirect to="/" />}
       </div>
     );
