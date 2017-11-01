@@ -191,13 +191,35 @@ class Prospects extends Component {
     return { prospects: inverse_array };
   }
 
-  renderList() {
+  renderNumberViewLead(prospect, i) {
     const lead_colors = {
       cold: "black",
       warm: "orange",
       hot: "red"
     };
 
+    let j = i * 200;
+    let k = j * 200;
+    return [
+      <Table.Cell key={i}>{i}</Table.Cell>,
+      <Table.Cell key={j}>
+        <Button color="teal" onClick={() => this.popUpPerson(prospect)}>
+          View
+        </Button>
+      </Table.Cell>,
+      <Table.Cell key={k}>
+        <Label
+          color={lead_colors[prospect.lead]}
+          horizontal
+          style={{ marginLeft: "10px", width: 60 }}
+        >
+          {prospect.lead}
+        </Label>
+      </Table.Cell>
+    ];
+  }
+
+  renderList() {
     switch (this.state.prospectsList) {
       case null:
         return;
@@ -217,21 +239,7 @@ class Prospects extends Component {
           const formatted_date_closed = this.formatDate(date_closed);
           return (
             <Table.Row key={prospect._id}>
-              <Table.Cell>{i}</Table.Cell>
-              <Table.Cell>
-                <Button color="teal" onClick={() => this.popUpPerson(prospect)}>
-                  View
-                </Button>
-              </Table.Cell>
-              <Table.Cell>
-                <Label
-                  color={lead_colors[prospect.lead]}
-                  horizontal
-                  style={{ marginLeft: "10px", width: 60 }}
-                >
-                  {prospect.lead}
-                </Label>
-              </Table.Cell>
+              {this.renderNumberViewLead(prospect, i)}
               <Table.Cell>
                 {prospect.first} {prospect.last}
               </Table.Cell>
