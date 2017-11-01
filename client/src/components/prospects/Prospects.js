@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
-import { Button, Table, Label } from "semantic-ui-react";
+import { Button, Table, Label, Search } from "semantic-ui-react";
 import _ from "lodash";
 import * as actions from "../../actions";
 
@@ -14,7 +14,10 @@ class Prospects extends Component {
     super(props);
 
     this.state = {
+      isLoading: false,
       modalOpen: false,
+      results: [],
+      value: "",
       prospect: {},
       emailModalOpen: false,
       prospectsList: this.props.prospects
@@ -223,7 +226,13 @@ class Prospects extends Component {
       case null:
         return;
       default:
-        let prospects = this.state.prospectsList;
+        let prospects;
+        if (this.state.results.length > 0) {
+          prospects = { prospects: this.state.results };
+        } else {
+          prospects = this.state.prospectsList;
+        }
+
         prospects = this.sortByDate(prospects.prospects);
         const truth = _.isEmpty(prospects);
         if (prospects === null || truth) {
@@ -253,18 +262,55 @@ class Prospects extends Component {
     }
   }
 
-  renderModalToggle(){
+  renderModalToggle() {
+    return this.state.modalOpen ? (
+      <ProspectsPerson
+        popUp={this.popUpPerson}
+        prospect={this.state.prospect}
+        prospectToDelete={this.prospectToDelete}
+        addNote={this.addNote}
+        togglePerson={this.togglePerson}
+      />
+    ) : null;
+  }
+
+  resetComponent = () =>
+    this.setState({ isLoading: false, results: [], value: "" });
+
+  handleResultSelect = (e, { result }) =>
+    this.setState({ value: result.title });
+
+  handleSearchChange = (e, { value }) => {
+    this.setState({ isLoading: true, value });
+    setTimeout(() => {
+      if (this.state.value.length < 1) return this.resetComponent();
+      let array_of_searched_prospects = [];
+      for (var i = 0; i < this.state.prospectsList.prospects.length; i++) {
+        let prosp = this.state.prospectsList.prospects[i].first;
+        if (prosp.toUpperCase().indexOf(value.toUpperCase()) > -1) {
+          array_of_searched_prospects.push(
+            this.state.prospectsList.prospects[i]
+          );
+        }
+      }
+      this.setState({
+        isLoading: false,
+        results: array_of_searched_prospects
+      });
+    }, 100);
+  };
+
+  renderSearchBar() {
     return (
-      this.state.modalOpen ? (
-        <ProspectsPerson
-          popUp={this.popUpPerson}
-          prospect={this.state.prospect}
-          prospectToDelete={this.prospectToDelete}
-          addNote={this.addNote}
-          togglePerson={this.togglePerson}
-        />
-      ) : null
-    )
+      <Search
+        category
+        loading={this.state.isLoading}
+        onResultSelect={this.handleResultSelect}
+        onSearchChange={this.handleSearchChange}
+        value={this.state.value}
+        noResultsMessage={"LOADING"}
+      />
+    );
   }
 
   render() {
@@ -279,6 +325,7 @@ class Prospects extends Component {
         <Button color="blue" onClick={() => this.emailModal()}>
           Send Greeting Emails
         </Button>
+        {this.renderSearchBar()}
         {this.renderModalToggle()}
         {this.state.emailModalOpen ? (
           <SendEmailModal emailModal={this.emailModal} />

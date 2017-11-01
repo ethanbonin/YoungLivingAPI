@@ -19,21 +19,21 @@ class App extends Component {
     super();
     this.state = { isLoggedIn: false };
     this.checkIfLoggedIn = this.checkIfLoggedIn.bind(this);
-    this.requireAuth = this.requireAuth.bind(this);
   }
   componentDidMount() {
     this.props.fetchUser();
-    this.requireAuth();
   }
   checkIfLoggedIn() {
     this.setState({ isLoggedIn: !this.state.isLoggedIn });
   }
 
-  requireAuth(nextState, Replace) {
-    if (!this.props.auth) {
-      this.setState({ isLoggedIn: false });
-    } else {
-      this.setState({ isLoggedIn: true });
+  redirectIfNotLoggedIn(){
+    if (history.location.pathname !== "/" && !this.props.auth){
+      history.push("/")
+    }
+
+    if (history.location.pathname === "/" && this.props.auth) {
+      history.push("/dashboard");
     }
   }
 
@@ -42,18 +42,18 @@ class App extends Component {
       <Router history={history}>
         <div>
           <Header />
+          {this.redirectIfNotLoggedIn()}
           <Switch>
-
-          <Route exact path="/" component={Landing} />
-          <Route exact path="/dashboard" component={DashBoard} />
-          <Route exact path={`/dashboard/prospects`} component={Prospects} />
-          <Route
-            exact
-            path={`/dashboard/prospects/new`}
-            component={ProspectsNew}
-          />
-          <Route component={NoMatch}/>
-        </Switch>
+            <Route exact path="/" component={Landing} />
+            <Route exact path="/dashboard" component={DashBoard} />
+            <Route exact path={`/dashboard/prospects`} component={Prospects} />
+            <Route
+              exact
+              path={`/dashboard/prospects/new`}
+              component={ProspectsNew}
+            />
+            <Route component={NoMatch} />
+          </Switch>
         </div>
       </Router>
     );
