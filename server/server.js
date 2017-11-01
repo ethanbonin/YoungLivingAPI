@@ -20,8 +20,6 @@ var {
 
 const { User } = require("./db/models/Users");
 
-var { amount_made } = require("./amount_estimate/amountestimate");
-
 var app = express();
 var sess;
 
@@ -163,41 +161,6 @@ app.post("/v0/yl/new_members", uidrequest, (req, res) => {
     });
 });
 
-app.post("/v0/yl/amount_made", uidrequest, retailcustomers, (req, res) => {
-  var uri =
-    "https://www.youngliving.com/vo.dlv.api/reports/download/All Accounts/" +
-    req.reportid +
-    "/" +
-    req.guid +
-    "/1/en-us";
-  var request_options = {
-    method: "GET",
-    uri: uri
-  };
-  rp(request_options)
-    .then(body => {
-      var csv_options = {
-        deliemiter: ",",
-        quote: '"', // optional
-        headers: report_data_header
-      };
-
-      var result = csvjson.toObject(body, csv_options);
-      var all_members = is_retail_customer(req.retail_customers, result);
-
-      var current_date_formated = new Date(req.body.date);
-      var estimated_amount_made = amount_made(
-        all_members,
-        current_date_formated
-      );
-
-      console.log(estimated_amount_made);
-      res.send({ estimated_amount_made });
-    })
-    .catch(e => {
-      res.send(e);
-    });
-});
 
 //***************//
 //PRIVATE METHODS//

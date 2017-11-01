@@ -20,7 +20,6 @@ var {
 
 const { User } = require("../db/models/Users");
 const { Prospects } = require("../db/models/Prospects");
-var { amount_made } = require("../amount_estimate/amountestimate");
 
 module.exports = app => {
   const formatNotes = function(note) {

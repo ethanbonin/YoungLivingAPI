@@ -19,7 +19,6 @@ var {
 } = require("../header_data/header_data");
 
 const { User } = require("../db/models/Users");
-var { amount_made } = require("../amount_estimate/amountestimate");
 
 module.exports = app => {
   app.get("/v0/yl/current_user", (req, res) => {
