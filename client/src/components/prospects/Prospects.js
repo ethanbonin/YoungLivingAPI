@@ -100,7 +100,6 @@ class Prospects extends Component {
   }
 
   toggleProspectFromMaster(e) {
-    console.log(e.target);
     const valuesArr = e.target.id.split(" ");
     const value = valuesArr[0];
     const id = valuesArr[1];
@@ -254,6 +253,20 @@ class Prospects extends Component {
     }
   }
 
+  renderModalToggle(){
+    return (
+      this.state.modalOpen ? (
+        <ProspectsPerson
+          popUp={this.popUpPerson}
+          prospect={this.state.prospect}
+          prospectToDelete={this.prospectToDelete}
+          addNote={this.addNote}
+          togglePerson={this.togglePerson}
+        />
+      ) : null
+    )
+  }
+
   render() {
     return (
       <div>
@@ -266,15 +279,7 @@ class Prospects extends Component {
         <Button color="blue" onClick={() => this.emailModal()}>
           Send Greeting Emails
         </Button>
-        {this.state.modalOpen ? (
-          <ProspectsPerson
-            popUp={this.popUpPerson}
-            prospect={this.state.prospect}
-            prospectToDelete={this.prospectToDelete}
-            addNote={this.addNote}
-            togglePerson={this.togglePerson}
-          />
-        ) : null}
+        {this.renderModalToggle()}
         {this.state.emailModalOpen ? (
           <SendEmailModal emailModal={this.emailModal} />
         ) : null}
