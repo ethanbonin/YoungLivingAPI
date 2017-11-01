@@ -29,7 +29,6 @@ class ProspectsPerson extends Component {
     this.props.deleteProspects(this.props.prospect._id);
     this.props.prospectToDelete(this.props.prospect._id);
     this.closeModal();
-    this.props.fetchProspects();
   }
 
   render() {

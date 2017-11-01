@@ -1,6 +1,6 @@
 import createHistory from "history/createBrowserHistory";
 import React, { Component } from "react";
-import { Router, Route } from "react-router-dom";
+import { Router, Route, Switch } from "react-router-dom";
 import { connect } from "react-redux";
 import * as actions from "../actions";
 
@@ -9,6 +9,7 @@ import Landing from "./dashboard/Landing";
 import DashBoard from "./dashboard/Dashboard";
 import Prospects from "./prospects/Prospects";
 import ProspectsNew from "./prospects/ProspectsForm";
+import NoMatch from "./NoMatch";
 
 const history = createHistory();
 
@@ -41,6 +42,8 @@ class App extends Component {
       <Router history={history}>
         <div>
           <Header />
+          <Switch>
+
           <Route exact path="/" component={Landing} />
           <Route exact path="/dashboard" component={DashBoard} />
           <Route exact path={`/dashboard/prospects`} component={Prospects} />
@@ -49,6 +52,8 @@ class App extends Component {
             path={`/dashboard/prospects/new`}
             component={ProspectsNew}
           />
+          <Route component={NoMatch}/>
+        </Switch>
         </div>
       </Router>
     );
