@@ -1,13 +1,14 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
-import { Button, Table, Label, Search } from "semantic-ui-react";
+import { Button, Table, Label, Search, Dropdown } from "semantic-ui-react";
 import _ from "lodash";
 import * as actions from "../../actions";
 
 import ProspectsPerson from "./ProspectsPerson";
 import SendEmailModal from "./SendEmailModal";
-import { box_values } from "./raw_data";
+import { box_values, ordering_options } from "./raw_data";
+import "./prospectscss/prospects.css";
 
 class Prospects extends Component {
   constructor(props) {
@@ -20,12 +21,13 @@ class Prospects extends Component {
       value: "",
       prospect: {},
       emailModalOpen: false,
-      prospectsList: this.props.prospects
+      prospectsList: this.props.prospects,
+      sort_by: "newest"
     };
 
     this.popUpPerson = this.popUpPerson.bind(this);
     this.emailModal = this.emailModal.bind(this);
-    this.sortByDate = this.sortByDate.bind(this);
+    // this.sortBy= this.sortBy.bind(this);
     this.prospectToDelete = this.prospectToDelete.bind(this);
     this.addNote = this.addNote.bind(this);
     this.togglePerson = this.togglePerson.bind(this);
@@ -34,8 +36,11 @@ class Prospects extends Component {
 
   componentWillMount() {
     if (this.props.location.state !== undefined) {
+      console.log("PROPS", this.props.location.state);
       const prospect = this.props.location.state;
+      console.log("PROSPECT ASSIGNED", prospect);
       let p_list = this.state.prospectsList;
+      console.log("p_list assigned", p_list);
       p_list.prospects.push(prospect);
       this.setState({ p_list });
     }
@@ -180,18 +185,46 @@ class Prospects extends Component {
     });
   }
 
-  sortByDate(prospects) {
-    let prospects_array = _.sortBy(prospects, function(person) {
-      if (person.prospect_created == null) {
-        // return new Date(person.additional_notes[person.additional_notes.length-1].date);
-      }
-      return new Date(person.prospect_created);
-    });
+  // sortBy(prospects) {
+  //   console.log(this.state)
+  //   const k = this.state.sort_by;
+  //   let prospects_array = _.sortBy(prospects, function(person) {
+  //     console.log(person.first);
+  //     return person.first
+  //     // switch (k) {
+  //     //   case 'newest':
+  //     //     if (person.prospect_created == null) {
+  //     //       // return new Date(person.additional_notes[person.additional_notes.length-1].date);
+  //     //       return
+  //     //     }
+  //     //     return new Date(person.prospect_created);
+  //     //   case 'first':
+  //     //     console.log('p', person.first);
+  //     //     return person.first
+  //     //   default:
+  //     //     return;
+  //     // }
+  //   });
+  //
+  //   console.log("Before Inverse", prospects_array);
+  //   let inverse_array = prospects_array.reverse();
+  //   console.log("After Inverse", inverse_array);
+  //   return { prospects: inverse_array };
+  // }
 
-    let inverse_array = prospects_array.reverse();
-
-    return { prospects: inverse_array };
-  }
+  //
+  // sortByDate(prospects) {
+  //   let prospects_array = _.sortBy(prospects, function(person) {
+  //     if (person.prospect_created == null) {
+  //       // return new Date(person.additional_notes[person.additional_notes.length-1].date);
+  //     }
+  //     return new Date(person.prospect_created);
+  //   });
+  //
+  //   let inverse_array = prospects_array.reverse();
+  //
+  //   return { prospects: inverse_array };
+  // }
 
   renderNumberViewLead(prospect, i) {
     const lead_colors = {
@@ -233,7 +266,7 @@ class Prospects extends Component {
           prospects = this.state.prospectsList;
         }
 
-        prospects = this.sortByDate(prospects.prospects);
+        // prospects = this.sortBy(prospects.prospects);
         const truth = _.isEmpty(prospects);
         if (prospects === null || truth) {
           return;
@@ -313,19 +346,52 @@ class Prospects extends Component {
     );
   }
 
+  handleSortSelect(value){
+    console.log("setting", value.value)
+    this.setState({sort_by: value.value});
+  }
+
   render() {
     return (
       <div>
-        <Link
-          to="/dashboard/prospects/new"
-          className="btn-floating btn-large red"
-        >
-          <i className="material-icons">add</i>
-        </Link>
-        <Button color="blue" onClick={() => this.emailModal()}>
-          Send Greeting Emails
-        </Button>
-        {this.renderSearchBar()}
+        <div className="tools">
+          <Link
+            to="/dashboard/prospects/new"
+            className="btn-floating btn-large red"
+          >
+            <i className="material-icons">add</i>
+          </Link>
+          <Button color="blue" onClick={() => this.emailModal()}>
+            Send Greeting Emails
+          </Button>
+          {this.renderSearchBar()}
+          <Dropdown
+            className="sort_tool"
+            placeholder="Sort List"
+            fluid
+            selection
+            options={ordering_options}
+          />
+
+          <Dropdown
+            fluid
+            text="Sort Prospect"
+            icon="filter"
+            labeled
+            button
+            className="icon"
+            onChange={e => console.log()}
+          >
+            <Dropdown.Menu>
+              <Dropdown.Divider />
+              <Dropdown.Menu scrolling>
+                {ordering_options.map(option => (
+                  <Dropdown.Item key={option.value} {...option} onClick={() => this.handleSortSelect(option)} />
+                ))}
+              </Dropdown.Menu>
+            </Dropdown.Menu>
+          </Dropdown>
+        </div>
         {this.renderModalToggle()}
         {this.state.emailModalOpen ? (
           <SendEmailModal emailModal={this.emailModal} />

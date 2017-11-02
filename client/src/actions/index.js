@@ -41,7 +41,7 @@ export const postProspects = (body) => {
     axios
       .post("/v0/yl/prospect_new", {values: body})
       .then(res => {
-        dispatch({ type: POST_PROSPECTS, payload: {redirect: true}});
+        dispatch({ type: POST_PROSPECTS, payload: res.data});
       });
   };
 };

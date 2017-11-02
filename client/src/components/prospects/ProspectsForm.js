@@ -97,6 +97,7 @@ class ProspectsNew extends Component {
     }
 
     this.props.postProspects(this.state);
+    this.props.fetchProspects();
     this.setState({
       goBack: true
     });

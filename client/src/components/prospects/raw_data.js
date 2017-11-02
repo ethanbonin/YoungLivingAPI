@@ -87,9 +87,59 @@ const details = [
   },
 ];
 
+
+const ordering_options = [
+    {
+      text: 'by Newest (default)',
+      value: 'newest',
+    },
+    {
+      text: 'by Oldest',
+      value: 'oldest',
+    },
+    {
+      text: 'by First',
+      value: 'first',
+    },
+    {
+      text: 'by Last',
+      value: 'last',
+    },
+    {
+      text: 'by Email',
+      value: 'email',
+    },
+    {
+      text: 'by Met Date (recent)',
+      value: 'met_recent',
+    },
+    {
+      text: 'by Met Date (old)',
+      value: 'met_old',
+    },
+    {
+      text: 'by Close Date (recent)',
+      value: 'closed_recent',
+    },
+    {
+      text: 'by Close Date (old)',
+      value: 'closed_old',
+    },
+    {
+      text: 'by Emailed Checked',
+      value: 'emailed_checked',
+    },
+    {
+      text: 'by Emailed UnChecked',
+      value: 'email_unchecked',
+    },
+
+]
+
 module.exports = {
   box_values,
   info,
   lead,
-  details
+  details,
+  ordering_options
 };
