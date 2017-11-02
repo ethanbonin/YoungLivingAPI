@@ -27,7 +27,7 @@ class Prospects extends Component {
 
     this.popUpPerson = this.popUpPerson.bind(this);
     this.emailModal = this.emailModal.bind(this);
-    // this.sortBy= this.sortBy.bind(this);
+    this.sortBy = this.sortBy.bind(this);
     this.prospectToDelete = this.prospectToDelete.bind(this);
     this.addNote = this.addNote.bind(this);
     this.togglePerson = this.togglePerson.bind(this);
@@ -41,6 +41,7 @@ class Prospects extends Component {
       console.log("PROSPECT ASSIGNED", prospect);
       let p_list = this.state.prospectsList;
       console.log("p_list assigned", p_list);
+      prospect.additional_notes = [prospect.additional_notes]
       p_list.prospects.push(prospect);
       this.setState({ p_list });
     }
@@ -88,11 +89,14 @@ class Prospects extends Component {
     let list = this.state.prospectsList;
     _.map(list.prospects, function(prospect) {
       if (prospect._id === _id) {
+        console.log("THE NOTE", note);
+        console.log("The prospect", prospect.additional_notes);
         prospect.additional_notes.push(note);
         return;
       }
       return;
     });
+    this.props.fetchProspects()
     this.setState({ prospectsList: list });
   }
 
@@ -105,6 +109,8 @@ class Prospects extends Component {
       }
     });
     this.setState({ prospectsList: list });
+    this.props.fetchProspects()
+
   }
 
   toggleProspectFromMaster(e) {
@@ -123,12 +129,12 @@ class Prospects extends Component {
     });
 
     this.setState({ prospectsList: list });
-
     this.props.toggleProspects({
       _id: id,
       value_to_toggle: value,
       truthy: truthy
     });
+    this.props.fetchProspects()
   }
 
   popUpPerson = person => {
@@ -141,6 +147,7 @@ class Prospects extends Component {
     _.remove(list.prospects, function(prospect) {
       return prospect._id === person;
     });
+    this.props.fetchProspects();
     this.setState({ prospectsList: list });
   }
 
@@ -185,46 +192,46 @@ class Prospects extends Component {
     });
   }
 
-  // sortBy(prospects) {
-  //   console.log(this.state)
-  //   const k = this.state.sort_by;
-  //   let prospects_array = _.sortBy(prospects, function(person) {
-  //     console.log(person.first);
-  //     return person.first
-  //     // switch (k) {
-  //     //   case 'newest':
-  //     //     if (person.prospect_created == null) {
-  //     //       // return new Date(person.additional_notes[person.additional_notes.length-1].date);
-  //     //       return
-  //     //     }
-  //     //     return new Date(person.prospect_created);
-  //     //   case 'first':
-  //     //     console.log('p', person.first);
-  //     //     return person.first
-  //     //   default:
-  //     //     return;
-  //     // }
-  //   });
-  //
-  //   console.log("Before Inverse", prospects_array);
-  //   let inverse_array = prospects_array.reverse();
-  //   console.log("After Inverse", inverse_array);
-  //   return { prospects: inverse_array };
-  // }
+  sortBy(prospects) {
+    const k = this.state.sort_by;
+    let prospects_array = _.sortBy(prospects, function(person) {
 
-  //
-  // sortByDate(prospects) {
-  //   let prospects_array = _.sortBy(prospects, function(person) {
-  //     if (person.prospect_created == null) {
-  //       // return new Date(person.additional_notes[person.additional_notes.length-1].date);
-  //     }
-  //     return new Date(person.prospect_created);
-  //   });
-  //
-  //   let inverse_array = prospects_array.reverse();
-  //
-  //   return { prospects: inverse_array };
-  // }
+      switch (k) {
+        case "newest":
+          if (person.prospect_created == null) {
+            // return new Date(person.additional_notes[person.additional_notes.length-1].date);
+            return
+          }
+          return new Date(person.prospect_created);
+        case "first":
+          return person.first;
+        case "last":
+          return person.last;
+        case "email":
+          return person.email;
+        case "met_old":
+        case "met_recent":
+          if (person.met_date == null) {
+            // return new Date(person.additional_notes[person.additional_notes.length-1].date);
+            return
+          }
+          return new Date(person.met_date);
+        default:
+          console.log("uh?");
+      }
+
+    });
+
+    let inverse_array = [];
+    if (k === "newest" || k === "met_recent") {
+      inverse_array = prospects_array.reverse();
+    } else {
+      inverse_array = prospects_array;
+    }
+
+    return { prospects: inverse_array };
+  }
+
 
   renderNumberViewLead(prospect, i) {
     const lead_colors = {
@@ -266,7 +273,7 @@ class Prospects extends Component {
           prospects = this.state.prospectsList;
         }
 
-        // prospects = this.sortBy(prospects.prospects);
+        prospects = this.sortBy(prospects.prospects);
         const truth = _.isEmpty(prospects);
         if (prospects === null || truth) {
           return;
@@ -346,9 +353,36 @@ class Prospects extends Component {
     );
   }
 
-  handleSortSelect(value){
-    console.log("setting", value.value)
-    this.setState({sort_by: value.value});
+  handleSortSelect(value) {
+    this.setState({ sort_by: value.value });
+  }
+
+  renderDropDown() {
+    return (
+      <Dropdown
+        fluid
+        text="Sort Prospect"
+        icon="filter"
+        labeled
+        button
+        className="icon"
+        style={{ marginTop: "5px" }}
+        onChange={e => console.log()}
+      >
+        <Dropdown.Menu>
+          <Dropdown.Divider />
+          <Dropdown.Menu scrolling>
+            {ordering_options.map(option => (
+              <Dropdown.Item
+                key={option.value}
+                {...option}
+                onClick={() => this.handleSortSelect(option)}
+              />
+            ))}
+          </Dropdown.Menu>
+        </Dropdown.Menu>
+      </Dropdown>
+    );
   }
 
   render() {
@@ -365,32 +399,7 @@ class Prospects extends Component {
             Send Greeting Emails
           </Button>
           {this.renderSearchBar()}
-          <Dropdown
-            className="sort_tool"
-            placeholder="Sort List"
-            fluid
-            selection
-            options={ordering_options}
-          />
-
-          <Dropdown
-            fluid
-            text="Sort Prospect"
-            icon="filter"
-            labeled
-            button
-            className="icon"
-            onChange={e => console.log()}
-          >
-            <Dropdown.Menu>
-              <Dropdown.Divider />
-              <Dropdown.Menu scrolling>
-                {ordering_options.map(option => (
-                  <Dropdown.Item key={option.value} {...option} onClick={() => this.handleSortSelect(option)} />
-                ))}
-              </Dropdown.Menu>
-            </Dropdown.Menu>
-          </Dropdown>
+          {this.renderDropDown()}
         </div>
         {this.renderModalToggle()}
         {this.state.emailModalOpen ? (

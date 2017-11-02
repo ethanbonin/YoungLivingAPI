@@ -118,19 +118,19 @@ const ordering_options = [
       value: 'met_old',
     },
     {
-      text: 'by Close Date (recent)',
+      text: 'by Close Date (recent) (COMING SOON)',
       value: 'closed_recent',
     },
     {
-      text: 'by Close Date (old)',
+      text: 'by Close Date (old) (COMING SOON)',
       value: 'closed_old',
     },
     {
-      text: 'by Emailed Checked',
+      text: 'by Emailed Checked (COMING SOON)',
       value: 'emailed_checked',
     },
     {
-      text: 'by Emailed UnChecked',
+      text: 'by Emailed UnChecked (COMING SOON)',
       value: 'email_unchecked',
     },
 

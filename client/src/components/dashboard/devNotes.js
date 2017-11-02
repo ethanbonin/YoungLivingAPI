@@ -1,8 +1,13 @@
 const devNotes = [
   {
     "11/04/2017": {
-      bug_fixes: [""],
-      new_features: ["Added a Search bar to the prospect page! You can now quickly search through ALL your people on the prospect page."],
+      bug_fixes: [
+        "Fixed an issue where you couldn't submit more than one person at a time when going to the prospect page."
+      ],
+      new_features: [
+        "Added a Search bar to the prospect page! You can now quickly search through ALL your people on the prospect page.",
+        "You can now sort your list! Not all of it works just yet! But it will soon!"
+      ],
       updated_features: [
         "You will now be rerouted if you log in. It will bring you to the dashboard. Similary, it will give you a 404 not found if you try routing to a page that doesn't exist"
       ]
