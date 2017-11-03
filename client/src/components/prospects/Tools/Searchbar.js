@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Search } from "semantic-ui-react";
 import { connect } from "react-redux";
-import * as actions from "../../actions";
+import * as actions from "../../../actions";
 
 class Searchbar extends Component {
   constructor(props) {

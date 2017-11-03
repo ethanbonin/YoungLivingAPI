@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 import { Dropdown } from "semantic-ui-react";
 import { connect } from "react-redux";
-import * as actions from "../../actions";
-import { ordering_options } from "./raw_data";
+import * as actions from "../../../actions";
+import { ordering_options } from "../raw_data";
 
 
 class SortDropDown extends Component {

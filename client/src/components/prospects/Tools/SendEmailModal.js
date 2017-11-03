@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Modal, Button } from "semantic-ui-react";
 import _ from "lodash";
-import * as actions from "../../actions";
+import * as actions from "../../../actions";
 
 
 class SendEmailModal extends Component {

@@ -6,10 +6,11 @@ import _ from "lodash";
 import * as actions from "../../actions";
 
 import ProspectsPerson from "./ProspectsPerson";
-import SendEmailModal from "./SendEmailModal";
 import { box_values } from "./raw_data";
-import Searchbar from "./Searchbar";
-import SortDropDown from "./SortDropDown";
+import SendEmailModal from "./Tools/SendEmailModal";
+import Searchbar from "./Tools/Searchbar";
+import SortDropDown from "./Tools/SortDropDown";
+
 import "./prospectscss/prospects.css";
 
 class Prospects extends Component {
