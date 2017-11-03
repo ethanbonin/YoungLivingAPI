@@ -1,5 +1,9 @@
 require("./config/config");
-var fs = require("fs");
+var fs = require('fs');
+var https = require('https');
+var http = require('http');
+var path    = require('path');
+
 
 //THIRD PARTY MODULES
 const express = require("express");
@@ -21,12 +25,19 @@ var {
 const { User } = require("./db/models/Users");
 
 var app = express();
-var sess;
+
+// const key = path.resolve(__dirname, 'config/key.pem');
+// const cert = path.resolve(__dirname, 'config/server.crt');
+//
+// var SSLoptions = {
+//   key: fs.readFileSync(key),
+//   cert: fs.readFileSync(cert)
+// };
 
 const _PORT = process.env.PORT || 5000;
 app.use(bodyParser.json());
 app.use(session({ secret: process.env.SESSION_SECRET }));
-app.use(express.static('client/src/assets'));
+app.use(express.static("client/src/assets"));
 
 require("./routes/authRoutes")(app);
 require("./routes/prospectsRoute")(app);
@@ -161,7 +172,6 @@ app.post("/v0/yl/new_members", uidrequest, (req, res) => {
     });
 });
 
-
 //***************//
 //PRIVATE METHODS//
 //***************//
@@ -190,20 +200,19 @@ is_retail_customer = function(retail_customers, all_members) {
 };
 
 //This only runs when on production
-if (process.env.NODE_ENV === 'production'){
+if (process.env.NODE_ENV === "production") {
   //Express will serve  up production assets
   //like our main.js file. or main.css file
-  app.use(express.static('client/build'));
-
+  app.use(express.static("client/build"));
 
   //Express will serve up index.html file
   //if it doesn't recongize the route
   //This is the catch all case
-  const path = require('path');
-  app.get('*', (req, res) => {
-    res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'));
+  const path = require("path");
+  app.get("*", (req, res) => {
+    res.sendFile(path.resolve(__dirname, "client", "build", "index.html"));
   });
-};
+}
 
 app.listen(_PORT, () => {
   console.log("Server is Running on port: " + _PORT);

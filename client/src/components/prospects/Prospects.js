@@ -42,9 +42,7 @@ class Prospects extends Component {
 
   componentWillMount() {
     if (this.props.location.state !== undefined) {
-      console.log("PROPS", this.props.location.state);
       const prospect = this.props.location.state;
-      console.log("PROSPECT ASSIGNED", prospect);
       let p_list = this.state.prospectsList;
       console.log("p_list assigned", p_list);
       prospect.additional_notes = [prospect.additional_notes];
