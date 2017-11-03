@@ -1,13 +1,15 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
-import { Button, Table, Label, Search, Dropdown } from "semantic-ui-react";
+import { Button, Table, Label } from "semantic-ui-react";
 import _ from "lodash";
 import * as actions from "../../actions";
 
 import ProspectsPerson from "./ProspectsPerson";
 import SendEmailModal from "./SendEmailModal";
-import { box_values, ordering_options } from "./raw_data";
+import { box_values } from "./raw_data";
+import Searchbar from "./Searchbar";
+import SortDropDown from "./SortDropDown";
 import "./prospectscss/prospects.css";
 
 class Prospects extends Component {
@@ -32,6 +34,9 @@ class Prospects extends Component {
     this.addNote = this.addNote.bind(this);
     this.togglePerson = this.togglePerson.bind(this);
     this.toggleProspectFromMaster = this.toggleProspectFromMaster.bind(this);
+
+    this.handleSearchResults = this.handleSearchResults.bind(this);
+    this.handleSortSelect = this.handleSortSelect.bind(this);
   }
 
   componentWillMount() {
@@ -41,7 +46,7 @@ class Prospects extends Component {
       console.log("PROSPECT ASSIGNED", prospect);
       let p_list = this.state.prospectsList;
       console.log("p_list assigned", p_list);
-      prospect.additional_notes = [prospect.additional_notes]
+      prospect.additional_notes = [prospect.additional_notes];
       p_list.prospects.push(prospect);
       this.setState({ p_list });
     }
@@ -96,7 +101,7 @@ class Prospects extends Component {
       }
       return;
     });
-    this.props.fetchProspects()
+    this.props.fetchProspects();
     this.setState({ prospectsList: list });
   }
 
@@ -109,8 +114,7 @@ class Prospects extends Component {
       }
     });
     this.setState({ prospectsList: list });
-    this.props.fetchProspects()
-
+    this.props.fetchProspects();
   }
 
   toggleProspectFromMaster(e) {
@@ -134,7 +138,7 @@ class Prospects extends Component {
       value_to_toggle: value,
       truthy: truthy
     });
-    this.props.fetchProspects()
+    this.props.fetchProspects();
   }
 
   popUpPerson = person => {
@@ -195,12 +199,11 @@ class Prospects extends Component {
   sortBy(prospects) {
     const k = this.state.sort_by;
     let prospects_array = _.sortBy(prospects, function(person) {
-
       switch (k) {
         case "newest":
           if (person.prospect_created == null) {
             // return new Date(person.additional_notes[person.additional_notes.length-1].date);
-            return
+            return;
           }
           return new Date(person.prospect_created);
         case "first":
@@ -213,13 +216,12 @@ class Prospects extends Component {
         case "met_recent":
           if (person.met_date == null) {
             // return new Date(person.additional_notes[person.additional_notes.length-1].date);
-            return
+            return;
           }
           return new Date(person.met_date);
         default:
           console.log("uh?");
       }
-
     });
 
     let inverse_array = [];
@@ -231,7 +233,6 @@ class Prospects extends Component {
 
     return { prospects: inverse_array };
   }
-
 
   renderNumberViewLead(prospect, i) {
     const lead_colors = {
@@ -314,93 +315,39 @@ class Prospects extends Component {
     ) : null;
   }
 
-  resetComponent = () =>
-    this.setState({ isLoading: false, results: [], value: "" });
-
-  handleResultSelect = (e, { result }) =>
-    this.setState({ value: result.title });
-
-  handleSearchChange = (e, { value }) => {
-    this.setState({ isLoading: true, value });
-    setTimeout(() => {
-      if (this.state.value.length < 1) return this.resetComponent();
-      let array_of_searched_prospects = [];
-      for (var i = 0; i < this.state.prospectsList.prospects.length; i++) {
-        let prosp = this.state.prospectsList.prospects[i].first;
-        if (prosp.toUpperCase().indexOf(value.toUpperCase()) > -1) {
-          array_of_searched_prospects.push(
-            this.state.prospectsList.prospects[i]
-          );
-        }
-      }
-      this.setState({
-        isLoading: false,
-        results: array_of_searched_prospects
-      });
-    }, 100);
-  };
-
-  renderSearchBar() {
-    return (
-      <Search
-        category
-        loading={this.state.isLoading}
-        onResultSelect={this.handleResultSelect}
-        onSearchChange={this.handleSearchChange}
-        value={this.state.value}
-        noResultsMessage={"LOADING"}
-      />
-    );
+  handleSearchResults(results) {
+    this.setState({ results: results });
   }
 
   handleSortSelect(value) {
-    this.setState({ sort_by: value.value });
+    this.setState({ sort_by: value });
   }
 
-  renderDropDown() {
+  renderTools() {
     return (
-      <Dropdown
-        fluid
-        text="Sort Prospect"
-        icon="filter"
-        labeled
-        button
-        className="icon"
-        style={{ marginTop: "5px" }}
-        onChange={e => console.log()}
-      >
-        <Dropdown.Menu>
-          <Dropdown.Divider />
-          <Dropdown.Menu scrolling>
-            {ordering_options.map(option => (
-              <Dropdown.Item
-                key={option.value}
-                {...option}
-                onClick={() => this.handleSortSelect(option)}
-              />
-            ))}
-          </Dropdown.Menu>
-        </Dropdown.Menu>
-      </Dropdown>
+      <div className="tools">
+        <Link
+          to="/dashboard/prospects/new"
+          className="btn-floating btn-large red"
+        >
+          <i className="material-icons">add</i>
+        </Link>
+        <Button color="blue" onClick={() => this.emailModal()}>
+          Send Greeting Emails
+        </Button>
+        <Searchbar
+          prospects={this.props.prospects}
+          handleSearchResults={this.handleSearchResults}
+        />
+        <SortDropDown handleSortSelect={this.handleSortSelect} />
+      </div>
     );
   }
 
   render() {
     return (
       <div>
-        <div className="tools">
-          <Link
-            to="/dashboard/prospects/new"
-            className="btn-floating btn-large red"
-          >
-            <i className="material-icons">add</i>
-          </Link>
-          <Button color="blue" onClick={() => this.emailModal()}>
-            Send Greeting Emails
-          </Button>
-          {this.renderSearchBar()}
-          {this.renderDropDown()}
-        </div>
+        {this.renderTools()}
         {this.renderModalToggle()}
         {this.state.emailModalOpen ? (
           <SendEmailModal emailModal={this.emailModal} />
