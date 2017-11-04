@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { Button, Header, Modal, Label } from "semantic-ui-react";
 import FormDataModal from "./FormDataModal";
 import { connect } from "react-redux";
-import * as actions from "../../actions";
+import * as actions from "../../../actions";
 
 class ProspectsPerson extends Component {
   constructor(props) {

@@ -1,5 +1,5 @@
 import axios from "axios";
-import { FETCH_USER, FETCH_PROSPECTS, DELETE_PROSPECTS, POST_PROSPECTS, PATCH_PROSPECTS, TOGGLE_PROSPECTS } from "./types";
+import { FETCH_USER, FETCH_PROSPECTS, DELETE_PROSPECTS, POST_PROSPECTS, PATCH_PROSPECTS, TOGGLE_PROSPECTS, CLOSE_PROSPECTS } from "./types";
 
 //SAME THING AS BELOW
 // export const fetchUser = () => async dispatch => {
@@ -66,6 +66,19 @@ export const toggleProspects = (toggle) => {
       });
   };
 };
+
+
+export const closeProspects = (prospect) => {
+  return function(dispatch) {
+    axios
+      .patch("/v0/yl/prospects/close_deal", {closed: prospect})
+      .then(res => {
+        dispatch({ type: CLOSE_PROSPECTS, payload: res.data});
+      });
+  };
+};
+
+
 
 
 // export const handleToken = token => async dispatch => {

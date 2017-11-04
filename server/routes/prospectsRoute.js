@@ -146,7 +146,7 @@ module.exports = app => {
 
   app.patch("/v0/yl/prospects/close_deal", (req, res) => {
     const id = req.body.closed._id;
-    const date = req.body.closed.closedDeal;
+    const date = new Date();
 
     Prospects.findOneAndUpdate({ _id: id }, { $set: { closedDeal: date } })
       .then(prospect => {

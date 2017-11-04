@@ -3,7 +3,21 @@
   margin: auto;
 }
 
-
 .sort_tool {
-  margin-top: 5px; 
+  margin-top: 5px;
+}
+
+.closed_deal_label {
+  width: 100%;
+  text-align: -webkit-center;
+}
+
+.close_deal_div {
+  margin: auto;
+  width: 100%;
+}
+
+
+.close_deal_segment {
+  margin-top: 6em;
 }

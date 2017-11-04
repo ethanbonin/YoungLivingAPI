@@ -1,11 +1,11 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
-import { Button, Table, Label } from "semantic-ui-react";
+import { Button, Table, Label, Segment } from "semantic-ui-react";
 import _ from "lodash";
 import * as actions from "../../actions";
 
-import ProspectsPerson from "./ProspectsPerson";
+import ProspectsPerson from "./Modal/ProspectsPerson";
 import { box_values } from "./raw_data";
 import SendEmailModal from "./Tools/SendEmailModal";
 import Searchbar from "./Tools/Searchbar";
@@ -25,7 +25,9 @@ class Prospects extends Component {
       prospect: {},
       emailModalOpen: false,
       prospectsList: this.props.prospects,
-      sort_by: "newest"
+      sort_by: "newest",
+      closed: false,
+      closeProspectList: []
     };
 
     this.popUpPerson = this.popUpPerson.bind(this);
@@ -168,7 +170,8 @@ class Prospects extends Component {
       "Host a Class",
       "Emailed",
       "Date Met",
-      "Date Closed"
+      "Date Closed",
+      "Close Deal"
     ];
 
     return _.map(headerTitles, header => {
@@ -261,7 +264,81 @@ class Prospects extends Component {
     ];
   }
 
+  handleCloseDeal(prospect) {
+    this.props.closeProspects(prospect);
+    this.props.fetchProspects();
+  }
+
+  renderCloseDealButton(prospect) {
+    if (prospect.closedDeal === "") {
+      return (
+        <Table.Cell>
+          <Button color="green" onClick={() => this.handleCloseDeal(prospect)}>
+            Close Prospect
+          </Button>
+        </Table.Cell>
+      );
+    } else {
+      return (
+        <Table.Cell>
+          <Label color="grey">
+            CLOSED
+          </Label>
+        </Table.Cell>
+      );
+    }
+  }
+
   renderList() {
+    switch (this.state.prospectsList) {
+      case null:
+        return;
+      default:
+        let prospects;
+        if (this.state.results.length > 0) {
+          prospects = { prospects: this.state.results };
+        } else {
+          prospects = this.state.prospectsList;
+        }
+
+        prospects = this.sortBy(prospects.prospects);
+        const truth = _.isEmpty(prospects);
+        if (prospects === null || truth) {
+          return;
+        }
+        let i = 0;
+        return _.map(prospects.prospects, prospect => {
+          i = i + 1;
+          const date_met = new Date(prospect.met_date);
+          const formatted_date_met = this.formatDate(date_met);
+          console.log("prospect.closedDeal", prospect.closedDeal)
+          
+          const date_closed = new Date(prospect.closedDeal);
+          const formatted_date_closed = this.formatDate(date_closed);
+          let truthy = false;
+          if (prospect.closedDeal !== ""){
+            return
+          }
+          return (
+            <Table.Row key={prospect._id} positive={truthy}>
+              {this.renderNumberViewLead(prospect, i)}
+              <Table.Cell>
+                {prospect.first} {prospect.last}
+              </Table.Cell>
+              <Table.Cell>{this.formatEmail(prospect.email)}</Table.Cell>
+              <Table.Cell>{this.formatNumber(prospect.phone)}</Table.Cell>
+              {this.renderCheckBoxes(prospect)}
+              <Table.Cell>{formatted_date_met}</Table.Cell>
+              <Table.Cell>{formatted_date_closed}</Table.Cell>
+              {this.renderCloseDealButton(prospect)}
+            </Table.Row>
+          );
+        });
+    }
+  }
+
+
+  renderCloseList() {
     switch (this.state.prospectsList) {
       case null:
         return;
@@ -285,8 +362,14 @@ class Prospects extends Component {
           const formatted_date_met = this.formatDate(date_met);
           const date_closed = new Date(prospect.dateClosed);
           const formatted_date_closed = this.formatDate(date_closed);
+          let truthy = false;
+          if (prospect.closedDeal !== ""){
+            truthy = true
+          }else {
+            return
+          }
           return (
-            <Table.Row key={prospect._id}>
+            <Table.Row key={prospect._id} positive={truthy}>
               {this.renderNumberViewLead(prospect, i)}
               <Table.Cell>
                 {prospect.first} {prospect.last}
@@ -296,11 +379,13 @@ class Prospects extends Component {
               {this.renderCheckBoxes(prospect)}
               <Table.Cell>{formatted_date_met}</Table.Cell>
               <Table.Cell>{formatted_date_closed}</Table.Cell>
+              {this.renderCloseDealButton(prospect)}
             </Table.Row>
           );
         });
     }
   }
+
 
   renderModalToggle() {
     return this.state.modalOpen ? (
@@ -357,6 +442,17 @@ class Prospects extends Component {
           </Table.Header>
           <Table.Body>{this.renderList()}</Table.Body>
         </Table>
+        <Segment style={{marginTop: "5em"}}>
+          <div className="close_deal_div">
+            <Label color="green" className="closed_deal_label" size="massive">CLOSED PROSPECTS</Label>
+          </div>
+          <Table celled size="large">
+            <Table.Header>
+              <Table.Row>{this.renderHeaders()}</Table.Row>
+            </Table.Header>
+            <Table.Body>{this.renderCloseList()}</Table.Body>
+          </Table>
+        </Segment>
       </div>
     );
   }

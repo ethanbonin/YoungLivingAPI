@@ -4,3 +4,4 @@ export const DELETE_PROSPECTS = 'delete_prospects';
 export const POST_PROSPECTS = 'post_prospects';
 export const PATCH_PROSPECTS = 'patch_prospects';
 export const TOGGLE_PROSPECTS = 'toggle_prospects';
+export const CLOSE_PROSPECTS = 'close_prospects';

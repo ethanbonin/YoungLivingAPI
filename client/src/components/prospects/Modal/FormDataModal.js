@@ -4,8 +4,8 @@ import moment from "moment";
 import { connect } from "react-redux";
 import _ from "lodash";
 import "react-datepicker/dist/react-datepicker.css";
-import { box_values } from "./raw_data";
-import * as actions from "../../actions";
+import { box_values } from "../raw_data";
+import * as actions from "../../../actions";
 
 class FormDataModal extends Component {
   constructor(props) {
