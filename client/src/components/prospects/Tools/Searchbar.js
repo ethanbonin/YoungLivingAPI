@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { Search } from "semantic-ui-react";
 import { connect } from "react-redux";
 import * as actions from "../../../actions";
+import "../prospectscss/prospects.css"
 
 class Searchbar extends Component {
   constructor(props) {
@@ -10,13 +11,13 @@ class Searchbar extends Component {
       isLoading: false,
       results: [],
       value: "",
-      prospectsList: this.props.prospects
+      prospectsList: this.props.prospects,
     };
   }
 
   resetComponent = () => {
     this.setState({ isLoading: false, results: [], value: "" });
-    this.props.handleSearchResults([]);
+    this.props.handleSearchResults([], this.props.closedSearch);
   };
 
   handleSearchChange = (e, { value }) => {
@@ -36,7 +37,7 @@ class Searchbar extends Component {
         isLoading: false,
         results: array_of_searched_prospects
       });
-      this.props.handleSearchResults(array_of_searched_prospects);
+      this.props.handleSearchResults(array_of_searched_prospects, this.props.closedSearch);
     }, 100);
   };
 
@@ -44,6 +45,7 @@ class Searchbar extends Component {
     return (
       <Search
         category
+        className="close_deal_searchbar"
         loading={this.state.isLoading}
         onSearchChange={this.handleSearchChange}
         value={this.state.value}

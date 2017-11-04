@@ -21,13 +21,14 @@ class Prospects extends Component {
       isLoading: false,
       modalOpen: false,
       results: [],
+      closedResults: [],
       value: "",
       prospect: {},
       emailModalOpen: false,
       prospectsList: this.props.prospects,
       sort_by: "newest",
       closed: false,
-      closeProspectList: []
+      closedProspectList: this.findClosedList(this.props.prospects)
     };
 
     this.popUpPerson = this.popUpPerson.bind(this);
@@ -37,6 +38,7 @@ class Prospects extends Component {
     this.addNote = this.addNote.bind(this);
     this.togglePerson = this.togglePerson.bind(this);
     this.toggleProspectFromMaster = this.toggleProspectFromMaster.bind(this);
+    this.findClosedList = this.findClosedList.bind(this);
 
     this.handleSearchResults = this.handleSearchResults.bind(this);
     this.handleSortSelect = this.handleSortSelect.bind(this);
@@ -52,6 +54,19 @@ class Prospects extends Component {
       this.setState({ p_list });
     }
   }
+
+  findClosedList(prospects){
+    let unpruned_list = prospects;
+
+    let pruned_list = _.remove(unpruned_list.prospects, (prospect) => {
+       if (prospect.closedDeal !== ""){
+         return prospect;
+       }
+    });
+
+    return pruned_list;
+  }
+
 
   formatDate(date) {
     const year = date.getFullYear();
@@ -289,7 +304,7 @@ class Prospects extends Component {
     }
   }
 
-  renderList() {
+  renderList(closedList) {
     switch (this.state.prospectsList) {
       case null:
         return;
@@ -300,6 +315,15 @@ class Prospects extends Component {
         } else {
           prospects = this.state.prospectsList;
         }
+
+        if (closedList){
+          if (this.state.closedResults.length > 0){
+              prospects = {prospects: this.state.closedResults}
+          }else {
+            prospects = {prospects: this.state.closedProspectList}
+          }
+        }
+
 
         prospects = this.sortBy(prospects.prospects);
         const truth = _.isEmpty(prospects);
@@ -312,62 +336,11 @@ class Prospects extends Component {
           const date_met = new Date(prospect.met_date);
           const formatted_date_met = this.formatDate(date_met);
           console.log("prospect.closedDeal", prospect.closedDeal)
-          
+
           const date_closed = new Date(prospect.closedDeal);
           const formatted_date_closed = this.formatDate(date_closed);
           let truthy = false;
-          if (prospect.closedDeal !== ""){
-            return
-          }
-          return (
-            <Table.Row key={prospect._id} positive={truthy}>
-              {this.renderNumberViewLead(prospect, i)}
-              <Table.Cell>
-                {prospect.first} {prospect.last}
-              </Table.Cell>
-              <Table.Cell>{this.formatEmail(prospect.email)}</Table.Cell>
-              <Table.Cell>{this.formatNumber(prospect.phone)}</Table.Cell>
-              {this.renderCheckBoxes(prospect)}
-              <Table.Cell>{formatted_date_met}</Table.Cell>
-              <Table.Cell>{formatted_date_closed}</Table.Cell>
-              {this.renderCloseDealButton(prospect)}
-            </Table.Row>
-          );
-        });
-    }
-  }
 
-
-  renderCloseList() {
-    switch (this.state.prospectsList) {
-      case null:
-        return;
-      default:
-        let prospects;
-        if (this.state.results.length > 0) {
-          prospects = { prospects: this.state.results };
-        } else {
-          prospects = this.state.prospectsList;
-        }
-
-        prospects = this.sortBy(prospects.prospects);
-        const truth = _.isEmpty(prospects);
-        if (prospects === null || truth) {
-          return;
-        }
-        let i = 0;
-        return _.map(prospects.prospects, prospect => {
-          i = i + 1;
-          const date_met = new Date(prospect.met_date);
-          const formatted_date_met = this.formatDate(date_met);
-          const date_closed = new Date(prospect.dateClosed);
-          const formatted_date_closed = this.formatDate(date_closed);
-          let truthy = false;
-          if (prospect.closedDeal !== ""){
-            truthy = true
-          }else {
-            return
-          }
           return (
             <Table.Row key={prospect._id} positive={truthy}>
               {this.renderNumberViewLead(prospect, i)}
@@ -399,7 +372,15 @@ class Prospects extends Component {
     ) : null;
   }
 
-  handleSearchResults(results) {
+  handleSearchResults(results, closedSearch) {
+
+    if (closedSearch){
+
+      console.log('results', results);
+      this.setState({ closedResults: results });
+      return
+    }
+
     this.setState({ results: results });
   }
 
@@ -422,10 +403,25 @@ class Prospects extends Component {
         <Searchbar
           prospects={this.props.prospects}
           handleSearchResults={this.handleSearchResults}
+          closedSearch={false}
         />
         <SortDropDown handleSortSelect={this.handleSortSelect} />
       </div>
     );
+  }
+
+
+  renderClosedListTools(){
+    const closed_list = {prospects: this.state.closedProspectList}
+    return (
+      <div>
+        <Searchbar
+          prospects={closed_list}
+          closedSearch={true}
+          handleSearchResults={this.handleSearchResults}
+        />
+      </div>
+    )
   }
 
   render() {
@@ -440,9 +436,10 @@ class Prospects extends Component {
           <Table.Header>
             <Table.Row>{this.renderHeaders()}</Table.Row>
           </Table.Header>
-          <Table.Body>{this.renderList()}</Table.Body>
+          <Table.Body>{this.renderList(false)}</Table.Body>
         </Table>
         <Segment style={{marginTop: "5em"}}>
+          {this.renderClosedListTools()}
           <div className="close_deal_div">
             <Label color="green" className="closed_deal_label" size="massive">CLOSED PROSPECTS</Label>
           </div>
@@ -450,7 +447,7 @@ class Prospects extends Component {
             <Table.Header>
               <Table.Row>{this.renderHeaders()}</Table.Row>
             </Table.Header>
-            <Table.Body>{this.renderCloseList()}</Table.Body>
+            <Table.Body>{this.renderList(true)}</Table.Body>
           </Table>
         </Segment>
       </div>
