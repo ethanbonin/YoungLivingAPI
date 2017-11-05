@@ -1,6 +1,17 @@
 const devNotes = [
   {
-    "11/04/2017": {
+    "11/05/2017": {
+      bug_fixes: [
+        ""
+      ],
+      new_features: [
+        "You can now close your prospects. When you have closed the deal, you can click the close button and they will be moved to  different list.",
+      ],
+      updated_features: [
+        "Removed the three other cards that are not being used at the moment. Wanted to stop confusing you until they are working betas."
+      ]
+    },
+    "11/01/2017": {
       bug_fixes: [
         "Fixed an issue where you couldn't submit more than one person at a time when going to the prospect page."
       ],

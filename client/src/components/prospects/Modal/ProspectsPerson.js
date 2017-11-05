@@ -50,6 +50,7 @@ class ProspectsPerson extends Component {
           >
             {this.props.prospect.lead.toUpperCase()}
           </Label>
+
           <Button
             style={{ float: "right" }}
             color="teal"
