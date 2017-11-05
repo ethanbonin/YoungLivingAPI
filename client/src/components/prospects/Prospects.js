@@ -48,25 +48,23 @@ class Prospects extends Component {
     if (this.props.location.state !== undefined) {
       const prospect = this.props.location.state;
       let p_list = this.state.prospectsList;
-      console.log("p_list assigned", p_list);
       prospect.additional_notes = [prospect.additional_notes];
       p_list.prospects.push(prospect);
-      this.setState({ p_list });
     }
   }
 
-  findClosedList(prospects){
+  findClosedList(prospects) {
     let unpruned_list = prospects;
+    let pruned_list = [];
 
-    let pruned_list = _.remove(unpruned_list.prospects, (prospect) => {
-       if (prospect.closedDeal !== ""){
-         return prospect;
-       }
+    unpruned_list.prospects.forEach(prospect => {
+      if (prospect.closedDeal !== "") {
+        pruned_list.push(prospect);
+      }
     });
 
-    return pruned_list;
+    return { prospects: pruned_list };
   }
-
 
   formatDate(date) {
     const year = date.getFullYear();
@@ -110,8 +108,6 @@ class Prospects extends Component {
     let list = this.state.prospectsList;
     _.map(list.prospects, function(prospect) {
       if (prospect._id === _id) {
-        console.log("THE NOTE", note);
-        console.log("The prospect", prospect.additional_notes);
         prospect.additional_notes.push(note);
         return;
       }
@@ -164,9 +160,15 @@ class Prospects extends Component {
 
   prospectToDelete(person) {
     let list = this.state.prospectsList;
+    let closedList = this.state.closedProspectList;
     _.remove(list.prospects, function(prospect) {
       return prospect._id === person;
     });
+
+    _.remove(closedList.prospects, function(prospect) {
+      return prospect._id === person;
+    });
+
     this.props.fetchProspects();
     this.setState({ prospectsList: list });
   }
@@ -281,6 +283,15 @@ class Prospects extends Component {
 
   handleCloseDeal(prospect) {
     this.props.closeProspects(prospect);
+    let list = this.state.prospectsList;
+    _.find(list.prospects, person => {
+      if (person._id === prospect._id) {
+        prospect.closedDeal = new Date();
+        let closed_list = this.state.closedProspectList;
+        closed_list.prospects.unshift(prospect);
+      }
+    });
+
     this.props.fetchProspects();
   }
 
@@ -296,9 +307,7 @@ class Prospects extends Component {
     } else {
       return (
         <Table.Cell>
-          <Label color="grey">
-            CLOSED
-          </Label>
+          <Label color="grey">CLOSED</Label>
         </Table.Cell>
       );
     }
@@ -316,14 +325,13 @@ class Prospects extends Component {
           prospects = this.state.prospectsList;
         }
 
-        if (closedList){
-          if (this.state.closedResults.length > 0){
-              prospects = {prospects: this.state.closedResults}
-          }else {
-            prospects = {prospects: this.state.closedProspectList}
+        if (closedList) {
+          if (this.state.closedResults.length > 0) {
+            prospects = { prospects: this.state.closedResults };
+          } else {
+            prospects = this.state.closedProspectList;
           }
         }
-
 
         prospects = this.sortBy(prospects.prospects);
         const truth = _.isEmpty(prospects);
@@ -335,8 +343,6 @@ class Prospects extends Component {
           i = i + 1;
           const date_met = new Date(prospect.met_date);
           const formatted_date_met = this.formatDate(date_met);
-          console.log("prospect.closedDeal", prospect.closedDeal)
-
           const date_closed = new Date(prospect.closedDeal);
           const formatted_date_closed = this.formatDate(date_closed);
           let truthy = false;
@@ -359,7 +365,6 @@ class Prospects extends Component {
     }
   }
 
-
   renderModalToggle() {
     return this.state.modalOpen ? (
       <ProspectsPerson
@@ -373,12 +378,9 @@ class Prospects extends Component {
   }
 
   handleSearchResults(results, closedSearch) {
-
-    if (closedSearch){
-
-      console.log('results', results);
+    if (closedSearch) {
       this.setState({ closedResults: results });
-      return
+      return;
     }
 
     this.setState({ results: results });
@@ -410,9 +412,8 @@ class Prospects extends Component {
     );
   }
 
-
-  renderClosedListTools(){
-    const closed_list = {prospects: this.state.closedProspectList}
+  renderClosedListTools() {
+    const closed_list = this.state.closedProspectList;
     return (
       <div>
         <Searchbar
@@ -421,7 +422,7 @@ class Prospects extends Component {
           handleSearchResults={this.handleSearchResults}
         />
       </div>
-    )
+    );
   }
 
   render() {
@@ -438,10 +439,12 @@ class Prospects extends Component {
           </Table.Header>
           <Table.Body>{this.renderList(false)}</Table.Body>
         </Table>
-        <Segment style={{marginTop: "5em"}}>
+        <Segment style={{ marginTop: "5em" }}>
           {this.renderClosedListTools()}
           <div className="close_deal_div">
-            <Label color="green" className="closed_deal_label" size="massive">CLOSED PROSPECTS</Label>
+            <Label color="green" className="closed_deal_label" size="massive">
+              CLOSED PROSPECTS
+            </Label>
           </div>
           <Table celled size="large">
             <Table.Header>
