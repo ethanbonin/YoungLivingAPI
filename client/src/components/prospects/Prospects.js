@@ -48,7 +48,6 @@ class Prospects extends Component {
     if (this.props.location.state !== undefined) {
       const prospect = this.props.location.state;
       let p_list = this.state.prospectsList;
-      console.log("THE PROPSECT:", prospect);
       if (this.props.location.state.editingProspect) {
         var index = _.findIndex(p_list.prospects, { _id: prospect._id });
         p_list.prospects.splice(index, 1, prospect);

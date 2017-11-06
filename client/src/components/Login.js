@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Input, Card } from "semantic-ui-react";
+import { Input, Card, Label } from "semantic-ui-react";
 import axios from "axios";
 import * as actions from "../actions";
 import { connect } from "react-redux";
@@ -47,7 +47,7 @@ class Login extends Component {
 
   renderError() {
     return (
-      <div className="red-text" style={{ marginBottom: "20px" }}>
+      <div className="red-text">
         WRONG USERNAME OR PASSWORD
       </div>
     );
@@ -55,7 +55,7 @@ class Login extends Component {
 
   renderWarning() {
     return (
-      <div className="yellow-text" style={{ marginBottom: "20px" }}>
+      <div className="yellow-text">
         YOU MUST FILL OUT ALL FIELDS
       </div>
     );
@@ -95,6 +95,7 @@ class Login extends Component {
       >
         <Card.Group>
           <Card className=" signinbox ">
+            <Label className="label_login">Use your Young Living Whole Sale account credentials. It would be the same if you were to login into Virtual Office</Label>
             <div className="inputboxes card-action center-align ">
               {this.state.showWarning ? this.renderWarning() : null}
               {this.state.showError ? this.renderError() : null}
@@ -105,7 +106,11 @@ class Login extends Component {
               name="action"
               onClick={this.login_status}
             >
-              Sign In
+              <div className="signinbuttonlabeldiv">
+                <Label className="signinbuttonlabel" size="massive" basic color='teal'>
+                  Sign In
+                </Label>
+              </div>
             </a>
           </Card>
         </Card.Group>

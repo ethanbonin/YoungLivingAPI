@@ -20,7 +20,6 @@ class ProspectsNew extends Component {
         met_date: moment(props.location.state.met_date),
         old_notes: props.location.state.additional_notes
       };
-      console.log("this.state", this.state);
     } else {
       const NEW_ID = ObjectID.generate();
       this.state = {
