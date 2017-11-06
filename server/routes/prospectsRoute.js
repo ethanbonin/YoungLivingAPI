@@ -10,8 +10,6 @@ const bodyParser = require("body-parser");
 var { mongoose } = require("../db/mongoose");
 var session = require("express-session");
 
-var { uidrequest } = require("../middleware/uidrequest");
-var { retailcustomers } = require("../middleware/retailcustomers");
 var {
   report_data_header,
   about_to_go_inactive_header,
@@ -30,43 +28,88 @@ module.exports = app => {
     return n;
   };
 
+
   app.post("/v0/yl/prospect_new", (req, res) => {
     if (!req.session.user) {
       res.status(401).send({ error: "unauthorized" });
     }
 
-    var prospect = new Prospects({
-      _id: req.body.values._id,
-      first: req.body.values.first,
-      last: req.body.values.last,
-      email: req.body.values.email,
-      phone: req.body.values.phone,
-      invite_to_class: req.body.values.invite_to_class,
-      add_facebook_group: req.body.values.add_facebook_group,
-      texting_marketing: req.body.values.texting_marketing,
-      host_a_class: req.body.values.host_a_class,
-      emailed: req.body.values.emailed,
-      know_them: req.body.values.know_them,
-      health_needs: req.body.values.health_needs,
-      family: req.body.values.family,
-      occupation: req.body.values.occupation,
-      recreation: req.body.values.recreation,
-      additional_notes: [formatNotes(req.body.values.additional_notes)],
-      closedDeal: req.body.values.closedDeal,
-      met_date: req.body.values.met_date,
-      lead: req.body.values.lead,
-      prospect_created: new Date(),
-      _creator: req.session.user.user.memberid
-    });
+    if (req.body.values.editingProspect) {
+      let old_notes = req.body.values.old_notes
+      let form_new_note = formatNotes(req.body.values.additional_notes);
+      old_notes.push(form_new_note);
 
-    prospect.save().then(
-      doc => {
-        res.send(doc);
-      },
-      e => {
-        res.status(400).send(e);
-      }
-    );
+      const updated_prospect = new Prospects({
+        _id: req.body.values._id,
+        first: req.body.values.first,
+        last: req.body.values.last,
+        email: req.body.values.email,
+        phone: req.body.values.phone,
+        invite_to_class: req.body.values.invite_to_class,
+        add_facebook_group: req.body.values.add_facebook_group,
+        texting_marketing: req.body.values.texting_marketing,
+        host_a_class: req.body.values.host_a_class,
+        emailed: req.body.values.emailed,
+        know_them: req.body.values.know_them,
+        health_needs: req.body.values.health_needs,
+        family: req.body.values.family,
+        occupation: req.body.values.occupation,
+        recreation: req.body.values.recreation,
+        additional_notes: old_notes,
+        closedDeal: req.body.values.closedDeal,
+        met_date: req.body.values.met_date,
+        lead: req.body.values.lead,
+        prospect_created: req.body.values.prospect_created,
+        _creator: req.session.user.user.memberid
+      });
+
+      Prospects.findOneAndUpdate(
+        { _id: req.body.values._id },
+        updated_prospect,
+        { upsert: true },
+        function(error, result) {
+          if (error) {
+            console.log("Something wrong when updating data!", error);
+          }
+          res.status(200).send(result)
+        }
+      );
+    } else {
+      var prospect = new Prospects({
+        _id: req.body.values._id,
+        first: req.body.values.first,
+        last: req.body.values.last,
+        email: req.body.values.email,
+        phone: req.body.values.phone,
+        invite_to_class: req.body.values.invite_to_class,
+        add_facebook_group: req.body.values.add_facebook_group,
+        texting_marketing: req.body.values.texting_marketing,
+        host_a_class: req.body.values.host_a_class,
+        emailed: req.body.values.emailed,
+        know_them: req.body.values.know_them,
+        health_needs: req.body.values.health_needs,
+        family: req.body.values.family,
+        occupation: req.body.values.occupation,
+        recreation: req.body.values.recreation,
+        additional_notes: [formatNotes(req.body.values.additional_notes)],
+        closedDeal: req.body.values.closedDeal,
+        met_date: req.body.values.met_date,
+        lead: req.body.values.lead,
+        prospect_created: new Date(),
+        _creator: req.session.user.user.memberid
+      });
+
+      prospect.save().then(
+        doc => {
+          res.send(doc);
+        },
+        e => {
+          res.status(400).send(e);
+        }
+      );
+    }
+
+
   });
 
   app.get("/v0/yl/prospects", (req, res) => {

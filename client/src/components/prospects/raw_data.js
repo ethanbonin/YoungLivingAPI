@@ -56,31 +56,37 @@ const lead = [
 
 const details = [
   {
+    key: "123know_them",
     value: "know_them",
     label: "How do you know them?",
     placeholder: "I met them at Whole Foods"
   },
   {
+    key: "123health",
     value: "health_needs",
     label: "Health Needs",
     placeholder: "Very anxious and sneezy"
   },
   {
+    key: "123family",
     value: "family",
     label: "Family Details",
     placeholder: "They have 11 kids, two dogs and 4 cats"
   },
   {
+    key: "312occupation",
     value: "occupation",
     label: "Occupation",
     placeholder: "Future Royal Crown Diamond"
   },
   {
+    key: "290837recreation",
     value: "recreation",
     label: "Recreational Activities",
     placeholder: "Their hobbies include swimming and sky diving on a normal basis"
   },
   {
+    key: "019219028addtional_notes",
     value: "additional_notes",
     label: "Additional Notes",
     placeholder: "Totally forgot to add a note about this..."

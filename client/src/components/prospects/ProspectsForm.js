@@ -14,35 +14,46 @@ var ObjectID = require("bson-objectid");
 class ProspectsNew extends Component {
   constructor(props) {
     super(props);
-    const NEW_ID = ObjectID.generate()
-    this.state = {
-      _id: NEW_ID,
-      met_date: moment(),
-      first: "",
-      last: "",
-      email: "",
-      phone: "",
-      invite_to_class: false,
-      add_facebook_group: false,
-      texting_marketing: false,
-      emailed: false,
-      host_a_class: false,
-      know_them: "",
-      lead: "warm",
-      health_needs: "",
-      family: "",
-      occupation: "",
-      recreation: "",
-      additional_notes: {},
-      closedDeal: "",
-      first_error: false,
-      last_error: false,
-      email_error: false,
-      phone_error: false,
-      email_error_format: false,
-      phone_error_format: false,
-      goBack: false
-    };
+    if (props.location.state !== undefined) {
+      this.state = {
+        ...props.location.state,
+        met_date: moment(props.location.state.met_date),
+        old_notes: props.location.state.additional_notes
+      };
+      console.log("this.state", this.state);
+    } else {
+      const NEW_ID = ObjectID.generate();
+      this.state = {
+        _id: NEW_ID,
+        met_date: moment(),
+        first: "",
+        last: "",
+        email: "",
+        phone: "",
+        invite_to_class: false,
+        add_facebook_group: false,
+        texting_marketing: false,
+        emailed: false,
+        host_a_class: false,
+        know_them: "",
+        lead: "warm",
+        health_needs: "",
+        family: "",
+        occupation: "",
+        recreation: "",
+        additional_notes: "",
+        closedDeal: "",
+        first_error: false,
+        last_error: false,
+        email_error: false,
+        phone_error: false,
+        email_error_format: false,
+        phone_error_format: false,
+        goBack: false,
+        editingProspect: false
+      };
+    }
+
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleDateChange = this.handleDateChange.bind(this);
@@ -51,7 +62,9 @@ class ProspectsNew extends Component {
     this.getNewProspect = this.getNewProspect.bind(this);
   }
 
-  componentWillMount() {}
+  componentWillMount() {
+    this.setState({additional_notes: ""});
+  }
 
   handleChange = (e, { name, value }) => {
     this.setState({ [name]: value });
@@ -112,6 +125,7 @@ class ProspectsNew extends Component {
             id={value}
             name={value}
             onChange={this.toggle}
+            checked={this.state[value]}
           />
           <label htmlFor={value}>{message}</label>
         </p>
@@ -131,6 +145,7 @@ class ProspectsNew extends Component {
             name={value}
             onChange={this.handleChange}
             error={this.state[v]}
+            value={this.state[value]}
           />
           {this.state[v] ? (
             <Label basic color="red" pointing>
@@ -165,20 +180,27 @@ class ProspectsNew extends Component {
   }
 
   renderPersonalDetails() {
-    return _.map(details, ({ value, label, placeholder }) => {
+    return _.map(details, ({ key, value, label, placeholder }) => {
       return (
         <Form.TextArea
           label={label}
           placeholder={placeholder}
           name={value}
           onChange={this.handleChange}
-          key={value}
+          key={key}
+          value={this.state[value]}
         />
       );
     });
   }
 
   render() {
+    let notes;
+    if (this.state.old_notes !== undefined){
+      notes = this.state.old_notes;
+    } else {
+      notes = {date: new Date(), message: this.state.additional_notes}
+    }
     return (
       <Segment
         style={{ marginTop: "3em", marginLeft: "6em", marginRight: "6em" }}
@@ -237,8 +259,9 @@ class ProspectsNew extends Component {
                   family: this.state.family,
                   occupation: this.state.occupation,
                   recreation: this.state.recreation,
-                  additional_notes: this.state.additional_notes,
-                  closedDeal: ""
+                  additional_notes: notes,
+                  closedDeal: "",
+                  editingProspect: this.state.editingProspect
                 }
               }}
             />

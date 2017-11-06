@@ -48,8 +48,14 @@ class Prospects extends Component {
     if (this.props.location.state !== undefined) {
       const prospect = this.props.location.state;
       let p_list = this.state.prospectsList;
-      prospect.additional_notes = [prospect.additional_notes];
-      p_list.prospects.push(prospect);
+      console.log("THE PROPSECT:", prospect);
+      if (this.props.location.state.editingProspect) {
+        var index = _.findIndex(p_list.prospects, { _id: prospect._id });
+        p_list.prospects.splice(index, 1, prospect);
+      } else {
+        prospect.additional_notes = [prospect.additional_notes];
+        p_list.prospects.push(prospect);
+      }
     }
   }
 
@@ -341,14 +347,22 @@ class Prospects extends Component {
         let i = 0;
         return _.map(prospects.prospects, prospect => {
           i = i + 1;
-          const date_met = new Date(prospect.met_date);
-          const formatted_date_met = this.formatDate(date_met);
+
+          let date_met;
+          let formatted_date_met;
+
+          if (prospect.met_date === "UPDATING"){
+            formatted_date_met = "UPDATING";
+          } else {
+            date_met = new Date(prospect.met_date);
+            formatted_date_met = this.formatDate(date_met);
+          }
+
           const date_closed = new Date(prospect.closedDeal);
           const formatted_date_closed = this.formatDate(date_closed);
-          let truthy = false;
 
           return (
-            <Table.Row key={prospect._id} positive={truthy}>
+            <Table.Row key={prospect._id}>
               {this.renderNumberViewLead(prospect, i)}
               <Table.Cell>
                 {prospect.first} {prospect.last}

@@ -2,6 +2,10 @@ import React, { Component } from "react";
 import { Button, Header, Modal, Label } from "semantic-ui-react";
 import FormDataModal from "./FormDataModal";
 import { connect } from "react-redux";
+import { Link } from "react-router-dom";
+import moment from "moment";
+
+
 import * as actions from "../../../actions";
 
 class ProspectsPerson extends Component {
@@ -38,6 +42,7 @@ class ProspectsPerson extends Component {
       hot: "red"
     };
 
+    console.log("CLOSED DEAL INSIDE PROSPECT", moment(this.props.prospect.met_date));
     return (
       <Modal dimmer open>
         <Modal.Header>
@@ -50,13 +55,45 @@ class ProspectsPerson extends Component {
           >
             {this.props.prospect.lead.toUpperCase()}
           </Label>
-
           <Button
             style={{ float: "right" }}
             color="teal"
             onClick={this.closeModal}
           >
             Done
+          </Button>
+          <Button
+            style={{ float: "right" }}
+            color="red"
+            as={Link}
+            to={{
+              pathname: "/dashboard/prospects/new",
+              state: {
+                _id: this.props.prospect._id,
+                first: this.props.prospect.first,
+                last: this.props.prospect.last,
+                met_date: this.props.prospect.met_date,
+                email: this.props.prospect.email,
+                phone: this.props.prospect.phone,
+                invite_to_class: this.props.prospect.invite_to_class,
+                add_facebook_group: this.props.prospect.add_facebook_group,
+                texting_marketing: this.props.prospect.texting_marketing,
+                emailed: this.props.prospect.emailed,
+                host_a_class: this.props.prospect.host_a_class,
+                know_them: this.props.prospect.know_them,
+                lead: this.props.prospect.lead,
+                health_needs: this.props.prospect.health_needs,
+                family: this.props.prospect.family,
+                occupation: this.props.prospect.occupation,
+                recreation: this.props.prospect.recreation,
+                additional_notes: this.props.prospect.additional_notes,
+                closedDeal: this.props.prospect.closedDeal,
+                editingProspect: true,
+              }
+            }}
+
+          >
+            Edit Prospect
           </Button>
         </Modal.Header>
         <Modal.Content>
