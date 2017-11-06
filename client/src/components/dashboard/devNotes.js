@@ -5,7 +5,8 @@ const devNotes = [
         ""
       ],
       new_features: [
-        "You can now close your prospects. When you have closed the deal, you can click the close button and they will be moved to  different list.",
+        "CLOSE PROSPECT - You can now close your prospects. When you have closed the deal, you can click the close button and they will be moved to  different list.",
+        "EDITING PROSPECTS - You can now edited your prospects. Just click the view button on the prospect, and you'll see a 'edit prospect' button"
       ],
       updated_features: [
         "Removed the three other cards that are not being used at the moment. Wanted to stop confusing you until they are working betas."
