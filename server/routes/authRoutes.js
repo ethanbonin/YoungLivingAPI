@@ -59,11 +59,15 @@ module.exports = app => {
             var is_trial = true;
             signed_up = new Date();
             is_member = new Date();
+            agreed_to_terms = false;
+            member_name = body.displayName
             let b = {
               memberid: memberid,
               is_trial: is_trial,
               signed_up: signed_up,
-              is_member: is_member
+              is_member: is_member,
+              agreed_to_terms: agreed_to_terms,
+              member_name: member_name
             }
 
             sess = req.session;

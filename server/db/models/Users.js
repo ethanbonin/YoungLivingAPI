@@ -5,7 +5,9 @@ const userSchema = new Schema({
   memberid: String,
   is_trial: false,
   signed_up: Date,
-  is_member: Date
+  is_member: Date,
+  member_name: String,
+  agreed_to_terms: Boolean
 });
 
 

@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import { Card, Segment } from "semantic-ui-react";
 import { connect } from "react-redux";
 import * as actions from "../../actions";
-import { Redirect } from "react-router";
 import "./dashboardcss/dashboard.css";
 import Tab from "./Tab";
 import _ from "lodash";
@@ -30,14 +29,12 @@ const _TABS = [
 class DashBoard extends Component {
   constructor(props) {
     super();
-    this.state = { isLoggedIn: false };
+
   }
 
   componentWillMount() {
-    if (this.props.auth !== false && this.props.auth !== null) {
-      this.setState({ isLoggedIn: true });
       this.props.fetchProspects();
-    }
+      console.log("the props", this.props.auth);
   }
 
   renderTabs() {
@@ -102,7 +99,6 @@ class DashBoard extends Component {
             <div className="updateContainer">{this.renderDevNotes()}</div>
           </Segment>
         </div>
-        {this.state.isLoggedIn ? null : <Redirect to="/" />}
       </div>
     );
   }
