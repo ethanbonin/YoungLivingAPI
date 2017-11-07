@@ -1,8 +1,8 @@
 const devNotes = [
   {
-    "11/05/2017": {
+    "11/07/2017": {
       bug_fixes: [
-        ""
+        "NEEDS FIXING - SLOW - I realize that the modal is slow when you click the view a prospect. I will fix this next update."
       ],
       new_features: [
         "CLOSE PROSPECT - You can now close your prospects. When you have closed the deal, you can click the close button and they will be moved to  different list.",
