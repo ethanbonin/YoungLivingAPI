@@ -38,25 +38,25 @@ class App extends Component {
   }
 
   render() {
-    if (window.history.state === null) {
-      console.log("RELOADING WEBSITE");
-      history.push("/");
-    }
-
     return (
       <Router history={history}>
         <div>
           <Header />
           {this.redirectIfNotLoggedIn()}
           <Switch>
-            <Route exact path="/" component={Landing} />
-            <Route exact path="/dashboard" component={DashBoard} />
-            <Route exact path={`/dashboard/prospects`} component={Prospects} />
-            <Route
-              exact
-              path={`/dashboard/prospects/new`}
-              component={ProspectsNew}
-            />
+            <Route exact path="/" component={Landing}>
+              <Route exact path="/dashboard" component={DashBoard} />
+              <Route
+                exact
+                path={`/dashboard/prospects`}
+                component={Prospects}
+              />
+              <Route
+                exact
+                path={`/dashboard/prospects/new`}
+                component={ProspectsNew}
+              />
+            </Route>
             <Route component={NoMatch} />
           </Switch>
         </div>
