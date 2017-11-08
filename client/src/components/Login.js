@@ -11,7 +11,6 @@ class Login extends Component {
     this.state = {
       username: "",
       password: "",
-      showLoading: false,
       showWarning: false,
       showError: false,
       goBack: false
@@ -104,7 +103,7 @@ class Login extends Component {
             <a
               className="btn waves-effect waves-light signinbutton"
               name="action"
-              onClick={this.login_status}
+              onClick={() => this.login_status()}
             >
               <div className="signinbuttonlabeldiv">
                 <Label className="signinbuttonlabel" size="massive" basic color='teal'>
@@ -131,18 +130,15 @@ class Login extends Component {
       return;
     }
 
-    this.setState({ showLoading: true });
     axios
       .post("/v0/yl/login", body)
       .then(body => {
         //Order of setting states matter!
-        this.setState({ showLoading: false });
         this.props.fetchUser();
         this.setState({ goBack: true });
         this.props.removeCard(false);
       })
       .catch(err => {
-        this.setState({ showLoading: false });
         this.setState({ showWarning: false });
         this.setState({ showError: true });
       });

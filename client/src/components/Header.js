@@ -95,10 +95,3 @@ function mapStateToProps({ auth }) {
 }
 
 export default connect(mapStateToProps, actions)(Header);
-
-// OLD VERSION
-// function mapStateToProps(state){
-//   return {auth: state.auth};
-// };
-
-// export default connect(mapStateToProps)(Header);

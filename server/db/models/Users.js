@@ -7,7 +7,8 @@ const userSchema = new Schema({
   signed_up: Date,
   is_member: Date,
   member_name: String,
-  agreed_to_terms: Boolean
+  agreed_to_terms: Boolean,
+  agreed_to_terms_date: Date
 });
 
 

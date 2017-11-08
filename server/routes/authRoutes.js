@@ -23,9 +23,9 @@ const { User } = require("../db/models/Users");
 module.exports = app => {
   app.get("/v0/yl/current_user", (req, res) => {
     sess = req.session;
-    if (sess.user){
+    if (sess.user) {
       res.send(sess);
-    }else{
+    } else {
       sess.user = null;
       res.send(sess);
     }
@@ -50,9 +50,37 @@ module.exports = app => {
         User.findByCredentials(body.memberId).then(
           user => {
             sess = req.session;
-            var info = {user: user, body: body, token: token};
+            var info = { user: user, body: body, token: token };
             sess.user = info;
-            res.send({user:user, body:body});
+            //This is for the early adotpers of EOA.
+            //Since they did not have to agree to terms in the beginning
+            //I needed to go through and make sure everybody got updated.
+            if (user.member_name === undefined) {
+              let update_user = {
+                memberid: user.memberid,
+                is_trial: user.is_trial,
+                signed_up: user.signed_up,
+                is_member: user.is_member,
+                agreed_to_terms: false,
+                member_name: body.displayName
+              };
+
+              User.findOneAndUpdate(
+                { _id: user._id },
+                update_user,
+                { upsert: true },
+                (err, result) => {
+                  if (err) {
+                    console.log(err, "ERROR");
+                    res.send({ err: "Error on somethign" });
+                  }
+                  console.log(result);
+                  res.status(200).send(result);
+                }
+              );
+            } else {
+              res.send({ user: user, body: body });
+            }
           },
           () => {
             var memberid = body.memberId;
@@ -60,7 +88,7 @@ module.exports = app => {
             signed_up = new Date();
             is_member = new Date();
             agreed_to_terms = false;
-            member_name = body.displayName
+            member_name = body.displayName;
             let b = {
               memberid: memberid,
               is_trial: is_trial,
@@ -68,21 +96,21 @@ module.exports = app => {
               is_member: is_member,
               agreed_to_terms: agreed_to_terms,
               member_name: member_name
-            }
+            };
 
             sess = req.session;
-            var info = {user: b, body: body};
-            sess.user = info
+            var info = { user: b, body: body };
+            sess.user = info;
 
             var user = new User(b);
             user.save().then(() => {
-              res.send({ user:user, body: body });
+              res.send({ user: user, body: body });
             });
           }
         );
       })
       .catch(e => {
-        res.status(401).send({err:"incorrect username or password"});
+        res.status(401).send({ err: "incorrect username or password" });
       });
   });
 
@@ -90,5 +118,20 @@ module.exports = app => {
     req.session.user = null;
     res.redirect('/');
   })
+
+  app.get("/v0/yl/update_terms", (req, res) => {
+    const terms = {
+      agreed_to_terms: true,
+      agreed_to_terms_date: new Date()
+    }
+
+    User.findOneAndUpdate({_id: req.session.user.user._id}, {$set: terms}, {new: true}, function(err, doc){
+    if(err){
+        console.log("Something wrong when updating data!", err);
+    }
+    res.status(200).send(doc);
+});
+  });
+
 
 };

@@ -1,10 +1,11 @@
 import React, { Component } from "react";
-import { Card, Segment } from "semantic-ui-react";
+import { Card, Segment, Modal, Icon, Header, Button } from "semantic-ui-react";
 import { connect } from "react-redux";
 import * as actions from "../../actions";
 import "./dashboardcss/dashboard.css";
 import Tab from "./Tab";
 import _ from "lodash";
+import axios from "axios";
 import { devNotes, convert_to_normal } from "./devNotes.js";
 
 // https://images.pexels.com/photos/36717/amazing-animal-beautiful-beautifull.jpg?h=350&auto=compress&cs=tinysrgb
@@ -21,7 +22,7 @@ const imageSrc = {
 
 const _TABS = [
   // { name: "Stats", color: "blue", image: imageSrc.stats },
-  { name: "Prospects", color: "pink", image: imageSrc.pros },
+  { name: "Prospects", color: "pink", image: imageSrc.pros }
   // { name: "Downline", color: "green", image: imageSrc.down },
   // { name: "Alerts", color: "grey", image: imageSrc.alerts }
 ];
@@ -29,12 +30,20 @@ const _TABS = [
 class DashBoard extends Component {
   constructor(props) {
     super();
-
+    this.state = {
+      agreed_to_terms: false,
+      disagree_message_appear: false
+    };
+    this.handleDisagreement = this.handleDisagreement.bind(this);
+    this.handleSignOut = this.handleSignOut.bind(this);
+    this.handleAgreement = this.handleAgreement.bind(this);
   }
 
   componentWillMount() {
-      this.props.fetchProspects();
-      console.log("the props", this.props.auth);
+    this.props.fetchProspects();
+    this.setState({
+      agreed_to_terms: this.props.auth.user.user.agreed_to_terms
+    });
   }
 
   renderTabs() {
@@ -89,9 +98,87 @@ class DashBoard extends Component {
     });
   }
 
+  handleAgreement() {
+    this.setState({ agreed_to_terms: true });
+    axios
+      .get("/v0/yl/update_terms")
+      .then(body => {
+        console.log("FETCHING USER NOW");
+        this.props.fetchUser();
+      })
+      .catch(err => {
+        console.log("There was an error logging out", err);
+      });
+  }
+
+  handleDisagreement() {
+    this.setState({ disagree_message_appear: true });
+  }
+
+  handleSignOut() {
+    axios
+      .get("/v0/yl/logout")
+      .then(body => {
+        this.props.fetchUser();
+      })
+      .catch(err => {
+        console.log("There was an error logging out", err);
+      });
+  }
+
+  renderDisagreementMessage() {
+    return (
+      <Modal
+        dimmer={false}
+        style={{ height: "188px" }}
+        size="small"
+        open={this.state.disagree_message_appear}
+      >
+        <Modal.Header>Disagreement Message</Modal.Header>
+        <Modal.Content>
+          <p>
+            Because you disagreed, you can not use our service. If you're
+            interested in using our service, re-sign back in.
+          </p>
+        </Modal.Content>
+        <Modal.Actions>
+          <Button content="Okay" onClick={this.handleSignOut} />
+        </Modal.Actions>
+      </Modal>
+    );
+  }
+
   render() {
     return (
       <div>
+        <Modal open={!this.state.agreed_to_terms} basic size="small">
+          <Header icon="archive" content="Agree to Terms of Service" />
+          <Modal.Content>
+            <p>
+              In order to use this application, you must agree to the terms of
+              service. If you interested in reading the full EULA Agreement,
+              click here
+            </p>
+          </Modal.Content>
+          <Modal.Actions>
+            <Button
+              basic
+              color="red"
+              inverted
+              onClick={this.handleDisagreement}
+            >
+              <Icon name="remove" />
+              I Disagree
+            </Button>
+            <Button positive inverted onClick={this.handleAgreement}>
+              <Icon name="checkmark" />
+              I Agree
+            </Button>
+            {this.state.disagree_message_appear
+              ? this.renderDisagreementMessage()
+              : null}
+          </Modal.Actions>
+        </Modal>
         <div className="container">
           <Card.Group itemsPerRow={2}>{this.renderTabs()}</Card.Group>
           <Segment basic color="teal">
