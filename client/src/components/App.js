@@ -43,8 +43,8 @@ class App extends Component {
     return (
       <Router history={history}>
         <div>
-          <Message negative>
-            {/* <Message.Header>
+          {/* <Message negative>
+            <Message.Header>
               PERFORMING MAINTENANCE
             </Message.Header>
             <p>You might not be able to log in</p>
