@@ -27,9 +27,9 @@ class App extends Component {
     this.setState({ isLoggedIn: !this.state.isLoggedIn });
   }
 
-  redirectIfNotLoggedIn(){
-    if (history.location.pathname !== "/" && !this.props.auth){
-      history.push("/")
+  redirectIfNotLoggedIn() {
+    if (history.location.pathname !== "/" && !this.props.auth) {
+      history.push("/");
     }
 
     if (history.location.pathname === "/" && this.props.auth) {
@@ -38,6 +38,11 @@ class App extends Component {
   }
 
   render() {
+    if (window.history.state === null) {
+      console.log("RELOADING WEBSITE");
+      history.push("/");
+    }
+
     return (
       <Router history={history}>
         <div>
