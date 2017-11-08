@@ -40,16 +40,15 @@ class App extends Component {
   }
 
   render() {
-    console.log("HELL0 WORLD");
     return (
       <Router history={history}>
         <div>
           <Message negative>
-            <Message.Header>
+            {/* <Message.Header>
               PERFORMING MAINTENANCE
             </Message.Header>
             <p>You might not be able to log in</p>
-          </Message>
+          </Message> */}
           <Header />
           {this.redirectIfNotLoggedIn()}
           <Switch>
