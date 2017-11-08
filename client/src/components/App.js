@@ -1,6 +1,6 @@
 import createHistory from "history/createBrowserHistory";
 import React, { Component } from "react";
-import { Router, Route, Switch, HashRouter } from "react-router-dom";
+import { Router, Route, Switch } from "react-router-dom";
 import { connect } from "react-redux";
 import * as actions from "../actions";
 
@@ -39,7 +39,7 @@ class App extends Component {
 
   render() {
     return (
-      <HashRouter>
+      <Router history={history}>
         <div>
           <Header />
           {this.redirectIfNotLoggedIn()}
@@ -55,7 +55,7 @@ class App extends Component {
             <Route component={NoMatch} />
           </Switch>
         </div>
-      </HashRouter>
+      </Router>
     );
   }
 }
