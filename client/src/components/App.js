@@ -44,7 +44,7 @@ class App extends Component {
           <Header />
           {this.redirectIfNotLoggedIn()}
           <Switch>
-            <Route path="/" component={Landing}>
+            <Route exact path="/" component={Landing}/>
               <Route exact path="/dashboard" component={DashBoard} />
               <Route
                 exact
@@ -56,7 +56,6 @@ class App extends Component {
                 path={`/dashboard/prospects/new`}
                 component={ProspectsNew}
               />
-            </Route>
             <Route component={NoMatch} />
           </Switch>
         </div>
