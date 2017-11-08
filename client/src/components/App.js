@@ -38,6 +38,7 @@ class App extends Component {
   }
 
   render() {
+    console.log("HELL0 WORLD");
     return (
       <Router history={history}>
         <div>
