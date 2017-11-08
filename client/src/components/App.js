@@ -47,7 +47,7 @@ class App extends Component {
             <Message.Header>
               PERFORMING MAINTENANCE
             </Message.Header>
-            <p>You might not be able to log in</p>
+            <p>You might not be able to log in or perform some of the functions</p>
           </Message> */}
           <Header />
           {this.redirectIfNotLoggedIn()}
