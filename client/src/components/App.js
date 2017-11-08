@@ -4,6 +4,8 @@ import { Router, Route, Switch } from "react-router-dom";
 import { connect } from "react-redux";
 import * as actions from "../actions";
 
+import { Message } from "semantic-ui-react";
+
 import Header from "./Header";
 import Landing from "./dashboard/Landing";
 import DashBoard from "./dashboard/Dashboard";
@@ -42,21 +44,23 @@ class App extends Component {
     return (
       <Router history={history}>
         <div>
+          <Message negative>
+            <Message.Header>
+              PERFORMING MAINTENANCE
+            </Message.Header>
+            <p>You might not be able to log in</p>
+          </Message>
           <Header />
           {this.redirectIfNotLoggedIn()}
           <Switch>
-            <Route exact path="/" component={Landing}/>
-              <Route exact path="/dashboard" component={DashBoard} />
-              <Route
-                exact
-                path={`/dashboard/prospects`}
-                component={Prospects}
-              />
-              <Route
-                exact
-                path={`/dashboard/prospects/new`}
-                component={ProspectsNew}
-              />
+            <Route exact path="/" component={Landing} />
+            <Route exact path="/dashboard" component={DashBoard} />
+            <Route exact path={`/dashboard/prospects`} component={Prospects} />
+            <Route
+              exact
+              path={`/dashboard/prospects/new`}
+              component={ProspectsNew}
+            />
             <Route component={NoMatch} />
           </Switch>
         </div>
