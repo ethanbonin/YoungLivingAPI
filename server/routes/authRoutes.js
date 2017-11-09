@@ -114,29 +114,26 @@ module.exports = app => {
       });
   });
 
-  app.get('/v0/yl/logout', (req, res) => {
+  app.get("/v0/yl/logout", (req, res) => {
     req.session.user = null;
-    res.redirect('/');
-  })
-
-  app.get("/v0/yl/update_terms", (req, res) => {
-    const terms = {
-      agreed_to_terms: true,
-      agreed_to_terms_date: new Date()
-    }
-
-    console.log("UPDATING TERMS");
-    console.log("the terms", terms);
-    console.log("the session", req.session.user.user._id);
-
-    User.findOneAndUpdate({_id: req.session.user.user._id}, {$set: terms}, function(err, doc){
-    if(err){
-        console.log("Something wrong when updating data!", err);
-    }
-    console.log("THE DOC", doc);
-    res.status(200).send(doc);
-});
+    res.redirect("/");
   });
 
-
+  app.get("/v0/yl/update_terms", (req, res) => {
+    req.session.user.user.agreed_to_terms = true;
+    const id = req.session.user.user._id;
+    User.findOneAndUpdate(
+      { _id: id },
+      { $set: { agreed_to_terms: true, agreed_to_terms_date: new Date() } }
+    )
+      .then(prospect => {
+        if (!prospect) {
+          return res.status(404).send({ err: "not found" });
+        }
+        res.send({ prospect });
+      })
+      .catch(e => {
+        res.status(400).send();
+      });
+  });
 };

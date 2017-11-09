@@ -26,11 +26,6 @@ class App extends Component {
     this.props.fetchUser();
   }
 
-  callFetchUser(){
-    console.log("CALLING FETCH USER");
-    this.props.fetchUser();
-  }
-
   checkIfLoggedIn() {
     this.setState({ isLoggedIn: !this.state.isLoggedIn });
   }
@@ -59,7 +54,7 @@ class App extends Component {
           {this.redirectIfNotLoggedIn()}
           <Switch>
             <Route exact path="/" component={Landing} />
-            <Route exact path="/dashboard" component={DashBoard} callFetchUser={this.callFetchUser}/>
+            <Route exact path="/dashboard" component={DashBoard}/>
             <Route exact path={`/dashboard/prospects`} component={Prospects} />
             <Route
               exact

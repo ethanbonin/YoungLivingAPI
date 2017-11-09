@@ -6,6 +6,7 @@ export default function(state = null, action) {
       if (action.payload.user == null) {
         return false;
       } else {
+        console.log("FETCHING USER", action.payload);
         return action.payload;
       }
     case LOGOUT_USER:

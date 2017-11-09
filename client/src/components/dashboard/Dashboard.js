@@ -31,7 +31,7 @@ class DashBoard extends Component {
   constructor(props) {
     super();
     this.state = {
-      agreed_to_terms: false,
+      agreed_to_terms: props.auth.user.user.agreed_to_terms,
       disagree_message_appear: false
     };
     this.handleDisagreement = this.handleDisagreement.bind(this);
@@ -41,9 +41,7 @@ class DashBoard extends Component {
 
   componentWillMount() {
     this.props.fetchProspects();
-    this.setState({
-      agreed_to_terms: this.props.auth.user.user.agreed_to_terms
-    });
+    this.props.fetchUser();
   }
 
   renderTabs() {
@@ -98,16 +96,12 @@ class DashBoard extends Component {
     });
   }
 
-  callUser(){
-    this.props.callFetchUser();
-  }
-
   handleAgreement() {
     this.setState({ agreed_to_terms: true });
     axios
       .get("/v0/yl/update_terms")
       .then(body => {
-        this.callUser()
+        this.props.fetchUser();
       })
       .catch(err => {
         console.log("There was an error logging out", err);
