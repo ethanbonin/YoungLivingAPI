@@ -125,10 +125,15 @@ module.exports = app => {
       agreed_to_terms_date: new Date()
     }
 
-    User.findOneAndUpdate({_id: req.session.user.user._id}, {$set: terms}, {new: true}, function(err, doc){
+    console.log("UPDATING TERMS");
+    console.log("the terms", terms);
+    console.log("the session", req.session.user.user._id);
+
+    User.findOneAndUpdate({_id: req.session.user.user._id}, {$set: terms}, function(err, doc){
     if(err){
         console.log("Something wrong when updating data!", err);
     }
+    console.log("THE DOC", doc);
     res.status(200).send(doc);
 });
   });

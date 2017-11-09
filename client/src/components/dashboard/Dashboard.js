@@ -98,13 +98,16 @@ class DashBoard extends Component {
     });
   }
 
+  callUser(){
+    this.props.callFetchUser();
+  }
+
   handleAgreement() {
     this.setState({ agreed_to_terms: true });
     axios
       .get("/v0/yl/update_terms")
       .then(body => {
-        console.log("FETCHING USER NOW");
-        this.props.fetchUser();
+        this.callUser()
       })
       .catch(err => {
         console.log("There was an error logging out", err);

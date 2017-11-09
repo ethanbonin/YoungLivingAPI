@@ -35,7 +35,7 @@ logs
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
-/node_modules
+#/node_modules
 
 # Runtime data
 pids
@@ -87,11 +87,7 @@ typings/
 .yarn-integrity
 
 # dotenv environment variables file
-#
-#
 .env
 
-/server/tests/seed/secret_data.js
-/server/config/config.json
 
 # End of https://www.gitignore.io/api/node,macos
