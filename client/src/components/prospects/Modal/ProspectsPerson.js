@@ -3,7 +3,6 @@ import { Button, Header, Modal, Label } from "semantic-ui-react";
 import FormDataModal from "./FormDataModal";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
-import moment from "moment";
 
 
 import * as actions from "../../../actions";
@@ -42,7 +41,6 @@ class ProspectsPerson extends Component {
       hot: "red"
     };
 
-    console.log("CLOSED DEAL INSIDE PROSPECT", moment(this.props.prospect.met_date));
     return (
       <Modal dimmer open>
         <Modal.Header>
