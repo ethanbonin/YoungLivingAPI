@@ -40,6 +40,7 @@ class DashBoard extends Component {
   }
 
   componentWillMount() {
+    this.props.fetchLabels();
     this.props.fetchProspects();
     this.props.fetchUser();
   }

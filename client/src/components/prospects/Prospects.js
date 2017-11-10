@@ -471,8 +471,8 @@ class Prospects extends Component {
   }
 }
 
-function mapStateToProps({ prospects }) {
-  return { prospects };
+function mapStateToProps({ prospects, labels }) {
+  return { prospects, labels };
 }
 
 export default connect(mapStateToProps, actions)(Prospects);

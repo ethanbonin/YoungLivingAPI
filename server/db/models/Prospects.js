@@ -1,4 +1,4 @@
-var mongoose = require('mongoose');
+var mongoose = require("mongoose");
 const { Schema } = mongoose;
 
 const prospectSchema = new Schema({
@@ -20,17 +20,22 @@ const prospectSchema = new Schema({
   closedDeal: String,
   met_date: Date,
   lead: String,
-  labels: [String],
+  labels: [
+    {
+      key: String,
+      text: String,
+      value: String
+    }
+  ],
   prospect_created: Date,
   _creator: {
     type: String,
-    required: true,
+    required: true
   }
 });
 
 var Prospects = mongoose.model("prospects", prospectSchema);
 
-
 module.exports = {
-  Prospects: Prospects,
-}
+  Prospects: Prospects
+};

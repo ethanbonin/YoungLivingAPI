@@ -9,7 +9,7 @@ var rp = require("request-promise");
 const bodyParser = require("body-parser");
 var { mongoose } = require("../db/mongoose");
 var session = require("express-session");
-var _ = require('lodash');
+var _ = require("lodash");
 
 var { uidrequest } = require("../middleware/uidrequest");
 var { retailcustomers } = require("../middleware/retailcustomers");
@@ -69,7 +69,18 @@ module.exports = app => {
               if (_.isEmpty(doc)) {
                 let prospectLabels = {
                   memberid: memberId,
-                  labels: ["master", "prospect"]
+                  labels: [
+                    {
+                      key: "Master",
+                      text: "Master",
+                      value: "Master"
+                    },
+                    {
+                      key: "Prospect",
+                      text: "Prospect",
+                      value: "Prospect"
+                    }
+                  ]
                 };
 
                 var new_labels = new ProspectLabels(prospectLabels);
@@ -98,7 +109,6 @@ module.exports = app => {
                     console.log(err, "ERROR");
                     res.send({ err: "Error on somethign" });
                   }
-                  console.log(result);
                   res.status(200).send(result);
                 }
               );
@@ -128,7 +138,18 @@ module.exports = app => {
 
             let prospectLabels = {
               memberid: memberid,
-              labels: ["master", "prospect"]
+              labels: [
+                {
+                  key: "Master",
+                  text: "Master",
+                  value: "Master"
+                },
+                {
+                  key: "Prospect",
+                  text: "Prospect",
+                  value: "Prospect"
+                }
+              ]
             };
 
             var new_labels = new ProspectLabels(prospectLabels);

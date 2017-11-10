@@ -10,6 +10,7 @@ import {
   PATCH_PROSPECTS,
   TOGGLE_PROSPECTS,
   CLOSE_PROSPECTS,
+  FETCH_LABELS
 } from "./types";
 
 //SAME THING AS BELOW
@@ -102,6 +103,14 @@ export const closeProspects = prospect => {
       .then(res => {
         dispatch({ type: CLOSE_PROSPECTS, payload: res.data });
       });
+  };
+};
+
+export const fetchLabels = () => {
+  return function(dispatch) {
+    axios
+      .get("/v0/yl/prospect_labels/")
+      .then(res => dispatch({ type: FETCH_LABELS, payload: res.data }));
   };
 };
 

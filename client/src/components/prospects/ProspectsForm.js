@@ -48,6 +48,7 @@ class ProspectsNew extends Component {
         last_error: false,
         email_error: false,
         phone_error: false,
+        labels: [],
         email_error_format: false,
         phone_error_format: false,
         goBack: false,
@@ -61,6 +62,7 @@ class ProspectsNew extends Component {
     this.renderPersonalInfo = this.renderPersonalInfo.bind(this);
     this.toggle = this.toggle.bind(this);
     this.getNewProspect = this.getNewProspect.bind(this);
+    this.handleLabelAddition = this.handleLabelAddition.bind(this);
   }
 
   componentWillMount() {
@@ -195,6 +197,13 @@ class ProspectsNew extends Component {
     });
   }
 
+  handleLabelAddition(label){
+    const formatted_labels = _.map(label, (value) => {
+      return {key: value, text: value, value: value}
+    })
+    this.setState({labels: formatted_labels});
+  }
+
   render() {
     let notes;
     if (this.state.old_notes !== undefined){
@@ -221,9 +230,11 @@ class ProspectsNew extends Component {
               {this.renderRadioButtons()}
             </Segment>
             <Segment>
+              <Label>Choose Tags for this Prospect. This is to help you better organize your prospects.</Label>
+              <LabelsDropDown masterList={this.props.labels.prospectslabels[0].labels} handleLabelAddition={this.handleLabelAddition}/>
+            </Segment>
+            <Segment>
               {this.renderCheckBoxes()}
-              <Label>Choose Tags for this Prospect</Label>
-              <LabelsDropDown/>
             </Segment>
             {this.renderPersonalDetails()}
             <Form.Group>
@@ -264,6 +275,7 @@ class ProspectsNew extends Component {
                   family: this.state.family,
                   occupation: this.state.occupation,
                   recreation: this.state.recreation,
+                  labels: this.state.labels,
                   additional_notes: notes,
                   closedDeal: "",
                   editingProspect: this.state.editingProspect
@@ -277,8 +289,8 @@ class ProspectsNew extends Component {
   }
 }
 
-function mapStateToProps({ prospects }) {
-  return { prospects };
+function mapStateToProps({ prospects, labels }) {
+  return { prospects, labels };
 }
 
 export default connect(mapStateToProps, actions)(ProspectsNew);
