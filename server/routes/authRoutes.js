@@ -9,6 +9,7 @@ var rp = require("request-promise");
 const bodyParser = require("body-parser");
 var { mongoose } = require("../db/mongoose");
 var session = require("express-session");
+var _ = require('lodash');
 
 var { uidrequest } = require("../middleware/uidrequest");
 var { retailcustomers } = require("../middleware/retailcustomers");
@@ -19,6 +20,7 @@ var {
 } = require("../header_data/header_data");
 
 const { User } = require("../db/models/Users");
+const { ProspectLabels } = require("../db/models/ProspectLabels");
 
 module.exports = app => {
   app.get("/v0/yl/current_user", (req, res) => {
@@ -55,6 +57,28 @@ module.exports = app => {
             //This is for the early adotpers of EOA.
             //Since they did not have to agree to terms in the beginning
             //I needed to go through and make sure everybody got updated.
+            const memberId = body.memberId;
+            ProspectLabels.find({ memberid: memberId }, (err, doc) => {
+              if (err) {
+                console.log(
+                  "Error in trying to find member id for labels",
+                  err
+                );
+              }
+
+              if (_.isEmpty(doc)) {
+                let prospectLabels = {
+                  memberid: memberId,
+                  labels: ["master", "prospect"]
+                };
+
+                var new_labels = new ProspectLabels(prospectLabels);
+                new_labels.save().then(() => {
+                  console.log("New Labels Saved from existing person");
+                });
+              }
+            });
+
             if (user.member_name === undefined) {
               let update_user = {
                 memberid: user.memberid,
@@ -101,6 +125,16 @@ module.exports = app => {
             sess = req.session;
             var info = { user: b, body: body };
             sess.user = info;
+
+            let prospectLabels = {
+              memberid: memberid,
+              labels: ["master", "prospect"]
+            };
+
+            var new_labels = new ProspectLabels(prospectLabels);
+            new_labels.save().then(() => {
+              console.log("New Labels Saved");
+            });
 
             var user = new User(b);
             user.save().then(() => {

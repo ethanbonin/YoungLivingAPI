@@ -1,4 +1,6 @@
 import React, { Component } from "react";
+import LabelsDropDown from './LabelsDropDown'
+
 import { Form, Segment, Button, Label } from "semantic-ui-react";
 import DatePicker from "react-datepicker";
 import moment from "moment";
@@ -218,7 +220,11 @@ class ProspectsNew extends Component {
               <label>LEAD</label>
               {this.renderRadioButtons()}
             </Segment>
-            <Segment>{this.renderCheckBoxes()}</Segment>
+            <Segment>
+              {this.renderCheckBoxes()}
+              <Label>Choose Tags for this Prospect</Label>
+              <LabelsDropDown/>
+            </Segment>
             {this.renderPersonalDetails()}
             <Form.Group>
               <div style={{ margin: "auto auto" }}>

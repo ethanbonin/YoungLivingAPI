@@ -18,6 +18,7 @@ var {
 
 const { User } = require("../db/models/Users");
 const { Prospects } = require("../db/models/Prospects");
+const { ProspectLabels } = require("../db/models/ProspectLabels");
 
 module.exports = app => {
   const formatNotes = function(note) {
@@ -27,6 +28,22 @@ module.exports = app => {
     };
     return n;
   };
+
+  app.get('/v0/yl/prospect_labels', (req,res) => {
+    if (!req.session.user) {
+      res.status(401).send({ error: "unauthorized" });
+    }
+
+    ProspectLabels.find({
+      memberid: req.session.user.user.memberid
+    })
+      .then(prospectslabels => {
+        res.send({ prospectslabels });
+      })
+      .catch(e => {
+        console.log("Error", e);
+      });
+  })
 
 
   app.post("/v0/yl/prospect_new", (req, res) => {
