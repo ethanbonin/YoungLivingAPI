@@ -75,6 +75,7 @@ module.exports = app => {
         additional_notes: old_notes,
         closedDeal: req.body.values.closedDeal,
         met_date: req.body.values.met_date,
+        labels: req.body.values.labels,
         lead: req.body.values.lead,
         prospect_created: req.body.values.prospect_created,
         _creator: req.session.user.user.memberid

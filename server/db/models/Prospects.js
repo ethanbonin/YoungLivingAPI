@@ -20,6 +20,7 @@ const prospectSchema = new Schema({
   closedDeal: String,
   met_date: Date,
   lead: String,
+  labels: [String],
   prospect_created: Date,
   _creator: {
     type: String,
