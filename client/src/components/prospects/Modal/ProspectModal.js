@@ -3,17 +3,26 @@ import { Button, Header, Modal, Label } from "semantic-ui-react";
 import FormDataModal from "./FormDataModal";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
+import LabelsModal from "./LabelsModal";
 
 
 import * as actions from "../../../actions";
 
-class ProspectsPerson extends Component {
+class ProspectModal extends Component {
   constructor(props) {
     super();
     this.closeModal = this.closeModal.bind(this);
     this.deletePerson = this.deletePerson.bind(this);
     this.addNote = this.addNote.bind(this);
     this.togglePerson = this.togglePerson.bind(this);
+    this.state = {
+      labelsChosen: props.prospect.labels,
+      masterLabels: props.labels.prospectslabels[0].labels
+    }
+  }
+
+  componentWillMount() {
+
   }
 
   addNote(_id, note) {
@@ -42,7 +51,7 @@ class ProspectsPerson extends Component {
     };
 
     return (
-      <Modal dimmer open>
+      <Modal dimmer open size="fullscreen">
         <Modal.Header>
           {this.props.prospect.first} {this.props.prospect.last}
           <Label
@@ -53,6 +62,7 @@ class ProspectsPerson extends Component {
           >
             {this.props.prospect.lead.toUpperCase()}
           </Label>
+          <LabelsModal labelsChosen={this.state.labelsChosen} masterLabels={this.state.masterLabels}/>
           <Button
             style={{ float: "right" }}
             color="teal"
@@ -127,4 +137,4 @@ function mapStateToProps({ labels }) {
 }
 
 
-export default connect(mapStateToProps, actions)(ProspectsPerson);
+export default connect(mapStateToProps, actions)(ProspectModal);

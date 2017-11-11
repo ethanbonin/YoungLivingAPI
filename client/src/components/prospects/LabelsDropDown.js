@@ -41,7 +41,6 @@ class LabelsDropDown extends Component {
 
   handleChange = (e, { value }) => {
     this.setState({ currentValue: value });
-    console.log("this.currentvalue", this.state.currentValue);
     this.props.handleLabelAddition(value);
   }
 

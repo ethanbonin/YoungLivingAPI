@@ -7,6 +7,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import { box_values } from "../raw_data";
 import * as actions from "../../../actions";
 
+
 class FormDataModal extends Component {
   constructor(props) {
     super(props);
@@ -32,6 +33,7 @@ class FormDataModal extends Component {
       recreation: this.props.data.recreation,
       additional_notes: this.props.data.additional_notes,
       closedDeal: this.props.data.closedDeal,
+      labels: this.props.data.labels,
       new_note: ""
     };
 
@@ -229,8 +231,8 @@ class FormDataModal extends Component {
   }
 }
 
-function mapStateToProps({ auth }) {
-  return { auth };
+function mapStateToProps({ auth, labels }) {
+  return { auth, labels };
 }
 
 export default connect(mapStateToProps, actions)(FormDataModal);

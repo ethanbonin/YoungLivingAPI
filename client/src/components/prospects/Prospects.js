@@ -5,7 +5,7 @@ import { Button, Table, Label, Segment } from "semantic-ui-react";
 import _ from "lodash";
 import * as actions from "../../actions";
 
-import ProspectsPerson from "./Modal/ProspectsPerson";
+import ProspectModal from "./Modal/ProspectModal";
 import { box_values } from "./raw_data";
 import SendEmailModal from "./Tools/SendEmailModal";
 import Searchbar from "./Tools/Searchbar";
@@ -380,7 +380,7 @@ class Prospects extends Component {
 
   renderModalToggle() {
     return this.state.modalOpen ? (
-      <ProspectsPerson
+      <ProspectModal
         popUp={this.popUpPerson}
         prospect={this.state.prospect}
         prospectToDelete={this.prospectToDelete}
