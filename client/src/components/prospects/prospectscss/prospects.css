@@ -4,7 +4,26 @@
 }
 
 .sort_tool {
-  margin-top: 5px;
+  margin-top: 1.6em;
+  float: left;
+  margin-left: 5em;
+}
+
+.add_button {
+  float:left;
+}
+
+.send_email_button {
+  float: left;
+}
+
+.add_send_buttons {
+  padding-top: 1.5em;
+}
+
+.add_send_sort_buttons {
+  width: 44%;
+  margin: auto;
 }
 
 .closed_deal_label {
@@ -17,13 +36,12 @@
   width: 100%;
 }
 
-
 .close_deal_segment {
   margin-top: 6em;
 }
 
-
 .close_deal_searchbar {
   margin-top: 10px;
   margin-bottom: 10px;
+  float: left;
 }

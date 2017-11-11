@@ -4,7 +4,6 @@ import { connect } from "react-redux";
 import * as actions from "../../../actions";
 import { ordering_options } from "../raw_data";
 
-
 class SortDropDown extends Component {
   constructor(props) {
     super(props);
@@ -20,13 +19,16 @@ class SortDropDown extends Component {
   render() {
     return (
       <Dropdown
-        fluid
         text="Sort Prospect"
         icon="filter"
         labeled
         button
-        className="icon"
-        style={{ marginTop: "5px" }}
+        className="sort_tool icon"
+        style={{
+          marginTop: "1.6em",
+          float: "left",
+          marginLeft: "5em"
+        }}
         onChange={e => console.log()}
       >
         <Dropdown.Menu>
@@ -42,9 +44,8 @@ class SortDropDown extends Component {
           </Dropdown.Menu>
         </Dropdown.Menu>
       </Dropdown>
-    )
+    );
   }
 }
-
 
 export default connect(null, actions)(SortDropDown);

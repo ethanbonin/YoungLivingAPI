@@ -47,6 +47,7 @@ class Searchbar extends Component {
         category
         className="close_deal_searchbar"
         loading={this.state.isLoading}
+        placeholder="Search Prospects"
         onSearchChange={this.handleSearchChange}
         value={this.state.value}
         noResultsMessage={"LOADING"}

@@ -235,7 +235,8 @@ class Prospects extends Component {
         case "last":
           return person.last;
         case "email":
-          return person.email;
+          console.log("person.email", person.email);
+          return person.email.toLowerCase();
         case "met_old":
         case "met_recent":
           if (person.met_date == null) {
@@ -243,13 +244,24 @@ class Prospects extends Component {
             return;
           }
           return new Date(person.met_date);
+        case "closed_old":
+        case "closed_recent":
+          return person.closedDeal;
+        case "email_unchecked":
+        case "emailed_checked":
+          return person.emailed;
         default:
           console.log("uh?");
       }
     });
 
     let inverse_array = [];
-    if (k === "newest" || k === "met_recent") {
+    if (
+      k === "newest" ||
+      k === "met_recent" ||
+      k === "closed_recent" ||
+      k === "emailed_checked"
+    ) {
       inverse_array = prospects_array.reverse();
     } else {
       inverse_array = prospects_array;
@@ -350,7 +362,7 @@ class Prospects extends Component {
           let date_met;
           let formatted_date_met;
 
-          if (prospect.met_date === "UPDATING"){
+          if (prospect.met_date === "UPDATING") {
             formatted_date_met = "UPDATING";
           } else {
             date_met = new Date(prospect.met_date);
@@ -405,22 +417,27 @@ class Prospects extends Component {
 
   renderTools() {
     return (
-      <div className="tools">
-        <Link
-          to="/dashboard/prospects/new"
-          className="btn-floating btn-large red"
-        >
-          <i className="material-icons">add</i>
-        </Link>
-        <Button color="blue" onClick={() => this.emailModal()}>
-          Send Greeting Emails
-        </Button>
+      <div className="">
         <Searchbar
           prospects={this.props.prospects}
           handleSearchResults={this.handleSearchResults}
           closedSearch={false}
         />
-        <SortDropDown handleSortSelect={this.handleSortSelect} />
+        <div className="add_send_sort_buttons">
+          <SortDropDown handleSortSelect={this.handleSortSelect} />
+          <div className="add_send_buttons">
+            <Button as={Link} to={"/dashboard/prospects/new"} color="red">
+              Add Prospect
+            </Button>
+            <Button
+              color="blue"
+              className="send_email_button"
+              onClick={() => this.emailModal()}
+            >
+              Send Greeting Emails
+            </Button>
+          </div>
+        </div>
       </div>
     );
   }
@@ -441,17 +458,19 @@ class Prospects extends Component {
   render() {
     return (
       <div>
-        {this.renderTools()}
-        {this.renderModalToggle()}
-        {this.state.emailModalOpen ? (
-          <SendEmailModal emailModal={this.emailModal} />
-        ) : null}
-        <Table celled size="large">
-          <Table.Header>
-            <Table.Row>{this.renderHeaders()}</Table.Row>
-          </Table.Header>
-          <Table.Body>{this.renderList(false)}</Table.Body>
-        </Table>
+        <Segment>
+          {this.renderTools()}
+          {this.renderModalToggle()}
+          {this.state.emailModalOpen ? (
+            <SendEmailModal emailModal={this.emailModal} />
+          ) : null}
+          <Table celled size="large">
+            <Table.Header>
+              <Table.Row>{this.renderHeaders()}</Table.Row>
+            </Table.Header>
+            <Table.Body>{this.renderList(false)}</Table.Body>
+          </Table>
+        </Segment>
         <Segment style={{ marginTop: "5em" }}>
           {this.renderClosedListTools()}
           <div className="close_deal_div">
