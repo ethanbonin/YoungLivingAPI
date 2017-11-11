@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import LabelsDropDown from './LabelsDropDown'
+import LabelsDropDown from "./LabelsDropDown";
 
 import { Form, Segment, Button, Label } from "semantic-ui-react";
 import DatePicker from "react-datepicker";
@@ -52,7 +52,8 @@ class ProspectsNew extends Component {
         email_error_format: false,
         phone_error_format: false,
         goBack: false,
-        editingProspect: false
+        editingProspect: false,
+        masterList: this.props.labels.prospectslabels[0].labels
       };
     }
 
@@ -66,7 +67,7 @@ class ProspectsNew extends Component {
   }
 
   componentWillMount() {
-    this.setState({additional_notes: ""});
+    this.setState({ additional_notes: "" });
   }
 
   handleChange = (e, { name, value }) => {
@@ -112,8 +113,10 @@ class ProspectsNew extends Component {
       this.setState({ phone: "0000000000" });
     }
 
+    this.props.updateLabels(this.props.labels.prospectslabels[0]._id,this.state.masterList);
     this.props.postProspects(this.state);
     this.props.fetchProspects();
+    this.props.fetchLabels();
     this.setState({
       goBack: true
     });
@@ -197,19 +200,28 @@ class ProspectsNew extends Component {
     });
   }
 
-  handleLabelAddition(label){
-    const formatted_labels = _.map(label, (value) => {
-      return {key: value, text: value, value: value}
-    })
-    this.setState({labels: formatted_labels});
+  handleLabelAddition(label) {
+    const formatted_labels = _.map(label, value => {
+      return { key: value, text: value, value: value };
+    });
+    this.setState({ labels: formatted_labels });
+
+    let masterList = this.state.masterList;
+
+    var concatMaster = masterList.concat(formatted_labels);
+    var uniqueMaster = _.uniqBy(concatMaster, function(e) {
+      return e.key.toLowerCase();
+    });
+
+    this.setState({masterList: uniqueMaster});
   }
 
   render() {
     let notes;
-    if (this.state.old_notes !== undefined){
+    if (this.state.old_notes !== undefined) {
       notes = this.state.old_notes;
     } else {
-      notes = {date: new Date(), message: this.state.additional_notes}
+      notes = { date: new Date(), message: this.state.additional_notes };
     }
     return (
       <Segment
@@ -230,12 +242,16 @@ class ProspectsNew extends Component {
               {this.renderRadioButtons()}
             </Segment>
             <Segment>
-              <Label>Choose Tags for this Prospect. This is to help you better organize your prospects.</Label>
-              <LabelsDropDown masterList={this.props.labels.prospectslabels[0].labels} handleLabelAddition={this.handleLabelAddition}/>
+              <Label>
+                Choose Tags for this Prospect. This is to help you better
+                organize your prospects.
+              </Label>
+              <LabelsDropDown
+                masterList={this.state.masterList}
+                handleLabelAddition={this.handleLabelAddition}
+              />
             </Segment>
-            <Segment>
-              {this.renderCheckBoxes()}
-            </Segment>
+            <Segment>{this.renderCheckBoxes()}</Segment>
             {this.renderPersonalDetails()}
             <Form.Group>
               <div style={{ margin: "auto auto" }}>

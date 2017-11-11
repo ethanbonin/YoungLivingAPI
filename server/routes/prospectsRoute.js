@@ -45,6 +45,25 @@ module.exports = app => {
       });
   })
 
+  app.post("/v0/yl/prospect_labels_update", (req, res) => {
+    const updated_master = {
+      memberid: req.session.user.user.memberid,
+      labels: req.body.values
+    }
+
+    ProspectLabels.findOneAndUpdate(
+      { _id: req.body._id },
+      updated_master,
+      { upsert: true },
+      function(error, result) {
+        if (error) {
+          console.log("Something wrong when updating data for master list!", error);
+        }
+        res.status(200).send(result)
+      }
+    );
+  })
+
 
   app.post("/v0/yl/prospect_new", (req, res) => {
     if (!req.session.user) {

@@ -10,7 +10,8 @@ import {
   PATCH_PROSPECTS,
   TOGGLE_PROSPECTS,
   CLOSE_PROSPECTS,
-  FETCH_LABELS
+  FETCH_LABELS,
+  UPDATE_LABELS
 } from "./types";
 
 //SAME THING AS BELOW
@@ -113,6 +114,15 @@ export const fetchLabels = () => {
       .then(res => dispatch({ type: FETCH_LABELS, payload: res.data }));
   };
 };
+
+export const updateLabels = (_id, body) => {
+  return function(dispatch) {
+    axios
+      .post("/v0/yl/prospect_labels_update", {values: body, _id: _id})
+      .then(res => dispatch({ type: UPDATE_LABELS, payload: res.data }));
+  };
+};
+
 
 // export const handleToken = token => async dispatch => {
 //   const res = await axios.post('/api/stripe', token);

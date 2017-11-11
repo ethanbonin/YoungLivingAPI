@@ -9,3 +9,4 @@ export const PATCH_PROSPECTS = 'patch_prospects';
 export const TOGGLE_PROSPECTS = 'toggle_prospects';
 export const CLOSE_PROSPECTS = 'close_prospects';
 export const FETCH_LABELS = 'fetch_labels';
+export const UPDATE_LABELS = 'update_labels';
