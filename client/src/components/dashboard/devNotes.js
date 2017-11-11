@@ -1,5 +1,14 @@
 const devNotes = [
   {
+    "11/13/2017": {
+      bug_fixes: [
+      ],
+      new_features: [
+        "TAGS - You can now add 'tags' to Prospects. It will help you filter and keep track of cerntain properties of that prospect list. You can add tags to new prospect or edit your existing prospect and add tags."
+      ],
+      updated_features: [
+      ]
+    },
     "11/09/2017": {
       bug_fixes: [
         "NEEDS FIXING - SLOW - I realize that the modal is slow when you click the view a prospect. I will fix this next update.",

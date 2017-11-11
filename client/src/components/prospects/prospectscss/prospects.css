@@ -6,7 +6,16 @@
 .sort_tool {
   margin-top: 1.6em;
   float: left;
-  margin-left: 5em;
+}
+
+.reset_button {
+  float:left;
+  margin-top: 1.6em;
+}
+
+.sort_labels_dropdown {
+  float: left;
+  margin-top: 1.6em;
 }
 
 .add_button {
@@ -21,8 +30,9 @@
   padding-top: 1.5em;
 }
 
+
 .add_send_sort_buttons {
-  width: 44%;
+  width: 55%;
   margin: auto;
 }
 

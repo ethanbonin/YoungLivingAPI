@@ -10,6 +10,7 @@ import { box_values } from "./raw_data";
 import SendEmailModal from "./Tools/SendEmailModal";
 import Searchbar from "./Tools/Searchbar";
 import SortDropDown from "./Tools/SortDropDown";
+import FilterLabels from "./Tools/FilterLabels";
 
 import "./prospectscss/prospects.css";
 
@@ -27,7 +28,10 @@ class Prospects extends Component {
       emailModalOpen: false,
       prospectsList: this.props.prospects,
       sort_by: "newest",
+      filter: [],
+      filter_list_empty: true,
       closed: false,
+      masterLabels: [],
       closedProspectList: this.findClosedList(this.props.prospects)
     };
 
@@ -42,12 +46,17 @@ class Prospects extends Component {
 
     this.handleSearchResults = this.handleSearchResults.bind(this);
     this.handleSortSelect = this.handleSortSelect.bind(this);
+    this.handleFilterSelect = this.handleFilterSelect.bind(this);
+    this.filterBy = this.filterBy.bind(this);
   }
 
   componentWillMount() {
     if (this.props.location.state !== undefined) {
       const prospect = this.props.location.state;
       let p_list = this.state.prospectsList;
+      this.setState({
+        masterLabels: this.props.location.state.masterLabels
+      });
       if (this.props.location.state.editingProspect) {
         var index = _.findIndex(p_list.prospects, { _id: prospect._id });
         p_list.prospects.splice(index, 1, prospect);
@@ -55,6 +64,10 @@ class Prospects extends Component {
         prospect.additional_notes = [prospect.additional_notes];
         p_list.prospects.push(prospect);
       }
+    } else {
+      this.setState({
+        masterLabels: this.props.labels.prospectslabels[0].labels
+      });
     }
   }
 
@@ -235,7 +248,6 @@ class Prospects extends Component {
         case "last":
           return person.last;
         case "email":
-          console.log("person.email", person.email);
           return person.email.toLowerCase();
         case "met_old":
         case "met_recent":
@@ -268,6 +280,22 @@ class Prospects extends Component {
     }
 
     return { prospects: inverse_array };
+  }
+
+  filterBy(prospects) {
+    const list_of_labels = this.state.filter;
+    let filtered_prospects = prospects.prospects;
+    list_of_labels.forEach(label => {
+      filtered_prospects = _.filter(filtered_prospects, function(person) {
+        const picked_label = (({ key }) => ({ key }))(label);
+        let person_labels = person.labels.map(label => label.key);
+        if (_.includes(person_labels, picked_label.key)) {
+          return person;
+        }
+      });
+    });
+
+    return { prospects: filtered_prospects };
   }
 
   renderNumberViewLead(prospect, i) {
@@ -350,6 +378,10 @@ class Prospects extends Component {
           }
         }
 
+        if (!_.isEmpty(this.state.filter)) {
+          prospects = this.filterBy(prospects);
+        }
+
         prospects = this.sortBy(prospects.prospects);
         const truth = _.isEmpty(prospects);
         if (prospects === null || truth) {
@@ -415,6 +447,12 @@ class Prospects extends Component {
     this.setState({ sort_by: value });
   }
 
+  handleFilterSelect(value) {
+    this.setState({
+      filter: [...this.state.filter, value]
+    });
+  }
+
   renderTools() {
     return (
       <div className="">
@@ -424,6 +462,21 @@ class Prospects extends Component {
           closedSearch={false}
         />
         <div className="add_send_sort_buttons">
+          {!_.isEmpty(this.state.filter) ? (
+            <Button
+              className="reset_button"
+              color="red"
+              style={{ marginTop: "1.6em" }}
+              onClick={() => this.setState({ filter: [], sort_by: "newest" })}
+            >
+              Reset
+            </Button>
+          ) : null}
+
+          <FilterLabels
+            masterLabels={this.state.masterLabels}
+            handleFilterSelect={this.handleFilterSelect}
+          />
           <SortDropDown handleSortSelect={this.handleSortSelect} />
           <div className="add_send_buttons">
             <Button as={Link} to={"/dashboard/prospects/new"} color="red">

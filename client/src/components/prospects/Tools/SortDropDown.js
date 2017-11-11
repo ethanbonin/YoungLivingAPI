@@ -20,14 +20,13 @@ class SortDropDown extends Component {
     return (
       <Dropdown
         text="Sort Prospect"
-        icon="filter"
+        icon="sort"
         labeled
         button
         className="sort_tool icon"
         style={{
           marginTop: "1.6em",
           float: "left",
-          marginLeft: "5em"
         }}
         onChange={e => console.log()}
       >

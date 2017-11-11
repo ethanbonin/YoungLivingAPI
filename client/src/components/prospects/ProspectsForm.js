@@ -53,6 +53,7 @@ class ProspectsNew extends Component {
         phone_error_format: false,
         goBack: false,
         editingProspect: false,
+        address: { address1: "", address2: "", city: "", state: "", zip: "" },
         masterList: this.props.labels.prospectslabels[0].labels
       };
     }
@@ -113,7 +114,10 @@ class ProspectsNew extends Component {
       this.setState({ phone: "0000000000" });
     }
 
-    this.props.updateLabels(this.props.labels.prospectslabels[0]._id,this.state.masterList);
+    this.props.updateLabels(
+      this.props.labels.prospectslabels[0]._id,
+      this.state.masterList
+    );
     this.props.postProspects(this.state);
     this.props.fetchProspects();
     this.props.fetchLabels();
@@ -200,6 +204,48 @@ class ProspectsNew extends Component {
     });
   }
 
+  renderAddressFields() {
+    return (
+      <div>
+        <Form.TextArea
+          label={"Address 1"}
+          placeholder={"8000 w foo st"}
+          name={"address1"}
+          key={"address1"}
+          value={this.state.address.address1}
+        />
+        <Form.TextArea
+          label={"Address 2"}
+          placeholder={"APT 309"}
+          name={"address2"}
+          key={"address2"}
+          value={this.state.address.address2}
+        />
+        <Form.TextArea
+          label={"City"}
+          placeholder={"Colorado"}
+          name={"city"}
+          key={"city"}
+          value={this.state.address.city}
+        />
+        <Form.TextArea
+          label={"State"}
+          placeholder={"state"}
+          name={"state"}
+          key={"state"}
+          value={this.state.address.state}
+        />
+        <Form.TextArea
+          label={"Zip"}
+          placeholder={"zip"}
+          name={"zip"}
+          key={"zip"}
+          value={this.state.address.zip}
+        />
+      </div>
+    );
+  }
+
   handleLabelAddition(label) {
     const formatted_labels = _.map(label, value => {
       return { key: value, text: value, value: value };
@@ -213,7 +259,7 @@ class ProspectsNew extends Component {
       return e.key.toLowerCase();
     });
 
-    this.setState({masterList: uniqueMaster});
+    this.setState({ masterList: uniqueMaster });
   }
 
   render() {
@@ -253,6 +299,7 @@ class ProspectsNew extends Component {
               />
             </Segment>
             <Segment>{this.renderCheckBoxes()}</Segment>
+            <Segment>{this.renderAddressFields()}</Segment>
             {this.renderPersonalDetails()}
             <Form.Group>
               <div style={{ margin: "auto auto" }}>
@@ -295,7 +342,8 @@ class ProspectsNew extends Component {
                   labels: this.state.labels,
                   additional_notes: notes,
                   closedDeal: "",
-                  editingProspect: this.state.editingProspect
+                  editingProspect: this.state.editingProspect,
+                  masterLabels: this.state.masterList
                 }
               }}
             />
