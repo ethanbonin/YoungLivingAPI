@@ -249,6 +249,7 @@ class ProspectsNew extends Component {
               <LabelsDropDown
                 masterList={this.state.masterList}
                 handleLabelAddition={this.handleLabelAddition}
+                labelsChosen={this.state.labels}
               />
             </Segment>
             <Segment>{this.renderCheckBoxes()}</Segment>

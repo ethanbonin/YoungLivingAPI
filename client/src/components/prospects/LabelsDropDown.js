@@ -12,11 +12,24 @@ import { Dropdown } from "semantic-ui-react";
 class LabelsDropDown extends Component {
   constructor(props) {
     super(props);
-    console.log("props", props);
+    console.log("inside listprops", this.props.labelsChosen);
     let masterOptions = props.masterList;
+
+    var list = [];
+    if (this.props.labelsChosen !== []){
+      this.props.labelsChosen.forEach((label) => {
+          console.log("Pushing", label.value);
+          list.push(label.value);
+      })
+    }
+
+    console.log('list is', list);
+
+
+
     this.state = {
       masterOptions: masterOptions,
-      currentValue: []
+      currentValue: list
     }
   }
 
@@ -28,6 +41,7 @@ class LabelsDropDown extends Component {
 
   handleChange = (e, { value }) => {
     this.setState({ currentValue: value });
+    console.log("this.currentvalue", this.state.currentValue);
     this.props.handleLabelAddition(value);
   }
 

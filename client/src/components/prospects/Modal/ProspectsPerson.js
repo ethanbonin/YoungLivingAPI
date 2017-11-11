@@ -82,11 +82,13 @@ class ProspectsPerson extends Component {
                 lead: this.props.prospect.lead,
                 health_needs: this.props.prospect.health_needs,
                 family: this.props.prospect.family,
+                labels: this.props.prospect.labels,
                 occupation: this.props.prospect.occupation,
                 recreation: this.props.prospect.recreation,
                 additional_notes: this.props.prospect.additional_notes,
                 closedDeal: this.props.prospect.closedDeal,
                 editingProspect: true,
+                masterList: this.props.labels.prospectslabels[0].labels
               }
             }}
 
@@ -120,4 +122,9 @@ class ProspectsPerson extends Component {
   }
 }
 
-export default connect(null, actions)(ProspectsPerson);
+function mapStateToProps({ labels }) {
+  return { labels };
+}
+
+
+export default connect(mapStateToProps, actions)(ProspectsPerson);
