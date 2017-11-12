@@ -15,9 +15,16 @@ class ProspectModal extends Component {
     this.deletePerson = this.deletePerson.bind(this);
     this.addNote = this.addNote.bind(this);
     this.togglePerson = this.togglePerson.bind(this);
+
+    let labels = []
+    if (props.labels.prospectslabels[0].labels !== undefined){
+      labels = props.labels.prospectslabels[0].labels;
+    }
+
+
     this.state = {
       labelsChosen: props.prospect.labels,
-      masterLabels: props.labels.prospectslabels[0].labels
+      masterLabels: labels
     }
   }
 
@@ -103,7 +110,7 @@ class ProspectModal extends Component {
                 closedDeal: this.props.prospect.closedDeal,
                 editingProspect: true,
                 address: address,
-                masterList: this.props.labels.prospectslabels[0].labels
+                masterList: this.state.masterLabels
               }
             }}
 
