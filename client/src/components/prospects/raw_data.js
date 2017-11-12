@@ -54,6 +54,39 @@ const lead = [
   }
 ];
 
+const address_boxes = [
+  {
+    label: "Address 1",
+    placeholder: "80001 w frankford ave",
+    name: "address1",
+    key: "address1",
+  },
+  {
+    label: "Address 2",
+    placeholder: "APT 309",
+    name: "address2",
+    key: "address2",
+  },
+  {
+    label: "City",
+    placeholder: "Denver",
+    name: "city",
+    key: "city",
+  },
+  {
+    label: "State",
+    placeholder: "Colorado",
+    name: "state",
+    key: "state",
+  },
+  {
+    label: "zip",
+    placeholder: "Zip",
+    name: "zip",
+    key: "zip",
+  }
+]
+
 const details = [
   {
     key: "123know_them",
@@ -139,7 +172,6 @@ const ordering_options = [
       text: 'by Emailed UnChecked',
       value: 'email_unchecked',
     },
-
 ]
 
 module.exports = {
@@ -147,5 +179,6 @@ module.exports = {
   info,
   lead,
   details,
-  ordering_options
+  ordering_options,
+  address_boxes
 };

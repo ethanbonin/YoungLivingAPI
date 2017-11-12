@@ -27,6 +27,13 @@ const prospectSchema = new Schema({
       value: String
     }
   ],
+  address: {
+    address1: String,
+    address2: String,
+    city: String,
+    state: String,
+    zip: String
+  },
   prospect_created: Date,
   _creator: {
     type: String,

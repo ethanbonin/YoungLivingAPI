@@ -10,7 +10,7 @@ import { Redirect } from "react-router";
 import { Link } from "react-router-dom";
 import _ from "lodash";
 import "react-datepicker/dist/react-datepicker.css";
-import { box_values, info, lead, details } from "./raw_data";
+import { box_values, info, lead, details, address_boxes } from "./raw_data";
 var ObjectID = require("bson-objectid");
 
 class ProspectsNew extends Component {
@@ -85,6 +85,12 @@ class ProspectsNew extends Component {
       met_date: date
     });
   }
+
+  handleAddressChange = (e, { name, value }) => {
+    let address = this.state.address;
+    address[name] = value;
+    this.setState({ address: address });
+  };
 
   getNewProspect() {
     const list = this.state;
@@ -205,45 +211,15 @@ class ProspectsNew extends Component {
   }
 
   renderAddressFields() {
-    return (
-      <div>
+    return _.map(address_boxes, param => {
+      return (
         <Form.TextArea
-          label={"Address 1"}
-          placeholder={"8000 w foo st"}
-          name={"address1"}
-          key={"address1"}
-          value={this.state.address.address1}
+          {...param}
+          value={this.state.address[param["name"]]}
+          onChange={this.handleAddressChange}
         />
-        <Form.TextArea
-          label={"Address 2"}
-          placeholder={"APT 309"}
-          name={"address2"}
-          key={"address2"}
-          value={this.state.address.address2}
-        />
-        <Form.TextArea
-          label={"City"}
-          placeholder={"Colorado"}
-          name={"city"}
-          key={"city"}
-          value={this.state.address.city}
-        />
-        <Form.TextArea
-          label={"State"}
-          placeholder={"state"}
-          name={"state"}
-          key={"state"}
-          value={this.state.address.state}
-        />
-        <Form.TextArea
-          label={"Zip"}
-          placeholder={"zip"}
-          name={"zip"}
-          key={"zip"}
-          value={this.state.address.zip}
-        />
-      </div>
-    );
+      );
+    });
   }
 
   handleLabelAddition(label) {
@@ -341,6 +317,7 @@ class ProspectsNew extends Component {
                   recreation: this.state.recreation,
                   labels: this.state.labels,
                   additional_notes: notes,
+                  address: this.state.address,
                   closedDeal: "",
                   editingProspect: this.state.editingProspect,
                   masterLabels: this.state.masterList

@@ -69,7 +69,7 @@ module.exports = app => {
     if (!req.session.user) {
       res.status(401).send({ error: "unauthorized" });
     }
-
+    
     if (req.body.values.editingProspect) {
       let old_notes = req.body.values.old_notes
       let form_new_note = formatNotes(req.body.values.additional_notes);
@@ -96,6 +96,7 @@ module.exports = app => {
         met_date: req.body.values.met_date,
         labels: req.body.values.labels,
         lead: req.body.values.lead,
+        address: req.body.values.address,
         prospect_created: req.body.values.prospect_created,
         _creator: req.session.user.user.memberid
       });
@@ -133,6 +134,7 @@ module.exports = app => {
         met_date: req.body.values.met_date,
         labels: req.body.values.labels,
         lead: req.body.values.lead,
+        address: req.body.values.address,
         prospect_created: new Date(),
         _creator: req.session.user.user.memberid
       });

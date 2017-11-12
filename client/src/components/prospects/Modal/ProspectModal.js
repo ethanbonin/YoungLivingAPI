@@ -98,6 +98,7 @@ class ProspectModal extends Component {
                 additional_notes: this.props.prospect.additional_notes,
                 closedDeal: this.props.prospect.closedDeal,
                 editingProspect: true,
+                address: this.props.prospect.address,
                 masterList: this.props.labels.prospectslabels[0].labels
               }
             }}
