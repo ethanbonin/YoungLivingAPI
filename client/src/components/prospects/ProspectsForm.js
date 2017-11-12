@@ -58,6 +58,8 @@ class ProspectsNew extends Component {
       };
     }
 
+    console.log("this.state.moment", this.state.met_date.format())
+
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleDateChange = this.handleDateChange.bind(this);
@@ -301,7 +303,7 @@ class ProspectsNew extends Component {
                   _id: this.state._id,
                   first: this.state.first,
                   last: this.state.last,
-                  met_date: "UPDATING",
+                  met_date: this.state.met_date.format(),
                   email: this.state.email,
                   phone: this.state.phone,
                   invite_to_class: this.state.invite_to_class,

@@ -2,6 +2,7 @@ const devNotes = [
   {
     "11/13/2017": {
       bug_fixes: [
+        "DATE - I fixed a bug where when you created a new prospect, then immediate went to go edit them, it would create an invalid date. Well, that no longer happens. :) "
       ],
       new_features: [
         "TAGS - You can now add 'tags' to Prospects. It will help you filter and keep track of cerntain properties of that prospect list. You can add tags to new prospect or edit your existing prospect and add tags."

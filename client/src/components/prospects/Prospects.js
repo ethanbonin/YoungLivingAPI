@@ -391,15 +391,8 @@ class Prospects extends Component {
         return _.map(prospects.prospects, prospect => {
           i = i + 1;
 
-          let date_met;
-          let formatted_date_met;
-
-          if (prospect.met_date === "UPDATING") {
-            formatted_date_met = "UPDATING";
-          } else {
-            date_met = new Date(prospect.met_date);
-            formatted_date_met = this.formatDate(date_met);
-          }
+          let date_met = new Date(prospect.met_date);
+          let formatted_date_met = this.formatDate(date_met);
 
           const date_closed = new Date(prospect.closedDeal);
           const formatted_date_closed = this.formatDate(date_closed);
