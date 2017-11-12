@@ -58,8 +58,6 @@ class ProspectsNew extends Component {
       };
     }
 
-    console.log("this.state.moment", this.state.met_date.format())
-
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleDateChange = this.handleDateChange.bind(this);

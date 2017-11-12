@@ -6,12 +6,11 @@ import _ from "lodash";
 import "react-datepicker/dist/react-datepicker.css";
 import { box_values } from "../raw_data";
 import * as actions from "../../../actions";
-
+import "../prospectscss/prospects.css";
 
 class FormDataModal extends Component {
   constructor(props) {
     super(props);
-
     this.state = {
       met_date: moment(),
       first: this.props.data.first,
@@ -32,6 +31,7 @@ class FormDataModal extends Component {
       occupation: this.props.data.occupation,
       recreation: this.props.data.recreation,
       additional_notes: this.props.data.additional_notes,
+      address: this.props.data.address,
       closedDeal: this.props.data.closedDeal,
       labels: this.props.data.labels,
       new_note: ""
@@ -154,6 +154,18 @@ class FormDataModal extends Component {
     });
   }
 
+  renderAddress() {
+    if (this.props.data.address !== undefined) {
+      return (
+        <Label className="address_modal_label" size="large">
+          {this.props.data.address.address1}, {this.props.data.address.address2},{" "}
+          {this.props.data.address.city}, {this.props.data.address.state},{" "}
+          {this.props.data.address.zip}
+        </Label>
+      );
+    }
+  }
+
   renderPersonalInfo() {
     const headerValue = {
       phone: {
@@ -196,7 +208,10 @@ class FormDataModal extends Component {
             <Label size="huge" color="teal">
               Personal Info
             </Label>
-            <Segment key={1}>{this.renderPersonalInfo()}</Segment>
+            <Segment key={1}>
+              {this.renderPersonalInfo()}
+              {this.renderAddress()}
+            </Segment>
             <Label ribbon={false} size="huge" color="teal">
               Check-List
             </Label>

@@ -49,6 +49,10 @@ class ProspectModal extends Component {
       warm: "orange",
       hot: "red"
     };
+    let address = { address1: "", address2: "", city: "", state: "", zip: "" }
+    if (this.props.prospect.address !== undefined){
+      address = this.props.prospect.address;
+    }
 
     return (
       <Modal dimmer open size="fullscreen">
@@ -98,7 +102,7 @@ class ProspectModal extends Component {
                 additional_notes: this.props.prospect.additional_notes,
                 closedDeal: this.props.prospect.closedDeal,
                 editingProspect: true,
-                address: this.props.prospect.address,
+                address: address,
                 masterList: this.props.labels.prospectslabels[0].labels
               }
             }}
