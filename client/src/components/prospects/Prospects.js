@@ -75,11 +75,13 @@ class Prospects extends Component {
     let unpruned_list = prospects;
     let pruned_list = [];
 
-    unpruned_list.prospects.forEach(prospect => {
-      if (prospect.closedDeal !== "") {
-        pruned_list.push(prospect);
-      }
-    });
+    if (unpruned_list !== undefined){
+      unpruned_list.prospects.forEach(prospect => {
+        if (prospect.closedDeal !== "") {
+          pruned_list.push(prospect);
+        }
+      });
+    }
 
     return { prospects: pruned_list };
   }
