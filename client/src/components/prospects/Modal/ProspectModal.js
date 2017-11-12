@@ -17,7 +17,7 @@ class ProspectModal extends Component {
     this.togglePerson = this.togglePerson.bind(this);
 
     let labels = []
-    if (props.labels.prospectslabels[0].labels !== undefined){
+    if (props.labels.prospectslabels !== undefined){
       labels = props.labels.prospectslabels[0].labels;
     }
 
