@@ -152,7 +152,8 @@ class DashBoard extends Component {
           <p>
             In order to use this application, you must agree to the terms of
             service. If you interested in reading the full EULA Agreement, click
-            here
+            {" "}
+             <a href="/EULA">here</a>
           </p>
         </Modal.Content>
         <Modal.Actions>

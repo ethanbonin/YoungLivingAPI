@@ -9,7 +9,7 @@ import Landing from "./dashboard/Landing";
 import DashBoard from "./dashboard/Dashboard";
 import Prospects from "./prospects/Prospects";
 import ProspectsNew from "./prospects/Form/ProspectsForm";
-import NoMatch from "./NoMatch";
+import EULA from './EULA';
 
 const history = createHistory();
 
@@ -29,11 +29,12 @@ class App extends Component {
   }
 
   redirectIfNotLoggedIn() {
-    if (history.location.pathname !== "/" && !this.props.auth) {
-      history.push("/");
-    }
 
-    if (history.location.pathname === "/" && this.props.auth) {
+    if (history.location.pathname === "/EULA"){
+      history.push('/EULA');
+    } else if (history.location.pathname !== "/" && !this.props.auth){
+      history.push("/");
+    } else if (history.location.pathname === "/" && this.props.auth){
       history.push("/dashboard");
     }
   }
@@ -53,8 +54,8 @@ class App extends Component {
               path={`/dashboard/prospects/new`}
               component={ProspectsNew}
             />
-            <Route component={NoMatch} />
           </Switch>
+          <Route exact path={`/EULA`} component={EULA} />
         </div>
       </Router>
     );
