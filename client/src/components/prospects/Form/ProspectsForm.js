@@ -3,21 +3,21 @@ import LabelsDropDown from "./LabelsDropDown";
 
 //Personal Form Components
 import PersonalInfo from "./PersonalInfoComponent";
+import SaveCancelButtons from "./SaveCancelComponent";
+import RedirectComponent from "./Redirect";
+import RadioButtons from "./RadioButtonsComponent";
+import AddressField from "./AddressFieldsComponent";
 
-import { Form, Segment, Button, Label } from "semantic-ui-react";
+import { Form, Segment, Label } from "semantic-ui-react";
 import DatePicker from "react-datepicker";
 import moment from "moment";
 import { connect } from "react-redux";
 import * as actions from "../../../actions";
-import { Redirect } from "react-router";
-import { Link } from "react-router-dom";
 import _ from "lodash";
 import "react-datepicker/dist/react-datepicker.css";
 import {
   box_values,
-  lead,
   details,
-  address_boxes,
   form_state_initializer
 } from "../raw_data";
 var ObjectID = require("bson-objectid");
@@ -69,6 +69,10 @@ class ProspectsNew extends Component {
     let address = this.state.address;
     address[name] = value;
     this.setState({ address: address });
+  };
+
+  handleRadioChange = e => {
+    this.setState({ lead: e.target.id });
   };
 
   checkEmail() {
@@ -128,23 +132,6 @@ class ProspectsNew extends Component {
     });
   }
 
-  renderRadioButtons() {
-    return _.map(lead, ({ value, label }) => {
-      const v = value;
-      return (
-        <p key={value}>
-          <input
-            name="group1"
-            type="radio"
-            id={value}
-            onChange={() => this.setState({ lead: v })}
-          />
-          <label htmlFor={value}>{label}</label>
-        </p>
-      );
-    });
-  }
-
   renderPersonalDetails() {
     return _.map(details, ({ key, value, label, placeholder }) => {
       return (
@@ -160,57 +147,17 @@ class ProspectsNew extends Component {
     });
   }
 
-  renderAddressFields() {
-    return _.map(address_boxes, param => {
-      return (
-        <Form.TextArea
-          {...param}
-          value={this.state.address[param["name"]]}
-          onChange={this.handleAddressChange}
-        />
-      );
-    });
-  }
-
   handleLabelAddition(label) {
     const formatted_labels = _.map(label, value => {
       return { key: value, text: value, value: value };
     });
     this.setState({ labels: formatted_labels });
-
     let masterList = this.state.masterList;
-
     var concatMaster = masterList.concat(formatted_labels);
     var uniqueMaster = _.uniqBy(concatMaster, function(e) {
       return e.key.toLowerCase();
     });
-
     this.setState({ masterList: uniqueMaster });
-  }
-
-  goBackToProspects(truthy) {
-    let notes;
-    if (this.state.old_notes !== undefined) {
-      notes = this.state.old_notes;
-    } else {
-      notes = { date: new Date(), message: this.state.additional_notes };
-    }
-    if (truthy) {
-      return (
-        <Redirect
-          push
-          to={{
-            pathname: "/dashboard/prospects",
-            state: {
-              ...this.state,
-              met_date: this.state.met_date.format(),
-              additional_notes: notes
-            }
-          }}
-        />
-      );
-    }
-    return null;
   }
 
   renderPersonal() {
@@ -249,24 +196,6 @@ class ProspectsNew extends Component {
     );
   }
 
-  renderSaveCancelButtons() {
-    return (
-      <Form.Group>
-        <div style={{ margin: "auto auto" }}>
-          <Button.Group>
-            <Button as={Link} to={"/dashboard/prospects"}>
-              Cancel
-            </Button>
-            <Button.Or />
-            <Button color="teal" positive>
-              Save
-            </Button>
-          </Button.Group>
-        </div>
-      </Form.Group>
-    );
-  }
-
   render() {
     return (
       <Segment
@@ -278,15 +207,20 @@ class ProspectsNew extends Component {
             {this.renderDateMet()}
             <Segment>
               <label>LEAD</label>
-              {this.renderRadioButtons()}
+              <RadioButtons handleRadioChange={this.handleRadioChange} />
             </Segment>
             {this.renderLabelsInput()}
             <Segment>{this.renderCheckBoxes()}</Segment>
-            <Segment>{this.renderAddressFields()}</Segment>
+            <Segment>
+              <AddressField
+                data={this.state}
+                handleAddressChange={this.handleAddressChange}
+              />
+            </Segment>
             {this.renderPersonalDetails()}
-            {this.renderSaveCancelButtons()}
+            <SaveCancelButtons />
           </Form>
-          {this.goBackToProspects(this.state.goBack)}
+          <RedirectComponent data={this.state} truthy={this.state.goBack} />
         </div>
       </Segment>
     );
