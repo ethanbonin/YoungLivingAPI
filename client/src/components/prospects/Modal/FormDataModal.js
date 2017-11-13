@@ -13,30 +13,9 @@ class FormDataModal extends Component {
     super(props);
     this.state = {
       met_date: moment(),
-      first: this.props.data.first,
-      last: this.props.data.last,
-      email: this.props.data.email,
-      phone: this.props.data.phone,
-      first_call: this.props.data.first_call,
-      mail_sample: this.props.data.mail_sample,
-      follow_up: this.props.data.follow_up,
-      emailed: this.props.data.emailed,
-      invite_to_class: this.props.data.invite_to_class,
-      add_facebook_group: this.props.data.add_facebook_group,
-      texting_marketing: this.props.data.texting_marketing,
-      host_a_class: this.props.data.host_a_class,
-      know_them: this.props.data.know_them,
-      health_needs: this.props.data.health_needs,
-      family: this.props.data.family,
-      occupation: this.props.data.occupation,
-      recreation: this.props.data.recreation,
-      additional_notes: this.props.data.additional_notes,
-      address: this.props.data.address,
-      closedDeal: this.props.data.closedDeal,
-      labels: this.props.data.labels,
-      new_note: ""
+      new_note: "",
+      ...props.data
     };
-
     this.handleNoteSubmission = this.handleNoteSubmission.bind(this);
   }
 
