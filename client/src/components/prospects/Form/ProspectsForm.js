@@ -188,98 +188,105 @@ class ProspectsNew extends Component {
     this.setState({ masterList: uniqueMaster });
   }
 
-  render() {
+  goBackToProspects(truthy) {
     let notes;
     if (this.state.old_notes !== undefined) {
       notes = this.state.old_notes;
     } else {
       notes = { date: new Date(), message: this.state.additional_notes };
     }
+    if (truthy) {
+      return (
+        <Redirect
+          push
+          to={{
+            pathname: "/dashboard/prospects",
+            state: {
+              ...this.state,
+              met_date: this.state.met_date.format(),
+              additional_notes: notes
+            }
+          }}
+        />
+      );
+    }
+    return null;
+  }
+
+  renderPersonal() {
+    return (
+      <Form.Group>
+        <PersonalInfo info={this.state} handleChange={this.handleChange} />
+      </Form.Group>
+    );
+  }
+
+  renderDateMet() {
+    return (
+      <Form.Field>
+        <label>Date that you met</label>
+        <DatePicker
+          selected={this.state.met_date}
+          onChange={this.handleDateChange}
+        />
+      </Form.Field>
+    );
+  }
+
+  renderLabelsInput() {
+    return (
+      <Segment>
+        <Label>
+          Choose Tags for this Prospect. This is to help you better organize
+          your prospects.
+        </Label>
+        <LabelsDropDown
+          masterList={this.state.masterList}
+          handleLabelAddition={this.handleLabelAddition}
+          labelsChosen={this.state.labels}
+        />
+      </Segment>
+    );
+  }
+
+  renderSaveCancelButtons() {
+    return (
+      <Form.Group>
+        <div style={{ margin: "auto auto" }}>
+          <Button.Group>
+            <Button as={Link} to={"/dashboard/prospects"}>
+              Cancel
+            </Button>
+            <Button.Or />
+            <Button color="teal" positive>
+              Save
+            </Button>
+          </Button.Group>
+        </div>
+      </Form.Group>
+    );
+  }
+
+  render() {
     return (
       <Segment
         style={{ marginTop: "3em", marginLeft: "6em", marginRight: "6em" }}
       >
         <div>
           <Form onSubmit={this.handleSubmit}>
-            <Form.Group widths="equal">
-              <PersonalInfo
-                info={this.state}
-                handleChange={this.handleChange}
-              />
-            </Form.Group>
-            <Form.Field width={4}>
-              <label>Date that you met</label>
-              <DatePicker
-                selected={this.state.met_date}
-                onChange={this.handleDateChange}
-              />
-            </Form.Field>
+            {this.renderPersonal()}
+            {this.renderDateMet()}
             <Segment>
               <label>LEAD</label>
               {this.renderRadioButtons()}
             </Segment>
-            <Segment>
-              <Label>
-                Choose Tags for this Prospect. This is to help you better
-                organize your prospects.
-              </Label>
-              <LabelsDropDown
-                masterList={this.state.masterList}
-                handleLabelAddition={this.handleLabelAddition}
-                labelsChosen={this.state.labels}
-              />
-            </Segment>
+            {this.renderLabelsInput()}
             <Segment>{this.renderCheckBoxes()}</Segment>
             <Segment>{this.renderAddressFields()}</Segment>
             {this.renderPersonalDetails()}
-            <Form.Group>
-              <div style={{ margin: "auto auto" }}>
-                <Button.Group>
-                  <Button as={Link} to={"/dashboard/prospects"}>
-                    Cancel
-                  </Button>
-                  <Button.Or />
-                  <Button color="teal" positive>
-                    Save
-                  </Button>
-                </Button.Group>
-              </div>
-            </Form.Group>
+            {this.renderSaveCancelButtons()}
           </Form>
-
-          {this.state.goBack ? (
-            <Redirect
-              push
-              to={{
-                pathname: "/dashboard/prospects",
-                state: {
-                  _id: this.state._id,
-                  first: this.state.first,
-                  last: this.state.last,
-                  met_date: this.state.met_date.format(),
-                  email: this.state.email,
-                  phone: this.state.phone,
-                  invite_to_class: this.state.invite_to_class,
-                  add_facebook_group: this.state.add_facebook_group,
-                  texting_marketing: this.state.texting_marketing,
-                  emailed: this.state.emailed,
-                  host_a_class: this.state.host_a_class,
-                  know_them: this.state.know_them,
-                  lead: this.state.lead,
-                  health_needs: this.state.health_needs,
-                  family: this.state.family,
-                  occupation: this.state.occupation,
-                  recreation: this.state.recreation,
-                  labels: this.state.labels,
-                  additional_notes: notes,
-                  address: this.state.address,
-                  closedDeal: "",
-                  editingProspect: this.state.editingProspect,
-                  masterLabels: this.state.masterList
-                }
-              }}
-            />
-          ) : null}
+          {this.goBackToProspects(this.state.goBack)}
         </div>
       </Segment>
     );

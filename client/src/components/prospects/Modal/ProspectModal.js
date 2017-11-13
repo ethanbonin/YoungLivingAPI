@@ -24,7 +24,7 @@ class ProspectModal extends Component {
 
     this.state = {
       labelsChosen: props.prospect.labels,
-      masterLabels: labels
+      masterList: labels
     }
   }
 
@@ -73,7 +73,7 @@ class ProspectModal extends Component {
           >
             {this.props.prospect.lead.toUpperCase()}
           </Label>
-          <LabelsModal labelsChosen={this.state.labelsChosen} masterLabels={this.state.masterLabels}/>
+          <LabelsModal labelsChosen={this.state.labelsChosen} masterList={this.state.masterList}/>
           <Button
             style={{ float: "right" }}
             color="teal"
@@ -110,7 +110,7 @@ class ProspectModal extends Component {
                 closedDeal: this.props.prospect.closedDeal,
                 editingProspect: true,
                 address: address,
-                masterList: this.state.masterLabels
+                masterList: this.state.masterList
               }
             }}
 

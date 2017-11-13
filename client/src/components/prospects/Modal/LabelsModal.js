@@ -4,7 +4,7 @@ import { Dropdown } from "semantic-ui-react";
 class LabelsModal extends Component {
   constructor(props) {
     super(props);
-    let masterOptions = props.masterLabels;
+    let masterOptions = props.masterList;
     var list = [];
     if (props.labelsChosen !== []) {
       this.props.labelsChosen.forEach(label => {

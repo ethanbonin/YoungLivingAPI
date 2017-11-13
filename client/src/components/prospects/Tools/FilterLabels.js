@@ -6,6 +6,7 @@ import * as actions from "../../../actions";
 class FilterLabels extends Component {
   constructor(props) {
     super(props);
+    console.log("THE PROPS", props);
     this.state = {
       sort_by: ""
     };
@@ -36,7 +37,7 @@ class FilterLabels extends Component {
           </Label>
           <Dropdown.Divider />
           <Dropdown.Menu scrolling>
-            {this.props.masterLabels.map(option => (
+            {this.props.masterList.map(option => (
               <Dropdown.Item
                 key={option.value}
                 {...option}

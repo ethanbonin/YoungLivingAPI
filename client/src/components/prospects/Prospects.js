@@ -31,7 +31,7 @@ class Prospects extends Component {
       filter: [],
       filter_list_empty: true,
       closed: false,
-      masterLabels: [],
+      masterList: [],
       closedProspectList: this.findClosedList(this.props.prospects)
     };
 
@@ -55,7 +55,7 @@ class Prospects extends Component {
       const prospect = this.props.location.state;
       let p_list = this.state.prospectsList;
       this.setState({
-        masterLabels: this.props.location.state.masterLabels
+        masterList: this.props.location.state.masterList
       });
       if (this.props.location.state.editingProspect) {
         var index = _.findIndex(p_list.prospects, { _id: prospect._id });
@@ -66,7 +66,7 @@ class Prospects extends Component {
       }
     } else {
       this.setState({
-        masterLabels: this.props.labels.prospectslabels[0].labels
+        masterList: this.props.labels.prospectslabels[0].labels
       });
     }
   }
@@ -469,7 +469,7 @@ class Prospects extends Component {
           ) : null}
 
           <FilterLabels
-            masterLabels={this.state.masterLabels}
+            masterList={this.state.masterList}
             handleFilterSelect={this.handleFilterSelect}
           />
           <SortDropDown handleSortSelect={this.handleSortSelect} />
