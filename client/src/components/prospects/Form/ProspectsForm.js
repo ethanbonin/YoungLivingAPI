@@ -1,25 +1,25 @@
+//Third Party modules
 import React, { Component } from "react";
-import LabelsDropDown from "./LabelsDropDown";
+import { Form, Segment, Label } from "semantic-ui-react";
+import DatePicker from "react-datepicker";
+import moment from "moment";
+import { connect } from "react-redux";
+import _ from "lodash";
+import "react-datepicker/dist/react-datepicker.css";
 
 //Personal Form Components
+import LabelsDropDown from "./LabelsDropDown";
 import PersonalInfo from "./PersonalInfoComponent";
 import SaveCancelButtons from "./SaveCancelComponent";
 import RedirectComponent from "./Redirect";
 import RadioButtons from "./RadioButtonsComponent";
 import AddressField from "./AddressFieldsComponent";
+import PersonalDetails from "./PersonalDetailsComponent";
+import Checkboxes from "./CheckboxesComponent";
 
-import { Form, Segment, Label } from "semantic-ui-react";
-import DatePicker from "react-datepicker";
-import moment from "moment";
-import { connect } from "react-redux";
+
 import * as actions from "../../../actions";
-import _ from "lodash";
-import "react-datepicker/dist/react-datepicker.css";
-import {
-  box_values,
-  details,
-  form_state_initializer
-} from "../raw_data";
+import { form_state_initializer } from "../raw_data";
 var ObjectID = require("bson-objectid");
 
 class ProspectsNew extends Component {
@@ -115,38 +115,6 @@ class ProspectsNew extends Component {
     });
   };
 
-  renderCheckBoxes() {
-    return _.map(box_values, ({ value, message }) => {
-      return (
-        <p key={value}>
-          <input
-            type="checkbox"
-            id={value}
-            name={value}
-            onChange={this.toggle}
-            checked={this.state[value]}
-          />
-          <label htmlFor={value}>{message}</label>
-        </p>
-      );
-    });
-  }
-
-  renderPersonalDetails() {
-    return _.map(details, ({ key, value, label, placeholder }) => {
-      return (
-        <Form.TextArea
-          label={label}
-          placeholder={placeholder}
-          name={value}
-          onChange={this.handleChange}
-          key={key}
-          value={this.state[value]}
-        />
-      );
-    });
-  }
-
   handleLabelAddition(label) {
     const formatted_labels = _.map(label, value => {
       return { key: value, text: value, value: value };
@@ -210,14 +178,19 @@ class ProspectsNew extends Component {
               <RadioButtons handleRadioChange={this.handleRadioChange} />
             </Segment>
             {this.renderLabelsInput()}
-            <Segment>{this.renderCheckBoxes()}</Segment>
+            <Segment>
+              <Checkboxes data={this.state} toggle={this.toggle} />
+            </Segment>
             <Segment>
               <AddressField
                 data={this.state}
                 handleAddressChange={this.handleAddressChange}
               />
             </Segment>
-            {this.renderPersonalDetails()}
+            <PersonalDetails
+              data={this.state}
+              handleChange={this.handleChange}
+            />
             <SaveCancelButtons />
           </Form>
           <RedirectComponent data={this.state} truthy={this.state.goBack} />
