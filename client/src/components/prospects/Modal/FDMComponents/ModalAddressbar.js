@@ -2,7 +2,6 @@ import React from 'react'
 import {Label} from "semantic-ui-react";
 
 const AddressBar = (data) => {
-  console.log(data.data.address);
   if (data.data.address !== undefined) {
     return (
       <Label className="address_modal_label" size="large">

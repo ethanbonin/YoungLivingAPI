@@ -4,13 +4,11 @@ import { Router, Route, Switch } from "react-router-dom";
 import { connect } from "react-redux";
 import * as actions from "../actions";
 
-import { Message } from "semantic-ui-react";
-
 import Header from "./Header";
 import Landing from "./dashboard/Landing";
 import DashBoard from "./dashboard/Dashboard";
 import Prospects from "./prospects/Prospects";
-import ProspectsNew from "./prospects/ProspectsForm";
+import ProspectsNew from "./prospects/Form/ProspectsForm";
 import NoMatch from "./NoMatch";
 
 const history = createHistory();
@@ -44,12 +42,6 @@ class App extends Component {
     return (
       <Router history={history}>
         <div>
-          {/* <Message negative>
-            <Message.Header>
-              PERFORMING MAINTENANCE
-            </Message.Header>
-            <p>You might not be able to log in or perform some of the functions</p>
-          </Message> */}
           <Header />
           {this.redirectIfNotLoggedIn()}
           <Switch>
@@ -72,5 +64,12 @@ class App extends Component {
 function mapStateToProps({ auth }) {
   return { auth };
 }
+
+/* <Message negative>
+  <Message.Header>
+    PERFORMING MAINTENANCE
+  </Message.Header>
+  <p>You might not be able to log in or perform some of the functions</p>
+</Message> */
 
 export default connect(mapStateToProps, actions)(App);

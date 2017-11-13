@@ -1,17 +1,22 @@
 import React, { Component } from "react";
 import LabelsDropDown from "./LabelsDropDown";
 
+//Personal Form Components
+import PersonalInfo from './PersonalInfoComponent';
+
 import { Form, Segment, Button, Label } from "semantic-ui-react";
 import DatePicker from "react-datepicker";
 import moment from "moment";
 import { connect } from "react-redux";
-import * as actions from "../../actions";
+import * as actions from "../../../actions";
 import { Redirect } from "react-router";
 import { Link } from "react-router-dom";
 import _ from "lodash";
 import "react-datepicker/dist/react-datepicker.css";
-import { box_values, info, lead, details, address_boxes } from "./raw_data";
+import { box_values, lead, details, address_boxes, form_state_initializer } from "../raw_data";
 var ObjectID = require("bson-objectid");
+
+
 
 class ProspectsNew extends Component {
   constructor(props) {
@@ -27,38 +32,11 @@ class ProspectsNew extends Component {
       this.state = {
         _id: NEW_ID,
         met_date: moment(),
-        first: "",
-        last: "",
-        email: "",
-        phone: "",
-        invite_to_class: false,
-        add_facebook_group: false,
-        texting_marketing: false,
-        emailed: false,
-        host_a_class: false,
-        know_them: "",
-        lead: "warm",
-        health_needs: "",
-        family: "",
-        occupation: "",
-        recreation: "",
-        additional_notes: "",
-        closedDeal: "",
-        first_error: false,
-        last_error: false,
-        email_error: false,
-        phone_error: false,
-        labels: [],
-        email_error_format: false,
-        phone_error_format: false,
-        goBack: false,
-        editingProspect: false,
-        address: { address1: "", address2: "", city: "", state: "", zip: "" },
+        ...form_state_initializer,
         masterList: this.props.labels.prospectslabels[0].labels
       };
     }
 
-    this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleDateChange = this.handleDateChange.bind(this);
     this.renderPersonalInfo = this.renderPersonalInfo.bind(this);
@@ -149,35 +127,6 @@ class ProspectsNew extends Component {
     });
   }
 
-  renderPersonalInfo() {
-    return _.map(info, ({ value, label }) => {
-      const v = value + "_error";
-      const v_format = value + "_error_format";
-      return (
-        <div style={{ margin: "1em" }} key={value}>
-          <Form.Input
-            label={label}
-            placeholder={label}
-            name={value}
-            onChange={this.handleChange}
-            error={this.state[v]}
-            value={this.state[value]}
-          />
-          {this.state[v] ? (
-            <Label basic color="red" pointing>
-              Please enter a value
-            </Label>
-          ) : null}
-          {this.state[v_format] ? (
-            <Label basic color="red" pointing>
-              Please enter the correct format
-            </Label>
-          ) : null}
-        </div>
-      );
-    });
-  }
-
   renderRadioButtons() {
     return _.map(lead, ({ value, label }) => {
       const v = value;
@@ -251,7 +200,7 @@ class ProspectsNew extends Component {
       >
         <div>
           <Form onSubmit={this.handleSubmit}>
-            <Form.Group widths="equal">{this.renderPersonalInfo()}</Form.Group>
+            <Form.Group widths="equal"><PersonalInfo info={this.state} handleChange={this.handleChange}/></Form.Group>
             <Form.Field width={4}>
               <label>Date that you met</label>
               <DatePicker

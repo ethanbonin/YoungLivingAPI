@@ -14,7 +14,8 @@ const box_values = [
   {
     value: "host_a_class",
     message: "Asked if willing to host a class"
-  },{
+  },
+  {
     value: "emailed",
     message: "Emailed"
   }
@@ -59,33 +60,33 @@ const address_boxes = [
     label: "Address 1",
     placeholder: "80001 w frankford ave",
     name: "address1",
-    key: "address1",
+    key: "address1"
   },
   {
     label: "Address 2",
     placeholder: "APT 309",
     name: "address2",
-    key: "address2",
+    key: "address2"
   },
   {
     label: "City",
     placeholder: "Denver",
     name: "city",
-    key: "city",
+    key: "city"
   },
   {
     label: "State",
     placeholder: "Colorado",
     name: "state",
-    key: "state",
+    key: "state"
   },
   {
     label: "zip",
     placeholder: "Zip",
     name: "zip",
-    key: "zip",
+    key: "zip"
   }
-]
+];
 
 const details = [
   {
@@ -116,63 +117,93 @@ const details = [
     key: "290837recreation",
     value: "recreation",
     label: "Recreational Activities",
-    placeholder: "Their hobbies include swimming and sky diving on a normal basis"
+    placeholder:
+      "Their hobbies include swimming and sky diving on a normal basis"
   },
   {
     key: "019219028addtional_notes",
     value: "additional_notes",
     label: "Additional Notes",
     placeholder: "Totally forgot to add a note about this..."
-  },
+  }
 ];
 
-
 const ordering_options = [
-    {
-      text: 'by Newest (default)',
-      value: 'newest',
-    },
-    {
-      text: 'by Oldest',
-      value: 'oldest',
-    },
-    {
-      text: 'by First',
-      value: 'first',
-    },
-    {
-      text: 'by Last',
-      value: 'last',
-    },
-    {
-      text: 'by Email',
-      value: 'email',
-    },
-    {
-      text: 'by Met Date (recent)',
-      value: 'met_recent',
-    },
-    {
-      text: 'by Met Date (old)',
-      value: 'met_old',
-    },
-    {
-      text: 'by Close Date',
-      value: 'closed_recent',
-    },
-    {
-      text: 'by Not Closed',
-      value: 'closed_old',
-    },
-    {
-      text: 'by Emailed Checked',
-      value: 'emailed_checked',
-    },
-    {
-      text: 'by Emailed UnChecked',
-      value: 'email_unchecked',
-    },
-]
+  {
+    text: "by Newest (default)",
+    value: "newest"
+  },
+  {
+    text: "by Oldest",
+    value: "oldest"
+  },
+  {
+    text: "by First",
+    value: "first"
+  },
+  {
+    text: "by Last",
+    value: "last"
+  },
+  {
+    text: "by Email",
+    value: "email"
+  },
+  {
+    text: "by Met Date (recent)",
+    value: "met_recent"
+  },
+  {
+    text: "by Met Date (old)",
+    value: "met_old"
+  },
+  {
+    text: "by Close Date",
+    value: "closed_recent"
+  },
+  {
+    text: "by Not Closed",
+    value: "closed_old"
+  },
+  {
+    text: "by Emailed Checked",
+    value: "emailed_checked"
+  },
+  {
+    text: "by Emailed UnChecked",
+    value: "email_unchecked"
+  }
+];
+
+const form_state_initializer = {
+  first: "",
+  last: "",
+  email: "",
+  phone: "",
+  invite_to_class: false,
+  add_facebook_group: false,
+  texting_marketing: false,
+  emailed: false,
+  host_a_class: false,
+  know_them: "",
+  lead: "warm",
+  health_needs: "",
+  family: "",
+  occupation: "",
+  recreation: "",
+  additional_notes: "",
+  closedDeal: "",
+  first_error: false,
+  last_error: false,
+  email_error: false,
+  phone_error: false,
+  labels: [],
+  email_error_format: false,
+  phone_error_format: false,
+  goBack: false,
+  editingProspect: false,
+  address: { address1: "", address2: "", city: "", state: "", zip: "" }
+};
 
 module.exports = {
   box_values,
@@ -180,5 +211,6 @@ module.exports = {
   lead,
   details,
   ordering_options,
-  address_boxes
+  address_boxes,
+  form_state_initializer
 };
