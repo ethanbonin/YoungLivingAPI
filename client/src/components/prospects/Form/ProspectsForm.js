@@ -17,7 +17,6 @@ import AddressField from "./AddressFieldsComponent";
 import PersonalDetails from "./PersonalDetailsComponent";
 import Checkboxes from "./CheckboxesComponent";
 
-
 import * as actions from "../../../actions";
 import { form_state_initializer } from "../raw_data";
 var ObjectID = require("bson-objectid");
@@ -128,23 +127,25 @@ class ProspectsNew extends Component {
     this.setState({ masterList: uniqueMaster });
   }
 
-  renderPersonal() {
+  //Personal Info, Date Met and Lead status
+  renderTopHalfOfForm() {
     return (
-      <Form.Group>
-        <PersonalInfo info={this.state} handleChange={this.handleChange} />
-      </Form.Group>
-    );
-  }
-
-  renderDateMet() {
-    return (
-      <Form.Field>
-        <label>Date that you met</label>
-        <DatePicker
-          selected={this.state.met_date}
-          onChange={this.handleDateChange}
-        />
-      </Form.Field>
+      <div>
+        <Form.Group>
+          <PersonalInfo info={this.state} handleChange={this.handleChange} />
+        </Form.Group>
+        <Form.Field>
+          <label>Date that you met</label>
+          <DatePicker
+            selected={this.state.met_date}
+            onChange={this.handleDateChange}
+          />
+        </Form.Field>
+        <Segment>
+          <label>LEAD</label>
+          <RadioButtons handleRadioChange={this.handleRadioChange} />
+        </Segment>
+      </div>
     );
   }
 
@@ -164,6 +165,28 @@ class ProspectsNew extends Component {
     );
   }
 
+  //Check Boxes, and Personal Details
+  renderBottomHalfOfForm(){
+    return (
+      <div>
+        <Segment>
+          <Checkboxes data={this.state} toggle={this.toggle} />
+        </Segment>
+        <Segment>
+          <AddressField
+            data={this.state}
+            handleAddressChange={this.handleAddressChange}
+          />
+        </Segment>
+        <PersonalDetails
+          data={this.state}
+          handleChange={this.handleChange}
+        />
+        <SaveCancelButtons />
+      </div>
+    )
+  }
+
   render() {
     return (
       <Segment
@@ -171,27 +194,9 @@ class ProspectsNew extends Component {
       >
         <div>
           <Form onSubmit={this.handleSubmit}>
-            {this.renderPersonal()}
-            {this.renderDateMet()}
-            <Segment>
-              <label>LEAD</label>
-              <RadioButtons handleRadioChange={this.handleRadioChange} />
-            </Segment>
+            {this.renderTopHalfOfForm()}
             {this.renderLabelsInput()}
-            <Segment>
-              <Checkboxes data={this.state} toggle={this.toggle} />
-            </Segment>
-            <Segment>
-              <AddressField
-                data={this.state}
-                handleAddressChange={this.handleAddressChange}
-              />
-            </Segment>
-            <PersonalDetails
-              data={this.state}
-              handleChange={this.handleChange}
-            />
-            <SaveCancelButtons />
+            {this.renderBottomHalfOfForm()}
           </Form>
           <RedirectComponent data={this.state} truthy={this.state.goBack} />
         </div>
