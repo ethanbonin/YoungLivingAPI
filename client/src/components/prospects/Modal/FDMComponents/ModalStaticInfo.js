@@ -11,8 +11,6 @@ const StaticInfo = (data) => {
     recreation: "Hobbies"
   };
 
-  console.log("DATA", data);
-
   return _.map(data.data, (value, key) => {
     var truth = false;
     truth = _.hasIn(headerValue, key);

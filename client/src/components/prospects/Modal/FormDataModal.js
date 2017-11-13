@@ -11,6 +11,7 @@ import "../prospectscss/prospects.css";
 
 //Custom Data Components
 import StaticInfo from './FDMComponents/ModalStaticInfo';
+import PersonalInfo from './FDMComponents/ModalPersonalInfo';
 
 
 class FormDataModal extends Component {
@@ -123,80 +124,59 @@ class FormDataModal extends Component {
     }
   }
 
-  renderPersonalInfo() {
-    const headerValue = {
-      phone: {
-        header: "Phone",
-        icon: "phone"
-      },
-      email: {
-        header: "Email",
-        icon: "mail"
-      }
-    };
+  renderLeftGridColumn(){
+    return(
+      <Grid.Column>
+        <Label size="huge" color="teal">
+          Personal Info
+        </Label>
+        <Segment key={1}>
+          <PersonalInfo data={this.props.data}/>
+          {this.renderAddress()}
+        </Segment>
+        <Label ribbon={false} size="huge" color="teal">
+          Check-List
+        </Label>
+        <Segment>{this.renderCheckBoxes()}</Segment>
+        <Label size="huge" color="teal">
+          Personal Details
+        </Label>
+        <Segment><StaticInfo data={this.props.data}/></Segment>
+      </Grid.Column>
+    )
+  }
 
-    return _.map(this.props.data, (value, key) => {
-      var truth = false;
-      truth = _.hasIn(headerValue, key);
 
-      if (truth) {
-        return (
-          <div key={key}>
-            <Segment>
-              <Label
-                color="grey"
-                icon={headerValue[key].icon}
-                content={headerValue[key].header}
-                key={headerValue[key]}
-              />
-              <span style={{ marginLeft: "4px" }}>{value}</span>
-            </Segment>
-          </div>
-        );
-      }
-    });
+  renderRightGridColumn(){
+    return(
+      <Grid.Column>
+        <Segment>
+          <Label>New Note</Label>
+          <textarea
+            value={this.state.new_note}
+            style={{ height: 150 }}
+            onChange={e => this.setState({ new_note: e.target.value })}
+          />
+          <Button onClick={this.handleNoteSubmission} color={"teal"}>
+            Submit
+          </Button>
+        </Segment>
+        <br />
+        <br />
+        <Label ribbon={false} size="huge" color="teal">
+          Notes
+        </Label>
+        <Segment>{this.renderNotes()}</Segment>
+      </Grid.Column>
+    )
   }
 
   render() {
     return (
       <div style={{ marginTop: "3em", marginLeft: "1em", marginRight: "1em" }}>
         <Grid columns={2} padded="horizontally">
-          <Grid.Column>
-            <Label size="huge" color="teal">
-              Personal Info
-            </Label>
-            <Segment key={1}>
-              {this.renderPersonalInfo()}
-              {this.renderAddress()}
-            </Segment>
-            <Label ribbon={false} size="huge" color="teal">
-              Check-List
-            </Label>
-            <Segment>{this.renderCheckBoxes()}</Segment>
-            <Label size="huge" color="teal">
-              Personal Details
-            </Label>
-            <Segment><StaticInfo data={this.props.data}/></Segment>
-          </Grid.Column>
-          <Grid.Column>
-            <Segment>
-              <Label>New Note</Label>
-              <textarea
-                value={this.state.new_note}
-                style={{ height: 150 }}
-                onChange={e => this.setState({ new_note: e.target.value })}
-              />
-              <Button onClick={this.handleNoteSubmission} color={"teal"}>
-                Submit
-              </Button>
-            </Segment>
-            <br />
-            <br />
-            <Label ribbon={false} size="huge" color="teal">
-              Notes
-            </Label>
-            <Segment>{this.renderNotes()}</Segment>
-          </Grid.Column>
+          {this.renderLeftGridColumn()}
+          {this.renderRightGridColumn()}
         </Grid>
       </div>
     );
