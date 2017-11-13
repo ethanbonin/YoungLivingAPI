@@ -12,6 +12,7 @@ import "../prospectscss/prospects.css";
 //Custom Data Components
 import StaticInfo from './FDMComponents/ModalStaticInfo';
 import PersonalInfo from './FDMComponents/ModalPersonalInfo';
+import AddressBar from './FDMComponents/ModalAddressbar';
 
 
 class FormDataModal extends Component {
@@ -112,18 +113,6 @@ class FormDataModal extends Component {
     });
   }
 
-  renderAddress() {
-    if (this.props.data.address !== undefined) {
-      return (
-        <Label className="address_modal_label" size="large">
-          {this.props.data.address.address1}, {this.props.data.address.address2},{" "}
-          {this.props.data.address.city}, {this.props.data.address.state},{" "}
-          {this.props.data.address.zip}
-        </Label>
-      );
-    }
-  }
-
   renderLeftGridColumn(){
     return(
       <Grid.Column>
@@ -132,7 +121,7 @@ class FormDataModal extends Component {
         </Label>
         <Segment key={1}>
           <PersonalInfo data={this.props.data}/>
-          {this.renderAddress()}
+          <AddressBar data={this.props.data}/>
         </Segment>
         <Label ribbon={false} size="huge" color="teal">
           Check-List
@@ -145,7 +134,6 @@ class FormDataModal extends Component {
       </Grid.Column>
     )
   }
-
 
   renderRightGridColumn(){
     return(
