@@ -35,7 +35,6 @@ class DashBoard extends Component {
       disagree_message_appear: false
     };
     this.handleDisagreement = this.handleDisagreement.bind(this);
-    this.handleSignOut = this.handleSignOut.bind(this);
     this.handleAgreement = this.handleAgreement.bind(this);
   }
 
@@ -97,8 +96,31 @@ class DashBoard extends Component {
     });
   }
 
+  handleAxiosCall(option){
+    let ext = "";
+    switch (option) {
+      case 0:
+        ext = "/v0/yl/update_terms"
+        break;
+      case 1:
+        ext = "/v0/yl/logout"
+        break;
+      default:
+    }
+
+    axios
+      .get(ext)
+      .then(body => {
+        this.props.fetchUser();
+      })
+      .catch(err => {
+        console.log("There was an error logging out", err);
+      });
+  }
+
   handleAgreement() {
     this.setState({ agreed_to_terms: true });
+    this.handleAxiosCall(0);
     axios
       .get("/v0/yl/update_terms")
       .then(body => {
@@ -111,17 +133,6 @@ class DashBoard extends Component {
 
   handleDisagreement() {
     this.setState({ disagree_message_appear: true });
-  }
-
-  handleSignOut() {
-    axios
-      .get("/v0/yl/logout")
-      .then(body => {
-        this.props.fetchUser();
-      })
-      .catch(err => {
-        console.log("There was an error logging out", err);
-      });
   }
 
   renderDisagreementMessage() {
@@ -140,43 +151,49 @@ class DashBoard extends Component {
           </p>
         </Modal.Content>
         <Modal.Actions>
-          <Button content="Okay" onClick={this.handleSignOut} />
+          <Button content="Okay" onClick={() => this.handleAxiosCall(1)} />
         </Modal.Actions>
       </Modal>
     );
   }
 
+  renderModal(){
+    return (
+      <Modal open={!this.state.agreed_to_terms} basic size="small">
+        <Header icon="archive" content="Agree to Terms of Service" />
+        <Modal.Content>
+          <p>
+            In order to use this application, you must agree to the terms of
+            service. If you interested in reading the full EULA Agreement,
+            click here
+          </p>
+        </Modal.Content>
+        <Modal.Actions>
+          <Button
+            basic
+            color="red"
+            inverted
+            onClick={this.handleDisagreement}
+          >
+            <Icon name="remove" />
+            I Disagree
+          </Button>
+          <Button positive inverted onClick={this.handleAgreement}>
+            <Icon name="checkmark" />
+            I Agree
+          </Button>
+          {this.state.disagree_message_appear
+            ? this.renderDisagreementMessage()
+            : null}
+        </Modal.Actions>
+      </Modal>
+    )
+  }
+
   render() {
     return (
       <div>
-        <Modal open={!this.state.agreed_to_terms} basic size="small">
-          <Header icon="archive" content="Agree to Terms of Service" />
-          <Modal.Content>
-            <p>
-              In order to use this application, you must agree to the terms of
-              service. If you interested in reading the full EULA Agreement,
-              click here
-            </p>
-          </Modal.Content>
-          <Modal.Actions>
-            <Button
-              basic
-              color="red"
-              inverted
-              onClick={this.handleDisagreement}
-            >
-              <Icon name="remove" />
-              I Disagree
-            </Button>
-            <Button positive inverted onClick={this.handleAgreement}>
-              <Icon name="checkmark" />
-              I Agree
-            </Button>
-            {this.state.disagree_message_appear
-              ? this.renderDisagreementMessage()
-              : null}
-          </Modal.Actions>
-        </Modal>
+        {this.renderModal()}
         <div className="container">
           <Card.Group itemsPerRow={2}>{this.renderTabs()}</Card.Group>
           <Segment basic color="teal">
