@@ -113,9 +113,6 @@ class DashBoard extends Component {
       .then(body => {
         this.props.fetchUser();
       })
-      .catch(err => {
-        console.log("There was an error logging out", err);
-      });
   }
 
   handleAgreement() {
