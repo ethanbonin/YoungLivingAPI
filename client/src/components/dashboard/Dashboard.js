@@ -8,6 +8,9 @@ import _ from "lodash";
 import axios from "axios";
 import { devNotes, convert_to_normal } from "./devNotes.js";
 
+import MenuBar from "./Menu"
+import QuickStats from "./DashboardStats/QuickStats"
+
 // https://images.pexels.com/photos/36717/amazing-animal-beautiful-beautifull.jpg?h=350&auto=compress&cs=tinysrgb
 const imageSrc = {
   stats:
@@ -32,7 +35,8 @@ class DashBoard extends Component {
     super();
     this.state = {
       agreed_to_terms: props.auth.user.user.agreed_to_terms,
-      disagree_message_appear: false
+      disagree_message_appear: false,
+      activeItem: 'bio'
     };
     this.handleDisagreement = this.handleDisagreement.bind(this);
     this.handleSignOut = this.handleSignOut.bind(this);
@@ -146,6 +150,8 @@ class DashBoard extends Component {
     );
   }
 
+
+
   render() {
     return (
       <div>
@@ -177,12 +183,14 @@ class DashBoard extends Component {
               : null}
           </Modal.Actions>
         </Modal>
+        <MenuBar/>
         <div className="container">
-          <Card.Group itemsPerRow={2}>{this.renderTabs()}</Card.Group>
-          <Segment basic color="teal">
+          <QuickStats/>
+          {/* <Card.Group itemsPerRow={2}>{this.renderTabs()}</Card.Group> */}
+          {/* <Segment basic color="teal">
             <h1 className="title">Developer Notes</h1>
             <div className="updateContainer">{this.renderDevNotes()}</div>
-          </Segment>
+          </Segment> */}
         </div>
       </div>
     );

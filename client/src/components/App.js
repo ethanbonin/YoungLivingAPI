@@ -54,7 +54,7 @@ class App extends Component {
           {this.redirectIfNotLoggedIn()}
           <Switch>
             <Route exact path="/" component={Landing} />
-            <Route exact path="/dashboard" component={DashBoard}/>
+            <Route exact path="/dashboard" component={DashBoard} />
             <Route exact path={`/dashboard/prospects`} component={Prospects} />
             <Route
               exact

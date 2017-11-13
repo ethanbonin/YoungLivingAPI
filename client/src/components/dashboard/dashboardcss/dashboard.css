@@ -7,3 +7,13 @@
   width: 95%;
   margin: auto;
 }
+
+.quick_stats_header_label {
+  width: 100%;
+  text-align: center;
+}
+
+.grid_stats {
+  padding-left: 25px;
+  padding-top: 1em;
+}
