@@ -4,7 +4,7 @@ var request = require("request");
 var uidrequest = (req, res, next) => {
   var _body = req.body.values;
   var periodid = req.body.values.periodid;
-  var options = {
+  const options = {
     method: "POST",
     uri: "https://www.youngliving.com/vo.dlv.api//reportdata/v2/load",
     headers: {
