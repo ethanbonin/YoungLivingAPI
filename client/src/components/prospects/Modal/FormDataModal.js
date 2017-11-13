@@ -8,6 +8,11 @@ import { box_values } from "../raw_data";
 import * as actions from "../../../actions";
 import "../prospectscss/prospects.css";
 
+
+//Custom Data Components
+import StaticInfo from './FDMComponents/ModalStaticInfo';
+
+
 class FormDataModal extends Component {
   constructor(props) {
     super(props);
@@ -65,33 +70,6 @@ class FormDataModal extends Component {
           <label htmlFor={value}>{message}</label>
         </p>
       );
-    });
-  }
-
-  renderStaticInfo() {
-    const headerValue = {
-      know_them: "How do you Know Them",
-      health_needs: "Health Needs",
-      family: "Family Details",
-      occupation: "Occupation",
-      recreation: "Hobbies"
-    };
-
-    return _.map(this.props.data, (value, key) => {
-      var truth = false;
-      truth = _.hasIn(headerValue, key);
-      if (truth) {
-        return (
-          <Item key={headerValue[key]}>
-            <Item.Header>
-              <Label color="grey" size={"medium"}>
-                {headerValue[key]}
-              </Label>
-            </Item.Header>
-            <Item.Meta style={{ marginLeft: "15px" }}>{value}</Item.Meta>
-          </Item>
-        );
-      }
     });
   }
 
@@ -198,7 +176,7 @@ class FormDataModal extends Component {
             <Label size="huge" color="teal">
               Personal Details
             </Label>
-            <Segment>{this.renderStaticInfo()}</Segment>
+            <Segment><StaticInfo data={this.props.data}/></Segment>
           </Grid.Column>
           <Grid.Column>
             <Segment>
