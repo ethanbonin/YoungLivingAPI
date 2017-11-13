@@ -96,36 +96,26 @@ class DashBoard extends Component {
     });
   }
 
-  handleAxiosCall(option){
+  handleAxiosCall(option) {
     let ext = "";
     switch (option) {
       case 0:
-        ext = "/v0/yl/update_terms"
+        ext = "/v0/yl/update_terms";
         break;
       case 1:
-        ext = "/v0/yl/logout"
+        ext = "/v0/yl/logout";
         break;
       default:
     }
 
-    axios
-      .get(ext)
-      .then(body => {
-        this.props.fetchUser();
-      })
+    axios.get(ext).then(body => {
+      this.props.fetchUser();
+    });
   }
 
   handleAgreement() {
     this.setState({ agreed_to_terms: true });
     this.handleAxiosCall(0);
-    axios
-      .get("/v0/yl/update_terms")
-      .then(body => {
-        this.props.fetchUser();
-      })
-      .catch(err => {
-        console.log("There was an error logging out", err);
-      });
   }
 
   handleDisagreement() {
@@ -154,24 +144,19 @@ class DashBoard extends Component {
     );
   }
 
-  renderModal(){
+  renderModal() {
     return (
       <Modal open={!this.state.agreed_to_terms} basic size="small">
         <Header icon="archive" content="Agree to Terms of Service" />
         <Modal.Content>
           <p>
             In order to use this application, you must agree to the terms of
-            service. If you interested in reading the full EULA Agreement,
-            click here
+            service. If you interested in reading the full EULA Agreement, click
+            here
           </p>
         </Modal.Content>
         <Modal.Actions>
-          <Button
-            basic
-            color="red"
-            inverted
-            onClick={this.handleDisagreement}
-          >
+          <Button basic color="red" inverted onClick={this.handleDisagreement}>
             <Icon name="remove" />
             I Disagree
           </Button>
@@ -184,7 +169,7 @@ class DashBoard extends Component {
             : null}
         </Modal.Actions>
       </Modal>
-    )
+    );
   }
 
   render() {
