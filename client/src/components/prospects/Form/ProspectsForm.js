@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import LabelsDropDown from "./LabelsDropDown";
 
 //Personal Form Components
-import PersonalInfo from './PersonalInfoComponent';
+import PersonalInfo from "./PersonalInfoComponent";
 
 import { Form, Segment, Button, Label } from "semantic-ui-react";
 import DatePicker from "react-datepicker";
@@ -13,10 +13,14 @@ import { Redirect } from "react-router";
 import { Link } from "react-router-dom";
 import _ from "lodash";
 import "react-datepicker/dist/react-datepicker.css";
-import { box_values, lead, details, address_boxes, form_state_initializer } from "../raw_data";
+import {
+  box_values,
+  lead,
+  details,
+  address_boxes,
+  form_state_initializer
+} from "../raw_data";
 var ObjectID = require("bson-objectid");
-
-
 
 class ProspectsNew extends Component {
   constructor(props) {
@@ -39,9 +43,6 @@ class ProspectsNew extends Component {
 
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleDateChange = this.handleDateChange.bind(this);
-    this.renderPersonalInfo = this.renderPersonalInfo.bind(this);
-    this.toggle = this.toggle.bind(this);
-    this.getNewProspect = this.getNewProspect.bind(this);
     this.handleLabelAddition = this.handleLabelAddition.bind(this);
   }
 
@@ -70,12 +71,7 @@ class ProspectsNew extends Component {
     this.setState({ address: address });
   };
 
-  getNewProspect() {
-    const list = this.state;
-    return list;
-  }
-
-  handleSubmit = () => {
+  checkEmail() {
     if (this.state.email !== "") {
       const regex_email = /^([A-Z|a-z|0-9](\.|_){0,1})+[A-Z|a-z|0-9]@([A-Z|a-z|0-9])+((\.){0,1}[A-Z|a-z|0-9]){2}\.[a-z]{2,3}$/;
       const result_email = regex_email.test(this.state.email);
@@ -84,7 +80,9 @@ class ProspectsNew extends Component {
         return;
       }
     }
+  }
 
+  checkPhone() {
     if (this.state.phone !== "") {
       const regex_number = /(\+?( |-|\.)?\d{1,2}( |-|\.)?)?(\(?\d{3}\)?|\d{3})( |-|\.)?(\d{3}( |-|\.)?\d{4})/;
       const result_number = regex_number.test(this.state.phone);
@@ -92,11 +90,14 @@ class ProspectsNew extends Component {
         this.setState({ phone_error_format: !result_number });
         return;
       }
-    }
-
-    if (this.state.phone === "") {
+    } else {
       this.setState({ phone: "0000000000" });
     }
+  }
+
+  handleSubmit = () => {
+    this.checkEmail();
+    this.checkPhone();
 
     this.props.updateLabels(
       this.props.labels.prospectslabels[0]._id,
@@ -200,7 +201,12 @@ class ProspectsNew extends Component {
       >
         <div>
           <Form onSubmit={this.handleSubmit}>
-            <Form.Group widths="equal"><PersonalInfo info={this.state} handleChange={this.handleChange}/></Form.Group>
+            <Form.Group widths="equal">
+              <PersonalInfo
+                info={this.state}
+                handleChange={this.handleChange}
+              />
+            </Form.Group>
             <Form.Field width={4}>
               <label>Date that you met</label>
               <DatePicker
