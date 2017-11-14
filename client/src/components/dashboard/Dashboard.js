@@ -22,9 +22,9 @@ const imageSrc = {
 
 const _TABS = [
   // { name: "Stats", color: "blue", image: imageSrc.stats },
-  { name: "Prospects", color: "pink", image: imageSrc.pros }
+  { name: "Prospects", color: "pink", image: imageSrc.pros },
   // { name: "Downline", color: "green", image: imageSrc.down },
-  // { name: "Alerts", color: "grey", image: imageSrc.alerts }
+  { name: "Communicator", color: "grey", image: imageSrc.alerts }
 ];
 
 class DashBoard extends Component {

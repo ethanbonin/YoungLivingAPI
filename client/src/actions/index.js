@@ -11,7 +11,8 @@ import {
   TOGGLE_PROSPECTS,
   CLOSE_PROSPECTS,
   FETCH_LABELS,
-  UPDATE_LABELS
+  UPDATE_LABELS,
+  UPDATE_PHONE
 } from "./types";
 
 //SAME THING AS BELOW
@@ -122,6 +123,12 @@ export const updateLabels = (_id, body) => {
       .then(res => dispatch({ type: UPDATE_LABELS, payload: res.data }));
   };
 };
+
+export const updatePhoneNumer = (body) => {
+  return function(dispatch){
+    axios.post('/vo/yl/updatePhoneNumber', )
+  }
+}
 
 
 // export const handleToken = token => async dispatch => {

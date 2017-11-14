@@ -19,7 +19,7 @@ class Tab extends Component {
       case "downline":
         return "/dashboard/downline";
       case "alerts":
-        return "/dashboard/alerts";
+        return "/dashboard/communicator";
       default:
         return "/dashboard";
     }

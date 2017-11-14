@@ -9,6 +9,7 @@ import Landing from "./dashboard/Landing";
 import DashBoard from "./dashboard/Dashboard";
 import Prospects from "./prospects/Prospects";
 import ProspectsNew from "./prospects/Form/ProspectsForm";
+import Communicator from './communicator/Communicator';
 import EULA from './EULA';
 
 const history = createHistory();
@@ -54,6 +55,8 @@ class App extends Component {
               path={`/dashboard/prospects/new`}
               component={ProspectsNew}
             />
+            <Route exact path={`/dashboard/communicator`} component={Communicator} />
+
           </Switch>
           <Route exact path={`/EULA`} component={EULA} />
         </div>
