@@ -191,4 +191,11 @@ module.exports = app => {
         res.status(400).send();
       });
   });
+
+
+  app.post('/v0/yl/updatePhoneNumber',(req,res) => {
+      User.updatePhoneNumebr(req.session.user.user.memberid, req.body.phoneNumber);
+      res.send("saved phone number");
+  })
+
 };

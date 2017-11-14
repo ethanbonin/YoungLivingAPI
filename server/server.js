@@ -22,6 +22,9 @@ var {
   new_members_header
 } = require("./header_data/header_data");
 
+
+require('./scheduler').start();
+
 const { User } = require("./db/models/Users");
 
 var app = express();
