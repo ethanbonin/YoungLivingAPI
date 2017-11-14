@@ -26,6 +26,7 @@ class Communicator extends Component {
 
   handleUpdateNumberSubmit = (value) => {
     console.log(value);
+    this.props.updatePhoneNumer(value);
   }
 
 

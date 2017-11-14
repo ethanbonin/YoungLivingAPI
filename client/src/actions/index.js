@@ -126,7 +126,9 @@ export const updateLabels = (_id, body) => {
 
 export const updatePhoneNumer = (body) => {
   return function(dispatch){
-    axios.post('/vo/yl/updatePhoneNumber', )
+    axios.post('/v0/yl/updatePhoneNumber', {phoneNumber: body}).then((res) => {
+        dispatch({type: UPDATE_PHONE, payload: "number saved"});
+    })
   }
 }
 
