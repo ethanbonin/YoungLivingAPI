@@ -8,10 +8,10 @@ const userSchema = new Schema({
   is_member: Date,
   member_name: String,
   phoneNumber: String,
+  timeZone: String,
   agreed_to_terms: Boolean,
   agreed_to_terms_date: Date
 });
-
 
 userSchema.statics.findByCredentials = function(memberid) {
   var User = this;
@@ -23,18 +23,23 @@ userSchema.statics.findByCredentials = function(memberid) {
   });
 };
 
-
-userSchema.statics.updatePhoneNumebr = function(memberid, phoneNumber) {
-  var User = this;
-  return User.findOne({memberid: memberid}).then((err,user) => {
-    if (err){
-      return {err: "Error in saving Phone Number"}
+userSchema.statics.updatePhoneNumebr = function(
+  memberid,
+  phoneNumber,
+  timeZone
+) {
+  User.findOne({ memberid }).then(user => {
+    if (!user) {
+      return { err: "Couldn't find user" };
     }
-    user.phoneNumber = phoneNumber
+    user.phoneNumber = phoneNumber;
+    user.timeZone = timeZone;
     user.save();
-  })
-}
+    return user;
+  });
 
+  return;
+};
 
 var User = mongoose.model("users", userSchema);
 

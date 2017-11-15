@@ -48,7 +48,7 @@ remindersSchema.statics.sendNotifications = function(callback) {
         reminders.forEach(function(reminder) {
             // Create options to send the message
             const options = {
-                to: `+ ${reminder.phoneNumber}`,
+                to: `${reminder.phoneNumber}`,
                 from: process.env.TWILIO_PHONE_NUMBER,
                 /* eslint-disable max-len */
                 body: `Hi ${reminder.name}, ${reminder.reminderMessage}`,

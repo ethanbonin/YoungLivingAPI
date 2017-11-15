@@ -31,9 +31,8 @@ const TwilioRoutes = (app) => {
                 //THESE NEED TO CHANGE TO THESE VARAIBELS
     ////////////////////////////////////////////////////////////
 
-    const timeZone = 'America/Denver'
-    // const phoneNumber = req.session.user.user.phoneNumber;
-    const phoneNumber = '18326473419';
+    const timeZone = req.session.user.user.timeZone;
+    const phoneNumber = req.session.user.user.phoneNumber;
 
     //////////////////////////////////////////////////////////////////
     const reminder = new TwilioReminders({
@@ -68,9 +67,10 @@ const TwilioRoutes = (app) => {
     const updated_reminder = {
       memberid: req.session.user.user.memberid,
       name : req.session.user.user.member_name,
+      phoneNumber: req.session.user.user.phoneNumber,
       notification: 0,
       completed: false,
-      timeZone: 'America/Denver',
+      timeZone:  req.session.user.user.timeZone,
       time: moment(req.body.time),
       reminderMessage: req.body.reminderMessage
     }

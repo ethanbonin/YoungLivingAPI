@@ -12,7 +12,8 @@ import {
   CLOSE_PROSPECTS,
   FETCH_LABELS,
   UPDATE_LABELS,
-  UPDATE_PHONE
+  UPDATE_PHONE,
+  POST_REMINDER
 } from "./types";
 
 //SAME THING AS BELOW
@@ -124,10 +125,18 @@ export const updateLabels = (_id, body) => {
   };
 };
 
-export const updatePhoneNumer = (body) => {
+export const updatePhoneNumer = (phoneNumber, timeZone) => {
   return function(dispatch){
-    axios.post('/v0/yl/updatePhoneNumber', {phoneNumber: body}).then((res) => {
+    axios.post('/v0/yl/updatePhoneNumber', {phoneNumber: phoneNumber, timeZone: timeZone}).then((res) => {
         dispatch({type: UPDATE_PHONE, payload: "number saved"});
+    })
+  }
+}
+
+export const createReminder = (reminder) => {
+  return function(dispatch){
+    axios.post('/v0/yl/reminder/create', (reminder)).then((res) => {
+        dispatch({type: POST_REMINDER, payload: res.data});
     })
   }
 }

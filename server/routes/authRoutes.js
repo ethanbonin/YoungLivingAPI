@@ -194,9 +194,10 @@ module.exports = app => {
 
 
   app.post('/v0/yl/updatePhoneNumber',(req,res) => {
-      console.log(req.body);
-      // User.updatePhoneNumebr(req.session.user.user.memberid, req.body.phoneNumber);
-      // res.send("saved phone number");
+      User.updatePhoneNumebr(req.session.user.user.memberid, req.body.phoneNumber, req.body.timeZone);
+      req.session.user.user.phoneNumber = req.body.phoneNumber;
+      req.session.user.user.timeZone = req.body.timeZone;
+      res.send("saved phone number");
   })
 
 };
