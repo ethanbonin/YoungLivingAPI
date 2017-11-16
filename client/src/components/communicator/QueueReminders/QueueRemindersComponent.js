@@ -1,7 +1,16 @@
 import React from "react";
-import { List, Segment, Button, Header, Divider } from "semantic-ui-react";
+import {
+  List,
+  Segment,
+  Button,
+  Header,
+  Divider,
+  Popup
+} from "semantic-ui-react";
 import _ from "lodash";
 import moment from "moment";
+import Reminder from "../DateTimePickerComponent/ReminderComponent";
+
 
 const QueueReminders = data => {
   const handleDeleteClick = reminder => {
@@ -21,7 +30,12 @@ const QueueReminders = data => {
               <List.Description>{reminder.reminderMessage}</List.Description>
             </List.Content>
             <div className="center_buttons">
-              <Button>Edit</Button>
+              <Popup
+                trigger={<Button content='Edit' />}
+                content={<Reminder />}
+                on="click"
+                position="bottom center"
+              />
               <Button color="red" onClick={() => handleDeleteClick(reminder)}>
                 Delete
               </Button>
