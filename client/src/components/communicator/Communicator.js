@@ -11,7 +11,6 @@ import Reminder from "./DateTimePickerComponent/ReminderComponent";
 import CompletedReminders from "./CompletedReminders/CompletedRemindersComponent";
 import QueueReminders from "./QueueReminders/QueueRemindersComponent";
 
-var ObjectID = require("bson-objectid");
 
 
 class Communicator extends Component {
@@ -43,10 +42,10 @@ class Communicator extends Component {
     this.handleReminderSubmission = this.handleReminderSubmission.bind(this);
   }
 
-  handleReminderSubmission(time, reminderMessage) {
-    let NEW_ID = ObjectID.generate()
-    console.log('the new id', NEW_ID)
-    let reminder = {_id: NEW_ID, time, reminderMessage}
+  handleReminderSubmission(_id, time, reminderMessage) {
+    let reminder = {_id, time, reminderMessage}
+    console.log("inside communicator", reminder);
+
     this.props.createReminder(reminder);
     let rl = this.state.remindersList;
     rl.unshift(reminder);
@@ -68,17 +67,32 @@ class Communicator extends Component {
     this.props.fetchReminders();
   }
 
+  handleEditQueueReminder(_id, time, reminderMessage){
+    let reminder = {_id, time, reminderMessage};
+    this.props.editReminder(reminder);
+    _.find(this.state.remindersList, reminder => {
+      if (reminder._id === _id) {
+        reminder.reminderMessage = reminderMessage;
+        reminder.time = time;
+      }
+    });
+
+    this.props.fetchReminders();
+
+  }
+
   renderCommunicator() {
     return (
       <Grid columns={3}>
         <Grid.Row className="grid_spacing">
-          <Reminder handleReminderSubmission={this.handleReminderSubmission} />
+          <Reminder edit={false} handleReminderSubmission={this.handleReminderSubmission} />
           <Grid.Column>
             <QueueReminders
               data={this.state.remindersList}
               handleDeleteQueueReminder={this.handleDeleteQueueReminder.bind(
                 this
               )}
+              handleEditQueueReminder={this.handleEditQueueReminder.bind(this)}
             />
             <CompletedReminders data={this.state.completedRemindersList} />
           </Grid.Column>

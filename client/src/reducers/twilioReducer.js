@@ -1,4 +1,4 @@
-import { POST_REMINDER, FETCH_REMINDERS, DELETE_REMINDER } from "../actions/types";
+import { POST_REMINDER, FETCH_REMINDERS, DELETE_REMINDER, EDIT_REMINDER } from "../actions/types";
 
 export default function(state = null, action) {
   switch (action.type) {
@@ -10,6 +10,9 @@ export default function(state = null, action) {
       return action.payload;
     case DELETE_REMINDER:
       console.log("DELETE_REMINDER", action.payload);
+      return action.payload;
+    case EDIT_REMINDER:
+      console.log("EDIT_REMINDER", action.payload);
       return action.payload;
     default:
       return state;

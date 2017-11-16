@@ -15,7 +15,8 @@ import {
   UPDATE_PHONE,
   POST_REMINDER,
   FETCH_REMINDERS,
-  DELETE_REMINDER
+  DELETE_REMINDER,
+  EDIT_REMINDER
 } from "./types";
 
 //SAME THING AS BELOW
@@ -154,12 +155,20 @@ export const fetchReminders = () => {
 
 
 export const deleteReminder = (reminder) => {
-  console.log('the reminder', reminder);
   const _id = reminder._id;
   return function(dispatch){
     axios
       .delete("/v0/yl/reminder/delete", { data: { _id } })
       .then(res => dispatch({ type: DELETE_REMINDER, payload: res.data }));
+  }
+}
+
+export const editReminder = (reminder) => {
+  console.log('the reminder', reminder);
+  return function(dispatch){
+    axios
+      .patch("/v0/yl/reminder/update", (reminder))
+      .then(res => dispatch({ type: EDIT_REMINDER, payload: res.data }));
   }
 }
 

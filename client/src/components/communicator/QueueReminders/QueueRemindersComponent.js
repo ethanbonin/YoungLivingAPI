@@ -11,10 +11,32 @@ import _ from "lodash";
 import moment from "moment";
 import Reminder from "../DateTimePickerComponent/ReminderComponent";
 
-
 const QueueReminders = data => {
   const handleDeleteClick = reminder => {
     data.handleDeleteQueueReminder(reminder);
+  };
+
+
+  const handleEditReminder = (_id, time, reminderMessage) => {
+    data.handleEditQueueReminder( _id, time, reminderMessage)
+  };
+
+  const renderPopUp = reminder => {
+    return (
+      <Popup
+        size="large"
+        trigger={<Button content="Edit" />}
+        content={
+          <Reminder
+            edit={true}
+            reminder={reminder}
+            handleEditReminder={(_id, time, reminderMessage) => handleEditReminder(_id, time, reminderMessage)}
+          />
+        }
+        on="click"
+        position="bottom center"
+      />
+    );
   };
 
   const renderListItem = () => {
@@ -30,12 +52,7 @@ const QueueReminders = data => {
               <List.Description>{reminder.reminderMessage}</List.Description>
             </List.Content>
             <div className="center_buttons">
-              <Popup
-                trigger={<Button content='Edit' />}
-                content={<Reminder />}
-                on="click"
-                position="bottom center"
-              />
+              {renderPopUp(reminder)}
               <Button color="red" onClick={() => handleDeleteClick(reminder)}>
                 Delete
               </Button>

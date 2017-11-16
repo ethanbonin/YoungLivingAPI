@@ -4,20 +4,43 @@ import InputMoment from "input-moment";
 import { Dimmer, Header, Transition } from "semantic-ui-react";
 import "input-moment/dist/input-moment.css";
 import "./datepicker.css";
+var ObjectID = require("bson-objectid");
 
 class InputDate extends Component {
-  state = {
-    m: moment(),
-    reminderMessage: "",
-    dimmer: false
-  };
+  constructor(props) {
+    super(props);
+    if (props.edit) {
+      this.state = {
+        _id: props.reminder._id,
+        m: moment(props.reminder.time),
+        reminderMessage: props.reminder.reminderMessage,
+        dimmer: false,
+        edit: props.edit
+      };
+    } else {
+      this.state = {
+        _id: ObjectID.generate(),
+        m: moment(),
+        reminderMessage: "",
+        dimmer: false,
+        edit: props.edit
+      };
+    }
+  }
 
   handleChange = m => {
     this.setState({ m });
   };
 
   handleSave = () => {
+    console.log(
+      "inside Input datapicker",
+      this.state._id,
+      this.state.m.format(),
+      this.state.reminderMessage
+    );
     this.props.handleCallBackReminder(
+      this.state._id,
       this.state.m.format(),
       this.state.reminderMessage
     );
@@ -35,7 +58,7 @@ class InputDate extends Component {
     const content = (
       <div>
         <Header as="h2" inverted>
-          Saved Reminder
+          Reminder Saved
         </Header>
       </div>
     );
@@ -48,12 +71,32 @@ class InputDate extends Component {
     );
   }
 
+  renderHeader() {
+    let reminderHeader = "Create a Reminder";
+    let reminderHeader3 = "Write a reminder Message and set the date";
+    if (!this.state.edit) {
+      return (
+        <div>
+          <h1>{reminderHeader}</h1>
+          <h3>{reminderHeader3}</h3>
+        </div>
+      );
+    }
+    return null;
+  }
+
   render() {
+    const style = {
+      width: "100%"
+    };
+    if (this.state.edit) {
+      style.width = "";
+    }
+
     return (
       <div className="app">
         {this.renderDimmer()}
-        <h1>Create a Reminder</h1>
-        <h3>Write a reminder Message and set the date</h3>
+        {this.renderHeader()}
         <input
           placeholder="Reminder Message Here"
           value={this.state.reminderMessage}
@@ -63,7 +106,7 @@ class InputDate extends Component {
           <input type="text" value={this.state.m.format("llll")} readOnly />
         </div>
         <InputMoment
-          style={{ width: "100%" }}
+          style={style}
           className={"options"}
           moment={this.state.m}
           onChange={this.handleChange}
