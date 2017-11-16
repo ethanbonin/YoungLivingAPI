@@ -2,18 +2,21 @@ import React, { Component } from "react";
 import * as actions from "../../actions";
 import { connect } from "react-redux";
 import { Grid, Segment } from "semantic-ui-react";
+import _ from 'lodash';
+
 
 //First party components
 import UpdatePhoneMessage from "./UpdatePhoneMessageComponent";
-import Reminder from './DateTimePickerComponent/ReminderComponent';
-import CompletedReminders from './CompletedReminders/CompletedRemindersComponent';
-import QueueReminders from './QueueReminders/QueueRemindersComponent';
+import Reminder from "./DateTimePickerComponent/ReminderComponent";
+import CompletedReminders from "./CompletedReminders/CompletedRemindersComponent";
+import QueueReminders from "./QueueReminders/QueueRemindersComponent";
+
+var ObjectID = require("bson-objectid");
 
 
 class Communicator extends Component {
   constructor(props) {
     super(props);
-    console.log("The props", props);
     let phoneNumber = true;
 
     if (
@@ -24,16 +27,30 @@ class Communicator extends Component {
       phoneNumber = false;
     }
 
+    let completedRemindersList = [];
+    props.twilio.forEach((reminder) => {
+      if (reminder.completed){
+        completedRemindersList.push(reminder);
+      }
+    })
+
     this.state = {
       hasPhoneNumber: phoneNumber,
-      remindersList: this.props.twilio
+      remindersList: this.props.twilio,
+      completedRemindersList: completedRemindersList.reverse()
     };
 
     this.handleReminderSubmission = this.handleReminderSubmission.bind(this);
   }
 
-  handleReminderSubmission(time, reminderMessage){
-    this.props.createReminder({time, reminderMessage});
+  handleReminderSubmission(time, reminderMessage) {
+    let NEW_ID = ObjectID.generate()
+    console.log('the new id', NEW_ID)
+    let reminder = {_id: NEW_ID, time, reminderMessage}
+    this.props.createReminder(reminder);
+    let rl = this.state.remindersList;
+    rl.unshift(reminder);
+    this.setState({reminderList: rl});
     this.props.fetchReminders();
   }
 
@@ -43,34 +60,54 @@ class Communicator extends Component {
     this.setState({ hasPhoneNumber: true });
   };
 
+  handleDeleteQueueReminder(reminder) {
+    this.props.deleteReminder(reminder);
+    _.remove(this.state.remindersList, function(delete_reminder) {
+      return delete_reminder._id === reminder._id;
+    });
+    this.props.fetchReminders();
+  }
+
+  renderCommunicator() {
+    return (
+      <Grid columns={3}>
+        <Grid.Row className="grid_spacing">
+          <Reminder handleReminderSubmission={this.handleReminderSubmission} />
+          <Grid.Column>
+            <QueueReminders
+              data={this.state.remindersList}
+              handleDeleteQueueReminder={this.handleDeleteQueueReminder.bind(
+                this
+              )}
+            />
+            <CompletedReminders data={this.state.completedRemindersList} />
+          </Grid.Column>
+          <Grid.Column>
+            <Segment>1</Segment>
+            <Segment>2</Segment>
+            <Segment>3</Segment>
+          </Grid.Column>
+        </Grid.Row>
+      </Grid>
+    );
+  }
+
   render() {
     return (
       <div>
-        {this.state.hasPhoneNumber ? null : (
+        {this.state.hasPhoneNumber ? (
+          this.renderCommunicator()
+        ) : (
           <UpdatePhoneMessage
             handleUpdateNumberSubmit={this.handleUpdateNumberSubmit}
           />
         )}
-        <Grid columns={3}>
-          <Grid.Row className="grid_spacing">
-            <Reminder handleReminderSubmission={this.handleReminderSubmission}/>
-            <Grid.Column>
-              <QueueReminders data={this.state.remindersList.reverse()}/>
-              <CompletedReminders data={this.state.remindersList.reverse()}/>
-            </Grid.Column>
-            <Grid.Column>
-              <Segment>1</Segment>
-              <Segment>2</Segment>
-              <Segment>3</Segment>
-            </Grid.Column>
-          </Grid.Row>
-        </Grid>
       </div>
     );
   }
 }
 
-function mapStateToProps({ auth,twilio }) {
+function mapStateToProps({ auth, twilio }) {
   return { auth, twilio };
 }
 

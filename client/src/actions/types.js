@@ -13,3 +13,4 @@ export const FETCH_LABELS = 'fetch_labels';
 export const UPDATE_LABELS = 'update_labels';
 export const POST_REMINDER = 'create_reminder';
 export const FETCH_REMINDERS = 'fetch_reminders';
+export const DELETE_REMINDER = 'delete_reminder';

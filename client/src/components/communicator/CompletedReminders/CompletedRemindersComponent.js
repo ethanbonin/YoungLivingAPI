@@ -4,15 +4,13 @@ import _ from "lodash";
 import moment from "moment";
 
 const CompletedReminders = data => {
-  console.log(data);
-
   const renderListItem = () => {
     return _.map(data.data, reminder => {
       if (reminder.completed) {
         return (
           <List.Item key={reminder._id}>
             <List.Icon
-              name="comment outline"
+              name="exclamation"
               size="large"
               verticalAlign="middle"
             />
