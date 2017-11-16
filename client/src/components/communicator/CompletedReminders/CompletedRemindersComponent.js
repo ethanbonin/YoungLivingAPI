@@ -9,13 +9,11 @@ const CompletedReminders = data => {
       if (reminder.completed) {
         return (
           <List.Item key={reminder._id}>
-            <List.Icon
-              name="exclamation"
-              size="large"
-              verticalAlign="middle"
-            />
+            <List.Icon name="exclamation" size="large" verticalAlign="middle" />
             <List.Content>
-              <List.Header className="list_item_header">{moment(reminder.time).format("llll")}</List.Header>
+              <List.Header className="list_item_header">
+                {moment(reminder.time).format("llll")}
+              </List.Header>
               <List.Description>{reminder.reminderMessage}</List.Description>
             </List.Content>
           </List.Item>
@@ -30,7 +28,7 @@ const CompletedReminders = data => {
       <Header size="large" className="completed_reminders_header">
         Completed Reminders
       </Header>
-      <Divider/>
+      <Divider />
       <List divided relaxed>
         {renderListItem()}
       </List>

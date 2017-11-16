@@ -8,7 +8,6 @@ const Reminder = (data) => {
       data.handleEditReminder(_id, time, reminderMessage);
       return
     }
-    console.log("inside Reminder comonent", _id,time, reminderMessage);
     data.handleReminderSubmission(_id,time, reminderMessage);
   };
 

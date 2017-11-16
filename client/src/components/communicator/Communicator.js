@@ -2,16 +2,13 @@ import React, { Component } from "react";
 import * as actions from "../../actions";
 import { connect } from "react-redux";
 import { Grid, Segment } from "semantic-ui-react";
-import _ from 'lodash';
-
+import _ from "lodash";
 
 //First party components
 import UpdatePhoneMessage from "./UpdatePhoneMessageComponent";
 import Reminder from "./DateTimePickerComponent/ReminderComponent";
 import CompletedReminders from "./CompletedReminders/CompletedRemindersComponent";
 import QueueReminders from "./QueueReminders/QueueRemindersComponent";
-
-
 
 class Communicator extends Component {
   constructor(props) {
@@ -22,16 +19,15 @@ class Communicator extends Component {
       props.auth.user.user.phoneNumber === undefined ||
       props.auth.user.user.phoneNumber === ""
     ) {
-      console.log("EMPTY!!");
       phoneNumber = false;
     }
 
     let completedRemindersList = [];
-    props.twilio.forEach((reminder) => {
-      if (reminder.completed){
+    props.twilio.forEach(reminder => {
+      if (reminder.completed) {
         completedRemindersList.push(reminder);
       }
-    })
+    });
 
     this.state = {
       hasPhoneNumber: phoneNumber,
@@ -43,13 +39,11 @@ class Communicator extends Component {
   }
 
   handleReminderSubmission(_id, time, reminderMessage) {
-    let reminder = {_id, time, reminderMessage}
-    console.log("inside communicator", reminder);
-
+    let reminder = { _id, time, reminderMessage };
     this.props.createReminder(reminder);
     let rl = this.state.remindersList;
     rl.unshift(reminder);
-    this.setState({reminderList: rl});
+    this.setState({ reminderList: rl });
     this.props.fetchReminders();
   }
 
@@ -67,8 +61,8 @@ class Communicator extends Component {
     this.props.fetchReminders();
   }
 
-  handleEditQueueReminder(_id, time, reminderMessage){
-    let reminder = {_id, time, reminderMessage};
+  handleEditQueueReminder(_id, time, reminderMessage) {
+    let reminder = { _id, time, reminderMessage };
     this.props.editReminder(reminder);
     _.find(this.state.remindersList, reminder => {
       if (reminder._id === _id) {
@@ -83,7 +77,10 @@ class Communicator extends Component {
     return (
       <Grid columns={3}>
         <Grid.Row className="grid_spacing">
-          <Reminder edit={false} handleReminderSubmission={this.handleReminderSubmission} />
+          <Reminder
+            edit={false}
+            handleReminderSubmission={this.handleReminderSubmission}
+          />
           <Grid.Column>
             <QueueReminders
               data={this.state.remindersList}

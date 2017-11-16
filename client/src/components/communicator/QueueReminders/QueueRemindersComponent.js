@@ -16,9 +16,8 @@ const QueueReminders = data => {
     data.handleDeleteQueueReminder(reminder);
   };
 
-
   const handleEditReminder = (_id, time, reminderMessage) => {
-    data.handleEditQueueReminder( _id, time, reminderMessage)
+    data.handleEditQueueReminder(_id, time, reminderMessage);
   };
 
   const renderPopUp = reminder => {
@@ -30,7 +29,8 @@ const QueueReminders = data => {
           <Reminder
             edit={true}
             reminder={reminder}
-            handleEditReminder={(_id, time, reminderMessage) => handleEditReminder(_id, time, reminderMessage)}
+            handleEditReminder={(_id, time, reminderMessage) =>
+              handleEditReminder(_id, time, reminderMessage)}
           />
         }
         on="click"

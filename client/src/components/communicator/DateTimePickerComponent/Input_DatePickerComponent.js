@@ -33,12 +33,6 @@ class InputDate extends Component {
   };
 
   handleSave = () => {
-    console.log(
-      "inside Input datapicker",
-      this.state._id,
-      this.state.m.format(),
-      this.state.reminderMessage
-    );
     this.props.handleCallBackReminder(
       this.state._id,
       this.state.m.format(),
