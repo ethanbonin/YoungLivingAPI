@@ -1,3 +1,7 @@
+.grid_spacing {
+  margin-top: 1em;
+}
+
 .update_phone_message {
     text-align: center;
 }
@@ -10,4 +14,34 @@
 
 .label_error {
   margin-top: 1em;
+}
+
+.list_item_header {
+  margin-top: 1em;
+}
+
+.queued_reminders_header {
+  text-align: center;
+}
+
+.queue_reminders {
+  height: 30%;
+  overflow: scroll;
+}
+
+
+.completed_reminders_header {
+    text-align: center;
+}
+
+.completed_reminders {
+  height: 40%;
+  overflow: scroll;
+}
+
+.center_buttons {
+    margin-left: 10em;
+    margin-top: 0.5em;
+    width: 50%;
+    padding: 5px;
 }

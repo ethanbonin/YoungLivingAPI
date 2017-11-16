@@ -1,13 +1,14 @@
 import React, { Component } from "react";
-import { Card } from "semantic-ui-react";
-import {Link} from "react-router-dom";
+import { Card, Dimmer, Loader, Image } from "semantic-ui-react";
+import { Link } from "react-router-dom";
 
 class Tab extends Component {
   constructor(props) {
     super();
     this.pickURL = this.pickURL.bind(this);
     const link = this.pickURL(props.name);
-    this.state = {link: link};
+    this.state = { link: link};
+    console.log("Dimming", props.dim);
   }
 
   pickURL(name) {
@@ -25,17 +26,24 @@ class Tab extends Component {
     }
   }
 
+  renderDimmer() {
+    return (
+      <Dimmer active>
+        <Loader>Loading</Loader>
+      </Dimmer>
+    );
+  }
+
   render() {
     return (
-      <Card
-        style={{ margin: "1em" }}
-        raised
-        color={this.props.color}
-        image={this.props.image}
-        header={this.props.name}
-        as={Link}
-        to={`/dashboard/${this.props.name.toLowerCase()}`}
-      />
+      <Card as={Link} to={`/dashboard/${this.props.name.toLowerCase()}`}>
+        <Image src={this.props.image} />
+        <Card.Content>
+          {this.props.dim ? this.renderDimmer() : null}
+          <Card.Header>{this.props.name}</Card.Header>
+          <Card.Description>{this.props.description}</Card.Description>
+        </Card.Content>
+      </Card>
     );
   }
 }

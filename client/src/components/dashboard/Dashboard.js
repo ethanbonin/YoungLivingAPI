@@ -21,10 +21,24 @@ const imageSrc = {
 };
 
 const _TABS = [
-  // { name: "Stats", color: "blue", image: imageSrc.stats },
-  { name: "Prospects", color: "pink", image: imageSrc.pros },
+  // { name: "Stats", color: "blue", image: imageSrc.stats, value: stats },
+  {
+    name: "Prospects",
+    color: "pink",
+    image: imageSrc.pros,
+    value: "prospects",
+    description:
+      "Create leads and keep notes on your current status of potential purchasers"
+  },
   // { name: "Downline", color: "green", image: imageSrc.down },
-  { name: "Communicator", color: "grey", image: imageSrc.alerts }
+  {
+    name: "Communicator",
+    color: "grey",
+    image: imageSrc.alerts,
+    value: "twilio",
+    description:
+      "Create Reminders, Send mass text messages or emails to your downline"
+  }
 ];
 
 class DashBoard extends Component {
@@ -39,19 +53,31 @@ class DashBoard extends Component {
   }
 
   componentWillMount() {
+    this.props.fetchUser();
     this.props.fetchLabels();
     this.props.fetchProspects();
-    this.props.fetchUser();
+    this.props.fetchReminders();
+  }
+
+  checkCard(value) {
+    if (this.props[value] !== null) {
+      return false;
+    }
+    return true;
   }
 
   renderTabs() {
-    return _.map(_TABS, ({ name, color, image }) => {
+    ///ADD GETS TO THE _TABS so that we can check them with an if statement
+    return _.map(_TABS, ({ name, color, image, value, description }) => {
+      let truthy = this.checkCard(value);
       return (
         <Tab
+          dim={truthy}
           key={name}
           name={name}
           color={color}
           image={image}
+          description={description}
           url={this.props.match.url}
         />
       );
@@ -151,9 +177,8 @@ class DashBoard extends Component {
         <Modal.Content>
           <p>
             In order to use this application, you must agree to the terms of
-            service. If you interested in reading the full EULA Agreement, click
-            {" "}
-             <a href="/EULA">here</a>
+            service. If you interested in reading the full EULA Agreement, click{" "}
+            <a href="/EULA">here</a>
           </p>
         </Modal.Content>
         <Modal.Actions>
@@ -189,8 +214,8 @@ class DashBoard extends Component {
   }
 }
 
-function mapStateToProps({ auth }) {
-  return { auth };
+function mapStateToProps({ auth, prospects, twilio }) {
+  return { auth, prospects, twilio};
 }
 
 export default connect(mapStateToProps, actions)(DashBoard);

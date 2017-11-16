@@ -6,6 +6,8 @@ import { Grid, Segment } from "semantic-ui-react";
 //First party components
 import UpdatePhoneMessage from "./UpdatePhoneMessageComponent";
 import Reminder from './DateTimePickerComponent/ReminderComponent';
+import CompletedReminders from './CompletedReminders/CompletedRemindersComponent';
+import QueueReminders from './QueueReminders/QueueRemindersComponent';
 
 
 class Communicator extends Component {
@@ -23,7 +25,8 @@ class Communicator extends Component {
     }
 
     this.state = {
-      hasPhoneNumber: phoneNumber
+      hasPhoneNumber: phoneNumber,
+      remindersList: this.props.twilio
     };
 
     this.handleReminderSubmission = this.handleReminderSubmission.bind(this);
@@ -31,6 +34,7 @@ class Communicator extends Component {
 
   handleReminderSubmission(time, reminderMessage){
     this.props.createReminder({time, reminderMessage});
+    this.props.fetchReminders();
   }
 
   handleUpdateNumberSubmit = (value, timeZone) => {
@@ -47,13 +51,12 @@ class Communicator extends Component {
             handleUpdateNumberSubmit={this.handleUpdateNumberSubmit}
           />
         )}
-
-        <Grid columns={3} divided stretched>
-          <Grid.Row>
+        <Grid columns={3}>
+          <Grid.Row className="grid_spacing">
             <Reminder handleReminderSubmission={this.handleReminderSubmission}/>
             <Grid.Column>
-              <Segment>1</Segment>
-              <Segment>2</Segment>
+              <QueueReminders data={this.state.remindersList.reverse()}/>
+              <CompletedReminders data={this.state.remindersList.reverse()}/>
             </Grid.Column>
             <Grid.Column>
               <Segment>1</Segment>
@@ -67,8 +70,8 @@ class Communicator extends Component {
   }
 }
 
-function mapStateToProps({ auth }) {
-  return { auth };
+function mapStateToProps({ auth,twilio }) {
+  return { auth, twilio };
 }
 
 export default connect(mapStateToProps, actions)(Communicator);

@@ -13,7 +13,8 @@ import {
   FETCH_LABELS,
   UPDATE_LABELS,
   UPDATE_PHONE,
-  POST_REMINDER
+  POST_REMINDER,
+  FETCH_REMINDERS
 } from "./types";
 
 //SAME THING AS BELOW
@@ -140,6 +141,16 @@ export const createReminder = (reminder) => {
     })
   }
 }
+
+
+export const fetchReminders = () => {
+  return function(dispatch){
+    axios.get('/v0/yl/reminder/').then((res) => {
+        dispatch({type: FETCH_REMINDERS, payload: res.data});
+    })
+  }
+}
+
 
 
 // export const handleToken = token => async dispatch => {
