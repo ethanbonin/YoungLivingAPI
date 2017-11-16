@@ -26,20 +26,20 @@ class Tab extends Component {
     }
   }
 
-  renderDimmer() {
-    return (
-      <Dimmer active>
-        <Loader>Loading</Loader>
-      </Dimmer>
-    );
+  handleClick(e) {
+    if (this.props.dim){
+      e.preventDefault();
+    }
   }
 
   render() {
     return (
-      <Card as={Link} to={`/dashboard/${this.props.name.toLowerCase()}`}>
+      <Card as={Link} to={`/dashboard/${this.props.name.toLowerCase()}`} onClick={this.handleClick.bind(this)}>
         <Image src={this.props.image} />
         <Card.Content>
-          {this.props.dim ? this.renderDimmer() : null}
+          <Dimmer active={this.props.dim}>
+            <Loader>Loading</Loader>
+          </Dimmer>
           <Card.Header>{this.props.name}</Card.Header>
           <Card.Description>{this.props.description}</Card.Description>
         </Card.Content>

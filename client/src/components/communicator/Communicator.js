@@ -76,9 +76,7 @@ class Communicator extends Component {
         reminder.time = time;
       }
     });
-
     this.props.fetchReminders();
-
   }
 
   renderCommunicator() {
