@@ -1,6 +1,6 @@
 import createHistory from "history/createBrowserHistory";
 import React, { Component } from "react";
-import { Router, Route, Switch } from "react-router-dom";
+import { Router, Route } from "react-router-dom";
 import { connect } from "react-redux";
 import * as actions from "../actions";
 
@@ -10,6 +10,9 @@ import DashBoard from "./dashboard/Dashboard";
 import Prospects from "./prospects/Prospects";
 import ProspectsNew from "./prospects/Form/ProspectsForm";
 import Communicator from './communicator/Communicator';
+import TextCommunicator from './communicator/TextCommunicator/TextCommunicator';
+import EmailCommunicator from './communicator/EmailCommunicator/EmailCommunicator';
+
 import EULA from './EULA';
 
 const history = createHistory();
@@ -35,7 +38,10 @@ class App extends Component {
       history.push('/EULA');
     } else if (history.location.pathname !== "/" && !this.props.auth){
       history.push("/");
-    } else if (history.location.pathname === "/" && this.props.auth){
+    }
+
+    if (history.location.pathname === "/" && this.props.auth){
+      console.log("redirecting to dash");
       history.push("/dashboard");
     }
   }
@@ -46,7 +52,6 @@ class App extends Component {
         <div>
           <Header />
           {this.redirectIfNotLoggedIn()}
-          <Switch>
             <Route exact path="/" component={Landing} />
             <Route exact path="/dashboard" component={DashBoard}/>
             <Route exact path={`/dashboard/prospects`} component={Prospects} />
@@ -56,8 +61,8 @@ class App extends Component {
               component={ProspectsNew}
             />
             <Route exact path={`/dashboard/communicator`} component={Communicator} />
-
-          </Switch>
+            <Route exact path={`/dashboard/textcommunicator`} component={TextCommunicator} />
+            <Route exact path={`/dashboard/emailcommunicator`} component={EmailCommunicator} />
           <Route exact path={`/EULA`} component={EULA} />
         </div>
       </Router>

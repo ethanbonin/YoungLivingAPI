@@ -45,3 +45,12 @@
     width: 50%;
     padding: 5px;
 }
+
+
+.div_for_cards {
+  text-align: center;
+}
+
+.center_cards {
+  margin: auto;
+}

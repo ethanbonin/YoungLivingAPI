@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Input, Card, Label } from "semantic-ui-react";
+import { Input, Card, Label, Dimmer, Transition } from "semantic-ui-react";
 import axios from "axios";
 import * as actions from "../actions";
 import { connect } from "react-redux";
@@ -82,6 +82,16 @@ class Login extends Component {
     );
   }
 
+  renderDimmer(){
+    return (
+      <Transition visible={this.state.dimmer} animation="fade" duration={500}>
+        <Dimmer active={this.state.dimmer} size="medium">
+          Saving
+        </Dimmer>
+      </Transition>
+    )
+  }
+
   render() {
     return (
       <div
@@ -93,7 +103,7 @@ class Login extends Component {
         }}
       >
         <Card.Group>
-          <Card className=" signinbox ">
+          <Card className=" signinbox ">          
             <Label className="label_login">Use your Young Living Whole Sale account credentials. It would be the same if you were to login into Virtual Office</Label>
             <div className="inputboxes card-action center-align ">
               {this.state.showWarning ? this.renderWarning() : null}

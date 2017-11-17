@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import * as actions from "../../actions";
 import { connect } from "react-redux";
-import { Grid, Segment } from "semantic-ui-react";
+import { Grid } from "semantic-ui-react";
 import _ from "lodash";
 
 //First party components
@@ -9,6 +9,8 @@ import UpdatePhoneMessage from "./UpdatePhoneMessageComponent";
 import Reminder from "./DateTimePickerComponent/ReminderComponent";
 import CompletedReminders from "./CompletedReminders/CompletedRemindersComponent";
 import QueueReminders from "./QueueReminders/QueueRemindersComponent";
+import TextCard from './TextCommunicator/TextCommunicatorCard';
+import EmailCard from './EmailCommunicator/EmailCommunicatorCard';
 
 class Communicator extends Component {
   constructor(props) {
@@ -92,9 +94,12 @@ class Communicator extends Component {
             <CompletedReminders data={this.state.completedRemindersList} />
           </Grid.Column>
           <Grid.Column>
-            <Segment>1</Segment>
-            <Segment>2</Segment>
-            <Segment>3</Segment>
+            <div className="div_for_cards">
+              <TextCard/>
+            </div>
+            <div className="div_for_cards">
+              <EmailCard/>
+            </div>
           </Grid.Column>
         </Grid.Row>
       </Grid>
