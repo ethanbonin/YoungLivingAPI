@@ -9,8 +9,8 @@ import UpdatePhoneMessage from "./UpdatePhoneMessageComponent";
 import Reminder from "./DateTimePickerComponent/ReminderComponent";
 import CompletedReminders from "./CompletedReminders/CompletedRemindersComponent";
 import QueueReminders from "./QueueReminders/QueueRemindersComponent";
-import TextCard from './TextCommunicator/TextCommunicatorCard';
-import EmailCard from './EmailCommunicator/EmailCommunicatorCard';
+import TextCard from "./TextCommunicator/TextCommunicatorCard";
+import EmailCard from "./EmailCommunicator/EmailCommunicatorCard";
 
 class Communicator extends Component {
   constructor(props) {
@@ -19,7 +19,9 @@ class Communicator extends Component {
 
     if (
       props.auth.user.user.phoneNumber === undefined ||
-      props.auth.user.user.phoneNumber === ""
+      props.auth.user.user.phoneNumber === "" ||
+      props.auth.user.user.timeZone === undefined ||
+      props.auth.user.user.timeZone === ""
     ) {
       phoneNumber = false;
     }
@@ -95,10 +97,10 @@ class Communicator extends Component {
           </Grid.Column>
           <Grid.Column>
             <div className="div_for_cards">
-              <TextCard/>
+              <TextCard />
             </div>
             <div className="div_for_cards">
-              <EmailCard/>
+              <EmailCard />
             </div>
           </Grid.Column>
         </Grid.Row>

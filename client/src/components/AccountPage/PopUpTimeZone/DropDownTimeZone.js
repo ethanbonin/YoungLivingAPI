@@ -20,7 +20,6 @@ class DropDownTimeZone extends Component {
       timeZone: momentTimeZone.tz.guess(),
       timeZones: timeZones,
     };
-    console.log("props",props);
   }
 
   handleTimeZoneOption(e, { value }) {

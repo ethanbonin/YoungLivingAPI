@@ -28,7 +28,6 @@ userSchema.statics.updatePhoneNumebr = function(
   phoneNumber,
   timeZone
 ) {
-  console.log("memberid", phoneNumber, timeZone);
   User.findOne({ memberid }).then(user => {
     if (!user) {
       return { err: "Couldn't find user" };
