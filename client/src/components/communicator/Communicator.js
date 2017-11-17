@@ -53,7 +53,6 @@ class Communicator extends Component {
 
   handleUpdateNumberSubmit = (value, timeZone) => {
     this.props.updatePhoneNumer(value, timeZone);
-    this.props.fetchUser();
     this.setState({ hasPhoneNumber: true });
   };
 

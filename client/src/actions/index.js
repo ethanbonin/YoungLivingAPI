@@ -12,7 +12,6 @@ import {
   CLOSE_PROSPECTS,
   FETCH_LABELS,
   UPDATE_LABELS,
-  UPDATE_PHONE,
   POST_REMINDER,
   FETCH_REMINDERS,
   DELETE_REMINDER,
@@ -36,14 +35,13 @@ export const fetchUser = () => {
   };
 };
 
-export const loginUser = (body) => {
+export const loginUser = body => {
   return function(dispatch) {
     axios
       .post("/v0/yl/login/", body)
       .then(res => dispatch({ type: LOGIN_USER, payload: res.data }));
   };
 };
-
 
 export const logoutUser = () => {
   return function(dispatch) {
@@ -52,7 +50,6 @@ export const logoutUser = () => {
       .then(res => dispatch({ type: LOGOUT_USER, payload: res.data }));
   };
 };
-
 
 export const updateTerms = () => {
   return function(dispatch) {
@@ -123,55 +120,59 @@ export const fetchLabels = () => {
 export const updateLabels = (_id, body) => {
   return function(dispatch) {
     axios
-      .post("/v0/yl/prospect_labels_update", {values: body, _id: _id})
+      .post("/v0/yl/prospect_labels_update", { values: body, _id: _id })
       .then(res => dispatch({ type: UPDATE_LABELS, payload: res.data }));
   };
 };
 
 export const updatePhoneNumer = (phoneNumber, timeZone) => {
-  return function(dispatch){
-    axios.post('/v0/yl/updatePhoneNumber', {phoneNumber: phoneNumber, timeZone: timeZone}).then((res) => {
-        dispatch({type: UPDATE_PHONE, payload: "number saved"});
-    })
-  }
-}
+  return function(dispatch) {
+    axios
+      .post("/v0/yl/updatePhoneNumber", {
+        phoneNumber: phoneNumber,
+        timeZone: timeZone
+      })
+      .then(res => {
+        axios
+          .get("/v0/yl/current_user/")
+          .then(res => dispatch({ type: FETCH_USER, payload: res.data }));
+      });
+  };
+};
 
-export const createReminder = (reminder) => {
-  return function(dispatch){
-    axios.post('/v0/yl/reminder/create', (reminder)).then((res) => {
-        dispatch({type: POST_REMINDER, payload: res.data});
-    })
-  }
-}
-
+export const createReminder = reminder => {
+  return function(dispatch) {
+    axios.post("/v0/yl/reminder/create", reminder).then(res => {
+      dispatch({ type: POST_REMINDER, payload: res.data });
+    });
+  };
+};
 
 export const fetchReminders = () => {
-  return function(dispatch){
-    axios.get('/v0/yl/reminder/').then((res) => {
-        dispatch({type: FETCH_REMINDERS, payload: res.data});
-    })
-  }
-}
+  return function(dispatch) {
+    axios.get("/v0/yl/reminder/").then(res => {
+      dispatch({ type: FETCH_REMINDERS, payload: res.data });
+    });
+  };
+};
 
-
-export const deleteReminder = (reminder) => {
+export const deleteReminder = reminder => {
   const _id = reminder._id;
-  return function(dispatch){
+  return function(dispatch) {
     axios
       .delete("/v0/yl/reminder/delete", { data: { _id } })
       .then(res => dispatch({ type: DELETE_REMINDER, payload: res.data }));
-  }
-}
+  };
+};
 
-export const editReminder = (reminder) => {
-  console.log('the reminder', reminder);
-  return function(dispatch){
+export const editReminder = reminder => {
+  console.log("the reminder", reminder);
+  return function(dispatch) {
     axios
-      .patch("/v0/yl/reminder/update", (reminder))
+      .patch("/v0/yl/reminder/update", reminder)
       .then(res => dispatch({ type: EDIT_REMINDER, payload: res.data }));
-  }
-}
-
+  };
+};
 
 // export const handleToken = token => async dispatch => {
 //   const res = await axios.post('/api/stripe', token);

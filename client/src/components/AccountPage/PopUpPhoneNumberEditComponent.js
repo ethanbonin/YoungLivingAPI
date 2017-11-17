@@ -35,7 +35,6 @@ class PhoneEditPopUp extends Component {
       }
       this.props.handleUpdate(this.state.phoneNumber, timeZone);
       this.props.updatePhoneNumer(this.state.phoneNumber, timeZone);
-      this.props.fetchUser();
     }
   }
 

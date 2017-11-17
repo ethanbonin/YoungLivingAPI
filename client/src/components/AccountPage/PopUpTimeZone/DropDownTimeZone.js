@@ -30,7 +30,6 @@ class DropDownTimeZone extends Component {
     }
     this.props.handleUpdate(phoneNumber, value);
     this.props.updatePhoneNumer(phoneNumber, value);
-    this.props.fetchUser();
   }
 
   render() {
