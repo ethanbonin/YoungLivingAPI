@@ -200,14 +200,14 @@ class DashBoard extends Component {
 
   render() {
     return (
-      <div>
+      <div style={{marginTop: "1em"}}>
         {this.renderModal()}
         <div className="container">
           <Card.Group itemsPerRow={2}>{this.renderTabs()}</Card.Group>
-          <Segment basic color="teal">
+          {/* <Segment basic color="teal">
             <h1 className="title">Developer Notes</h1>
             <div className="updateContainer">{this.renderDevNotes()}</div>
-          </Segment>
+          </Segment> */}
         </div>
       </div>
     );

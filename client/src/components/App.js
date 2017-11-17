@@ -12,6 +12,7 @@ import ProspectsNew from "./prospects/Form/ProspectsForm";
 import Communicator from './communicator/Communicator';
 import TextCommunicator from './communicator/TextCommunicator/TextCommunicator';
 import EmailCommunicator from './communicator/EmailCommunicator/EmailCommunicator';
+import Account from "./AccountPage/Account";
 
 import EULA from './EULA';
 
@@ -63,6 +64,7 @@ class App extends Component {
             <Route exact path={`/dashboard/communicator`} component={Communicator} />
             <Route exact path={`/dashboard/textcommunicator`} component={TextCommunicator} />
             <Route exact path={`/dashboard/emailcommunicator`} component={EmailCommunicator} />
+            <Route exact path={`/account`} component={Account} />
           <Route exact path={`/EULA`} component={EULA} />
         </div>
       </Router>
