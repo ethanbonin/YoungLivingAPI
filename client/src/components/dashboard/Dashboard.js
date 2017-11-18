@@ -1,5 +1,14 @@
 import React, { Component } from "react";
-import { Card, Segment, Modal, Icon, Header, Button } from "semantic-ui-react";
+import {
+  Card,
+  Segment,
+  Modal,
+  Icon,
+  Header,
+  Button,
+  Responsive,
+  Message
+} from "semantic-ui-react";
 import { connect } from "react-redux";
 import * as actions from "../../actions";
 import "./dashboardcss/dashboard.css";
@@ -198,9 +207,9 @@ class DashBoard extends Component {
     );
   }
 
-  render() {
+  renderDashBoard() {
     return (
-      <div style={{marginTop: "1em"}}>
+      <div style={{ marginTop: "1em" }}>
         {this.renderModal()}
         <div className="container">
           <Card.Group itemsPerRow={2}>{this.renderTabs()}</Card.Group>
@@ -212,10 +221,40 @@ class DashBoard extends Component {
       </div>
     );
   }
+
+  renderMobileMessage() {
+    return (
+      <div style={{ marginTop: "1em" }}>
+        <div className="container">
+          <Message>
+            <Message.Header>No Mobile Support yet!</Message.Header>
+            <Message.Content>
+              <br />
+              We are in the process of building an iOS and Android application to give you best experience.
+              In the meantime, to access the full potential of this website you need to use a tablet or computer.
+            </Message.Content>
+          </Message>
+        </div>
+      </div>
+    );
+  }
+
+  render() {
+    return (
+      <div>
+        <Responsive {...Responsive.onlyMobile}>
+          {this.renderMobileMessage()}
+        </Responsive>
+        <Responsive minWidth={Responsive.onlyTablet.minWidth}>
+          {this.renderDashBoard()}
+        </Responsive>
+      </div>
+    );
+  }
 }
 
 function mapStateToProps({ auth, prospects, twilio }) {
-  return { auth, prospects, twilio};
+  return { auth, prospects, twilio };
 }
 
 export default connect(mapStateToProps, actions)(DashBoard);
