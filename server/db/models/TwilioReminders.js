@@ -16,6 +16,9 @@ var remindersSchema = new mongoose.Schema({
 
 
 remindersSchema.methods.requiresNotification = function(date) {
+  console.log(Math.round(moment.duration(moment(this.time).tz(this.timeZone).utc()
+                          .diff(moment(date).utc())
+                        ).asMinutes()));
   return Math.round(moment.duration(moment(this.time).tz(this.timeZone).utc()
                           .diff(moment(date).utc())
                         ).asMinutes()) === this.notification;
@@ -32,17 +35,12 @@ remindersSchema.statics.sendNotifications = function(callback) {
               return reminder.requiresNotification(searchDate);
       });
 
-      // console.log("reminders after words", reminders);
       if (reminders.length > 0) {
         sendNotifications(reminders);
       }
     });
 
 
-    /**
-    * Send messages to all appoinment owners via Twilio
-    * @param {array} appointments List of appointments.
-    */
     function sendNotifications(reminders) {
         const client = new Twilio(process.env.TWILIO_ACCOUNT_SID, process.env.TWILIO_AUTH_TOKEN);
         reminders.forEach(function(reminder) {
@@ -72,8 +70,7 @@ remindersSchema.statics.sendNotifications = function(callback) {
             });
         });
 
-        // Don't wait on success/failure, just indicate all messages have been
-        // queued for delivery
+        //Don't wait. Just see if queued for deliver. 
         if (callback) {
           callback.call();
         }

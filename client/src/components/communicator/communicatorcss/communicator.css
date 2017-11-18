@@ -1,3 +1,8 @@
+.div_communicator {
+  margin-left: 1em;
+  margin-right: 1em;
+}
+
 .grid_spacing {
   margin-top: 1em;
 }
@@ -10,7 +15,6 @@
   margin-right: 11em;
   margin-top: 1em;
 }
-
 
 .label_error {
   margin-top: 1em;

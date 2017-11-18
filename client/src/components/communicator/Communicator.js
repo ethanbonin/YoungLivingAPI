@@ -78,32 +78,36 @@ class Communicator extends Component {
 
   renderCommunicator() {
     return (
-      <Grid columns={3}>
-        <Grid.Row className="grid_spacing">
-          <Reminder
-            edit={false}
-            handleReminderSubmission={this.handleReminderSubmission}
-          />
-          <Grid.Column>
-            <QueueReminders
-              data={this.state.remindersList}
-              handleDeleteQueueReminder={this.handleDeleteQueueReminder.bind(
-                this
-              )}
-              handleEditQueueReminder={this.handleEditQueueReminder.bind(this)}
+      <div className="div_communicator">
+        <Grid columns={3}>
+          <Grid.Row className="grid_spacing">
+            <Reminder
+              edit={false}
+              handleReminderSubmission={this.handleReminderSubmission}
             />
-            <CompletedReminders data={this.state.completedRemindersList} />
-          </Grid.Column>
-          <Grid.Column>
-            <div className="div_for_cards">
-              <TextCard />
-            </div>
-            <div className="div_for_cards">
-              <EmailCard />
-            </div>
-          </Grid.Column>
-        </Grid.Row>
-      </Grid>
+            <Grid.Column>
+              <QueueReminders
+                data={this.state.remindersList}
+                handleDeleteQueueReminder={this.handleDeleteQueueReminder.bind(
+                  this
+                )}
+                handleEditQueueReminder={this.handleEditQueueReminder.bind(
+                  this
+                )}
+              />
+              <CompletedReminders data={this.state.completedRemindersList} />
+            </Grid.Column>
+            <Grid.Column>
+              <div className="div_for_cards">
+                <TextCard />
+              </div>
+              <div className="div_for_cards">
+                <EmailCard />
+              </div>
+            </Grid.Column>
+          </Grid.Row>
+        </Grid>
+      </div>
     );
   }
 
