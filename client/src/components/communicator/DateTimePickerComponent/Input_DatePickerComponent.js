@@ -39,6 +39,8 @@ class InputDate extends Component {
       this.state.reminderMessage
     );
     this.setState({ reminderMessage: "" });
+    this.setState({_id: ObjectID.generate()});
+    this.setState({m: moment()});
     this.setState({ dimmer: true });
     setTimeout(
       function() {

@@ -27,16 +27,20 @@ class Communicator extends Component {
     }
 
     let completedRemindersList = [];
+    let queuedReminderList = []
     props.twilio.forEach(reminder => {
       if (reminder.completed) {
         completedRemindersList.push(reminder);
+      } else {
+        queuedReminderList.push(reminder);
       }
     });
 
     this.state = {
       hasPhoneNumber: phoneNumber,
       remindersList: this.props.twilio,
-      completedRemindersList: completedRemindersList.reverse()
+      completedRemindersList: completedRemindersList.reverse(),
+      queuedReminderList: queuedReminderList
     };
 
     this.handleReminderSubmission = this.handleReminderSubmission.bind(this);
@@ -47,7 +51,7 @@ class Communicator extends Component {
     this.props.createReminder(reminder);
     let rl = this.state.remindersList;
     rl.unshift(reminder);
-    this.setState({ reminderList: rl });
+    this.setState({ queuedReminderList: rl });
     this.props.fetchReminders();
   }
 
@@ -58,6 +62,7 @@ class Communicator extends Component {
 
   handleDeleteQueueReminder(reminder) {
     this.props.deleteReminder(reminder);
+    console.log("the reminder", reminder);
     _.remove(this.state.remindersList, function(delete_reminder) {
       return delete_reminder._id === reminder._id;
     });
@@ -87,7 +92,7 @@ class Communicator extends Component {
             />
             <Grid.Column>
               <QueueReminders
-                data={this.state.remindersList}
+                data={this.state.queuedReminderList}
                 handleDeleteQueueReminder={this.handleDeleteQueueReminder.bind(
                   this
                 )}

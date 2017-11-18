@@ -16,9 +16,6 @@ var remindersSchema = new mongoose.Schema({
 
 
 remindersSchema.methods.requiresNotification = function(date) {
-  console.log(Math.round(moment.duration(moment(this.time).tz(this.timeZone).utc()
-                          .diff(moment(date).utc())
-                        ).asMinutes()));
   return Math.round(moment.duration(moment(this.time).tz(this.timeZone).utc()
                           .diff(moment(date).utc())
                         ).asMinutes()) === this.notification;
@@ -70,7 +67,7 @@ remindersSchema.statics.sendNotifications = function(callback) {
             });
         });
 
-        //Don't wait. Just see if queued for deliver. 
+        //Don't wait. Just see if queued for deliver.
         if (callback) {
           callback.call();
         }
