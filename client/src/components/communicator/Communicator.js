@@ -63,7 +63,7 @@ class Communicator extends Component {
   handleDeleteQueueReminder(reminder) {
     this.props.deleteReminder(reminder);
     console.log("the reminder", reminder);
-    _.remove(this.state.remindersList, function(delete_reminder) {
+    _.remove(this.state.queuedReminderList, function(delete_reminder) {
       return delete_reminder._id === reminder._id;
     });
     this.props.fetchReminders();

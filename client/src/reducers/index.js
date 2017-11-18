@@ -2,11 +2,11 @@ import { combineReducers } from "redux";
 import authReducer from "./authReducer";
 import prospectsReducer from "./prospectsReducer";
 import labelsReducer from "./LabelsReducer";
-import twilioReducer from "./twilioReducer";
+import twilioRemindersReducer from "./twilioRemindersReducer";
 
 export default combineReducers({
   auth: authReducer,
   prospects: prospectsReducer,
   labels: labelsReducer,
-  twilio: twilioReducer
+  twilio: twilioRemindersReducer
 });
