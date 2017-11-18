@@ -227,11 +227,20 @@ class DashBoard extends Component {
       <div style={{ marginTop: "1em" }}>
         <div className="container">
           <Message>
-            <Message.Header>No Mobile Support yet!</Message.Header>
+            <Message.Header>Mobile Support not yet available!</Message.Header>
             <Message.Content>
-              <br />
-              We are in the process of building an iOS and Android application to give you best experience.
-              In the meantime, to access the full potential of this website you need to use a tablet or computer.
+              <Message.List>
+                <Message.Item>
+                  If you are currently on a browser and cannot view page, expand the browser screen.
+                </Message.Item>
+                <Message.Item>
+                  {" "}
+                  We are in the process of building an iOS and Android
+                  application to give you the best experience. In the meantime, to
+                  access the full potential of this website you will need to use a
+                  tablet or computer.
+                </Message.Item>
+              </Message.List>
             </Message.Content>
           </Message>
         </div>
