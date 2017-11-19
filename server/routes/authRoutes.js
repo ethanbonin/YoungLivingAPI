@@ -54,6 +54,8 @@ module.exports = app => {
             sess = req.session;
             var info = { user: user, body: body, token: token };
             sess.user = info;
+            user.lastTimeLoggedIn = new Date();
+            user.save();
             //This is for the early adotpers of EOA.
             //Since they did not have to agree to terms in the beginning
             //I needed to go through and make sure everybody got updated.

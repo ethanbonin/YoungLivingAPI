@@ -6,7 +6,10 @@ const Twilio = require('twilio');
 var textingSchema = new mongoose.Schema({
   memberid: String,
   name: String,
-  group: [String],
+  group: [{
+    name: String,
+    number: String
+  }],
   notification: Number,
   reminderMessage: String,
   timeZone: String,

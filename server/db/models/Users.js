@@ -10,7 +10,8 @@ const userSchema = new Schema({
   phoneNumber: String,
   timeZone: String,
   agreed_to_terms: Boolean,
-  agreed_to_terms_date: Date
+  agreed_to_terms_date: Date,
+  lastTimeLoggedIn: Date
 });
 
 userSchema.statics.findByCredentials = function(memberid) {
