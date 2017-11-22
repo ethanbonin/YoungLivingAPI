@@ -1,5 +1,9 @@
 require("../config/config");
 var fs = require("fs");
+const sgMail = require('@sendgrid/mail');
+sgMail.setApiKey(process.env.SEND_GRID_API_KEY);
+
+
 
 //THIRD PARTY MODULES
 const express = require("express");
@@ -133,6 +137,23 @@ module.exports = app => {
               agreed_to_terms: agreed_to_terms,
               member_name: member_name
             };
+
+            var list = ["ethan@ollieandfinch.com", "drbonin@gmail.com"]
+
+            list.forEach((email) => {
+              const msg = {
+                to: email,
+                from: 'essentialAssistant@eoa.com',
+                subject: 'CONGRATULATIONS: New EOA Sign Up (DNR)',
+                text: `${member_name} has just signed up!`,
+                html: `
+                This is an automated Email. <br> <br> <br>
+                <strong>${member_name} has just signed up!</strong>
+                <br> <br> <br>
+                  Do not reply to this email. This is an automated Email.`,
+              };
+              sgMail.send(msg);
+            })
 
             sess = req.session;
             var info = { user: b, body: body };
