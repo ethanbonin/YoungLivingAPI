@@ -34,7 +34,7 @@ module.exports = app => {
       res.status(401).send({ error: "unauthorized" });
     }
 
-    console.log("The session user", req.session.user.user.memberid);
+    console.log("The session inside prospects", req.session);
 
     ProspectLabels.find({
       memberid: req.session.user.user.memberid

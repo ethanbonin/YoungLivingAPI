@@ -10,6 +10,7 @@ const TwilioRoutes = app => {
   };
 
   app.get("/v0/yl/reminder", (req, res) => {
+    console.log("The session inside Twilio", req.session);
     TwilioReminders.find({
       memberid: req.session.user.user.memberid
     }).then(doc => {
