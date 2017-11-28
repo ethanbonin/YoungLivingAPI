@@ -34,6 +34,8 @@ module.exports = app => {
       res.status(401).send({ error: "unauthorized" });
     }
 
+    console.log("The session user", req.session.user.user.memberid);
+
     ProspectLabels.find({
       memberid: req.session.user.user.memberid
     })
@@ -69,7 +71,7 @@ module.exports = app => {
     if (!req.session.user) {
       res.status(401).send({ error: "unauthorized" });
     }
-    
+
     if (req.body.values.editingProspect) {
       let old_notes = req.body.values.old_notes
       let form_new_note = formatNotes(req.body.values.additional_notes);
