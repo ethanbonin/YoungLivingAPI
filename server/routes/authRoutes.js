@@ -59,7 +59,6 @@ module.exports = app => {
             var info = { user: user, body: body, token: token };
             sess.user = info;
             user.lastTimeLoggedIn = new Date();
-            user.save();
 
             console.log('THe session', sess);
             //This is for the early adotpers of EOA.
