@@ -27,6 +27,9 @@ const { User } = require("../db/models/Users");
 const { ProspectLabels } = require("../db/models/ProspectLabels");
 
 module.exports = app => {
+
+
+
   app.get("/v0/yl/current_user", (req, res) => {
     sess = req.session;
     if (sess.user) {
@@ -58,12 +61,6 @@ module.exports = app => {
             sess = req.session;
             var info = { user: user, body: body, token: token };
             sess.user = info;
-            user.lastTimeLoggedIn = new Date();
-
-            console.log('THe session', sess);
-            //This is for the early adotpers of EOA.
-            //Since they did not have to agree to terms in the beginning
-            //I needed to go through and make sure everybody got updated.
             const memberId = body.memberId;
             ProspectLabels.find({ memberid: memberId }, (err, doc) => {
               if (err) {
@@ -139,19 +136,19 @@ module.exports = app => {
               member_name: member_name
             };
 
-            var admin_emails = ["ethan@ollieandfinch.com", "drbonin@gmail.com"]
-            const msg = {
-              to: admin_emails,
-              from: 'essentialAssistant@eoa.com',
-              subject: 'CONGRATULATIONS: New EOA Sign Up (DNR)',
-              text: `${member_name} has just signed up!`,
-              html: `
-              This is an automated Email. <br> <br> <br>
-              <strong>${member_name} has just signed up!</strong>
-              <br> <br> <br>
-                Do not reply to this email. This is an automated Email.`,
-            };
-            sgMail.send(msg);
+            // var admin_emails = ["ethan@ollieandfinch.com", "drbonin@gmail.com"]
+            // const msg = {
+            //   to: admin_emails,
+            //   from: 'essentialAssistant@eoa.com',
+            //   subject: 'CONGRATULATIONS: New EOA Sign Up (DNR)',
+            //   text: `${member_name} has just signed up!`,
+            //   html: `
+            //   This is an automated Email. <br> <br> <br>
+            //   <strong>${member_name} has just signed up!</strong>
+            //   <br> <br> <br>
+            //     Do not reply to this email. This is an automated Email.`,
+            // };
+            // sgMail.send(msg);
 
             sess = req.session;
             var info = { user: b, body: body };
