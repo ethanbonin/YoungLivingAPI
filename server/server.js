@@ -119,27 +119,6 @@ app.post("/v0/yl/report_data", uidrequest, retailcustomers, (req, res) => {
     });
 });
 
-app.post("/v0/yl/about_to_go_inactive", uidrequest, (req, res) => {
-  var uri = `https://www.youngliving.com/vo.dlv.api/reports/download/About%20To%20Go%20Inactive/${req.reportid}/${req.guid}/1/en-us`;
-  var request_options = {
-    method: "GET",
-    uri: uri
-  };
-  rp(request_options)
-    .then(body => {
-      var csv_options = {
-        deliemiter: ",",
-        quote: '"', // optional
-        headers: about_to_go_inactive_header
-      };
-      var result = csvjson.toObject(body, csv_options);
-      res.send(result);
-    })
-    .catch(e => {
-      res.send(e);
-    });
-});
-
 app.post("/v0/yl/rank_status", (req, res) => {
   var period = req.body.period;
   var uri =
@@ -163,18 +142,22 @@ app.post("/v0/yl/rank_status", (req, res) => {
     });
 });
 
-app.post("/v0/yl/new_members", uidrequest, (req, res) => {
-  var uri = `https://www.youngliving.com/vo.dlv.api/reports/download/New Members/${req.reportid}/${req.guid}/1/en-US`;
+app.post("/v0/yl/member_info", uidrequest, (req, res) => {
+  var ext = choose_extention(req.ext_option);
+  var uri = `https://www.youngliving.com/vo.dlv.api/reports/download/${ext}/${req.reportid}/${req.guid}/1/en-us`;
   var request_options = {
     method: "GET",
     uri: uri
   };
+
+  console.log(request_options);
+
   rp(request_options)
     .then(body => {
       var csv_options = {
         deliemiter: ",",
         quote: '"', // optional
-        headers: new_members_header
+        headers: about_to_go_inactive_header
       };
       var result = csvjson.toObject(body, csv_options);
       res.send(result);
@@ -182,11 +165,27 @@ app.post("/v0/yl/new_members", uidrequest, (req, res) => {
     .catch(e => {
       res.send(e);
     });
+
 });
 
 //***************//
 //PRIVATE METHODS//
 //***************//
+
+choose_extention = function(option){
+  var temp = "";
+  switch (option){
+    case 0:
+      temp = "New Members";
+      break;
+    case 1:
+      ext = "About%20To%20Go%20Inactive";
+      break;
+    default:
+      temp = "New Members";
+  }
+  return temp;
+}
 
 get_period = function(date) {
   date = date instanceof Date ? date : new Date();
