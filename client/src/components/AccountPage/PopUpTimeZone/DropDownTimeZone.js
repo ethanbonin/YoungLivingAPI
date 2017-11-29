@@ -1,28 +1,20 @@
 import React, { Component } from "react";
-import { Dropdown } from "semantic-ui-react";
 import { connect } from "react-redux";
 import * as actions from "../../../actions";
+import TimeZoneDropDown from "../../communicator/TimeZoneDropDownComponent";
+
 const momentTimeZone = require("moment-timezone");
+
 
 class DropDownTimeZone extends Component {
   constructor(props) {
     super(props);
-    let timeZones = [];
-    momentTimeZone.tz.names().forEach(timeZone => {
-      timeZones.push({
-        key: timeZone,
-        value: timeZone,
-        text: timeZone
-      });
-    });
-
     this.state = {
       timeZone: momentTimeZone.tz.guess(),
-      timeZones: timeZones,
     };
   }
 
-  handleTimeZoneOption(e, { value }) {
+  handleTimeZoneOption(value) {
     this.setState({ timeZone: value});
     let phoneNumber = ""
     if (this.props.auth.user.user.phoneNumber !== undefined){
@@ -34,13 +26,9 @@ class DropDownTimeZone extends Component {
 
   render() {
     return (
-      <Dropdown
-        placeholder="Time Zones"
-        search
-        selection
-        value={this.state.timeZone}
-        options={this.state.timeZones}
-        onChange={this.handleTimeZoneOption.bind(this)}
+      <TimeZoneDropDown
+        timeZone={this.state.timeZone}
+        handleTimeZoneOption={this.handleTimeZoneOption.bind(this)}
       />
     );
   }
