@@ -12,7 +12,9 @@ var request = require("request");
 var rp = require("request-promise");
 const bodyParser = require("body-parser");
 var { mongoose } = require("./db/mongoose");
-var session = require("express-session");
+// var session = require("express-session");
+var session = require("client-sessions");
+
 
 var { uidrequest } = require("./middleware/uidrequest");
 var { retailcustomers } = require("./middleware/retailcustomers");
@@ -39,7 +41,13 @@ var app = express();
 
 const _PORT = process.env.PORT || 5000;
 app.use(bodyParser.json());
-app.use(session({ secret: process.env.SESSION_SECRET }));
+app.use(session({
+  cookieName: 'session',
+  secret: process.env.SESSION_SECRET,
+  duration: 30 * 60 * 1000,
+  activeDuration: 5 * 60 * 1000,
+}));
+// app.use(session({ secret: process.env.SESSION_SECRET }));
 app.use(express.static("client/src/assets"));
 
 require("./routes/authRoutes")(app);

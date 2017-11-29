@@ -11,6 +11,9 @@ const TwilioRoutes = app => {
 
   app.get("/v0/yl/reminder", (req, res) => {
     console.log("The session inside Twilio", req.session);
+    if (!req.session.user){
+      res.send({err: "user session is not set"});
+    }
     TwilioReminders.find({
       memberid: req.session.user.user.memberid
     }).then(doc => {

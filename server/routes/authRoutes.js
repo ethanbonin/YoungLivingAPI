@@ -12,7 +12,7 @@ var request = require("request");
 var rp = require("request-promise");
 const bodyParser = require("body-parser");
 var { mongoose } = require("../db/mongoose");
-var session = require("express-session");
+// var session = require("express-session");
 var _ = require("lodash");
 
 var { uidrequest } = require("../middleware/uidrequest");
@@ -61,6 +61,7 @@ module.exports = app => {
             sess = req.session;
             var info = { user: user, body: body, token: token };
             sess.user = info;
+            // user.lastTimeLoggedIn = new Date();
             const memberId = body.memberId;
             ProspectLabels.find({ memberid: memberId }, (err, doc) => {
               if (err) {
