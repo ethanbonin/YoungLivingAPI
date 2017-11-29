@@ -28,8 +28,6 @@ const { ProspectLabels } = require("../db/models/ProspectLabels");
 
 module.exports = app => {
 
-
-
   app.get("/v0/yl/current_user", (req, res) => {
     sess = req.session;
     if (sess.user) {
@@ -61,7 +59,8 @@ module.exports = app => {
             sess = req.session;
             var info = { user: user, body: body, token: token };
             sess.user = info;
-            // user.lastTimeLoggedIn = new Date();
+            user.lastTimeLoggedIn = new Date();
+            user.save();
             const memberId = body.memberId;
             ProspectLabels.find({ memberid: memberId }, (err, doc) => {
               if (err) {
