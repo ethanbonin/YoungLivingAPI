@@ -68,6 +68,34 @@ class UpdatePhoneMessage extends Component {
     );
   }
 
+  renderButton(){
+    return(
+      <Button
+        icon="phone"
+        color="blue"
+        placeholder="303-555-5555"
+        content="Submit"
+        labelPosition="right"
+        onClick={() => this.handleUpdateNumberSubmit(this.state.value)}
+      />
+    )
+  }
+
+  renderInput(){
+    return (
+      <Input
+        className="input_phone_number_message"
+        onChange={e => {
+          this.setState({ value: e.target.value });
+        }}
+      >
+        <input style={{textAlign: 'center'}}/>
+        {this.renderTimeZonesDropDown()}
+        {this.renderButton()}
+      </Input>
+    )
+  }
+
   render() {
     return (
       <Message className="update_phone_message" negative>
@@ -80,23 +108,7 @@ class UpdatePhoneMessage extends Component {
           </Label>
         ) : null}
         <Message.Content>
-          <Input
-            className="input_phone_number_message"
-            onChange={e => {
-              this.setState({ value: e.target.value });
-            }}
-          >
-            <input style={{textAlign: 'center'}}/>
-            {this.renderTimeZonesDropDown()}
-            <Button
-              icon="phone"
-              color="blue"
-              placeholder="303-555-5555"
-              content="Submit"
-              labelPosition="right"
-              onClick={() => this.handleUpdateNumberSubmit(this.state.value)}
-            />
-          </Input>
+          {this.renderInput()}
         </Message.Content>
       </Message>
     );

@@ -216,8 +216,6 @@ module.exports = app => {
       User.updatePhoneNumebr(req.session.user.user.memberid, req.body.phoneNumber, req.body.timeZone);
       req.session.user.user.phoneNumber = req.body.phoneNumber;
       req.session.user.user.timeZone = req.body.timeZone;
-      console.log("req.session", req.session)
-      console.log(req.body.phoneNumber, req.body.timeZone);
       res.send(req.session);
   })
 
