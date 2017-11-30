@@ -60,7 +60,7 @@ module.exports = app => {
         if (error) {
           console.log("Something wrong when updating data for master list!", error);
         }
-        res.status(200).send(req.body.values)
+        res.status(200).send(result)
       }
     );
   })
