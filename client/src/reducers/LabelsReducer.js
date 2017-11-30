@@ -1,5 +1,4 @@
 import { FETCH_LABELS,UPDATE_LABELS } from "../actions/types";
-import _ from "lodash";
 
 export default function(state = null, action) {
   switch (action.type) {
@@ -9,8 +8,9 @@ export default function(state = null, action) {
       return action.payload;
     case UPDATE_LABELS:
       console.log("THe state", state);
-      console.log('the aciton.payload', action.payload);
-      return {prospectlabels: [action.payload]};
+      let prospectLabels = {prospectlabels: [action.payload]}
+      console.log('the aciton.payload', prospectLabels);
+      return prospectLabels;
     default:
       return state;
   }
