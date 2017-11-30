@@ -31,12 +31,13 @@ class ProspectsNew extends Component {
         old_notes: props.location.state.additional_notes
       };
     } else {
+      console.log("THe list", props.labels.prospectslabels[0].labels);
       const NEW_ID = ObjectID.generate();
       this.state = {
         _id: NEW_ID,
         met_date: moment(),
         ...form_state_initializer,
-        masterList: this.props.labels.prospectslabels[0].labels
+        masterList: props.labels.prospectslabels[0].labels
       };
     }
 
