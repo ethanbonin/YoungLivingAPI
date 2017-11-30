@@ -51,6 +51,7 @@ class Prospects extends Component {
   }
 
   componentWillMount() {
+    this.props.fetchLabels();
     if (this.props.location.state !== undefined) {
       const prospect = this.props.location.state;
       let p_list = this.state.prospectsList;
