@@ -38,6 +38,7 @@
     "mongodb": "^2.2.31",
     "mongoose": "^4.11.14",
     "path-parser": "^2.0.2",
+    "plivo": "^0.4.1",
     "remove": "^0.1.5",
     "request": "^2.81.0",
     "request-promise": "^4.2.1",

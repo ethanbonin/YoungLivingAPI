@@ -51,7 +51,6 @@ module.exports = app => {
       memberid: req.session.user.user.memberid,
       labels: req.body.values
     }
-
     ProspectLabels.findOneAndUpdate(
       { _id: req.body._id },
       updated_master,

@@ -18,13 +18,15 @@ class UpdatePhoneMessage extends Component {
   }
 
   checkPhone(value) {
-    const regex_number = /(\+?( |-|\.)?\d{1,2}( |-|\.)?)?(\(?\d{3}\)?|\d{3})( |-|\.)?(\d{3}( |-|\.)?\d{4})/;
+    const regex_number = /\b(?:\d{1}\s)?\(?(\d{3})\)?-?\s?(\d{3})-?\s?(\d{4})\b/;
     const result_number = regex_number.test(value);
+    console.log("reulst", result_number);
     if (!result_number) {
       this.setState({ error: true });
-      this.setState({ error_message: "Not a valid phoneNumber" });
+      this.setState({ error_message: "Not a valid phoneNumber. Please Remove any extensions like '1' at the front of the number" });
       return false;
     }
+
     return true;
   }
 
