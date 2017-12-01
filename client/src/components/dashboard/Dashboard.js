@@ -59,6 +59,7 @@ class DashBoard extends Component {
     };
     this.handleDisagreement = this.handleDisagreement.bind(this);
     this.handleAgreement = this.handleAgreement.bind(this);
+    props.headerLocation('DashBoard');
   }
 
   componentWillMount() {

@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Grid, Segment } from "semantic-ui-react";
+import * as actions from '../../actions';
 
 import PhoneZone from "./PhoneTimeZoneComponent";
 
@@ -20,6 +21,8 @@ class Account extends Component {
         phoneNumber: ""
       }
     }
+
+    props.headerLocation('Account Page');
   }
 
   handleUpdate(phoneNumber, timeZone){
@@ -49,4 +52,4 @@ function mapStateToProps({ auth }) {
   return { auth };
 }
 
-export default connect(mapStateToProps)(Account);
+export default connect(mapStateToProps, actions)(Account);

@@ -52,6 +52,10 @@
   }
 }
 
+.dropdown_menu {
+  margin-right: 10px;
+}
+
 /*
 @media (min-width: 360px) {
 

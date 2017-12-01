@@ -48,6 +48,8 @@ class Prospects extends Component {
     this.handleSortSelect = this.handleSortSelect.bind(this);
     this.handleFilterSelect = this.handleFilterSelect.bind(this);
     this.filterBy = this.filterBy.bind(this);
+    props.headerLocation('Prospects');
+
   }
 
   componentWillMount() {

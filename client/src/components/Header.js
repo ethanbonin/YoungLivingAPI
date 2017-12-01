@@ -1,22 +1,28 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { Redirect } from 'react-router'
+import { Redirect } from "react-router";
 import { Link } from "react-router-dom";
-import { Button } from "semantic-ui-react";
+import { Button, Dropdown } from "semantic-ui-react";
 import * as actions from "../actions";
 import axios from "axios";
-import './maincss/header.css'
+import "./maincss/header.css";
 
 import Login from "./Login";
+
+const options = [
+  { key: 1, text: "Dashboard", value: "/dashboard" },
+  { key: 2, text: "Communicator", value: "/dashboard/communicator" },
+  { key: 3, text: "Prospects", value: "/dashboard/prospects" }
+];
 
 class Header extends Component {
   constructor(props) {
     super();
-    this.state = { showCard: false, goBack: false };
+    this.state = { showCard: false, goBack: false, goToPage: false, page: "" };
     this.renderContent = this.renderContent.bind(this);
     this.removeCard = this.removeCard.bind(this);
     this.handleLogout = this.handleLogout.bind(this);
-
+    this.handleGoToPage = this.handleGoToPage.bind(this);
   }
 
   handleLogout() {
@@ -28,6 +34,10 @@ class Header extends Component {
       .catch(err => {
         console.log("There was an error logging out", err);
       });
+  }
+
+  handleGoToPage(e, { value }) {
+    this.setState({ page: value, goToPage: true });
   }
 
   renderContent() {
@@ -47,9 +57,25 @@ class Header extends Component {
       default:
         return [
           <li key="3">
-            <Button as={Link} to={"/account"} color="black" className="welcomeText">Account Page</Button>
+            <Dropdown
+              text={this.props.header}
+              value={this.props.header}
+              options={options}
+              className="dropdown_menu"
+              onChange={this.handleGoToPage}
+            />
           </li>,
           <li key="2">
+            <Button
+              as={Link}
+              to={"/account"}
+              color="black"
+              className="welcomeText"
+            >
+              Account Page
+            </Button>
+          </li>,
+          <li key="1">
             <Button onClick={this.handleLogout}>Logout</Button>
           </li>
         ];
@@ -63,7 +89,7 @@ class Header extends Component {
           <Link
             to={this.props.auth ? "/dashboard" : "/"}
             className="headerLogo left brand-logo"
-        >
+          >
             Essential Assistant
           </Link>
           <ul className="right" style={{ marginRight: "1em" }}>
@@ -78,7 +104,8 @@ class Header extends Component {
     return (
       <div>
         {this.headerBar()}
-        {this.state.goBack ? <Redirect push to="/"/> : null }
+        {this.state.goToPage ? <Redirect push to={this.state.page} /> : null}
+        {this.state.goBack ? <Redirect push to="/" /> : null}
         {this.state.showCard ? <Login removeCard={this.removeCard} /> : null}
       </div>
     );
@@ -90,8 +117,8 @@ class Header extends Component {
   }
 }
 
-function mapStateToProps({ auth }) {
-  return { auth };
+function mapStateToProps({ auth, header }) {
+  return { auth, header };
 }
 
 export default connect(mapStateToProps, actions)(Header);

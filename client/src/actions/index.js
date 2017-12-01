@@ -15,7 +15,8 @@ import {
   POST_REMINDER,
   FETCH_REMINDERS,
   DELETE_REMINDER,
-  EDIT_REMINDER
+  EDIT_REMINDER,
+  HEADER_LOCATION
 } from "./types";
 
 //SAME THING AS BELOW
@@ -171,6 +172,12 @@ export const editReminder = reminder => {
     axios
       .patch("/v0/yl/reminder/update", reminder)
       .then(res => dispatch({ type: EDIT_REMINDER, payload: res.data }));
+  };
+};
+
+export const headerLocation = location => {
+  return function(dispatch) {
+    dispatch({ type: HEADER_LOCATION, payload: location });
   };
 };
 

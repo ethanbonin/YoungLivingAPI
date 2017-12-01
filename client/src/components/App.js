@@ -27,6 +27,7 @@ class App extends Component {
   }
   componentDidMount() {
     this.props.fetchUser();
+    this.props.headerLocation('Dashboard')
   }
 
   checkIfLoggedIn() {

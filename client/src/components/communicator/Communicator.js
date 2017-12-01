@@ -43,6 +43,7 @@ class Communicator extends Component {
       queuedReminderList: queuedReminderList
     };
 
+    props.headerLocation('Communicator');
     this.handleReminderSubmission = this.handleReminderSubmission.bind(this);
   }
 
