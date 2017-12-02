@@ -27,7 +27,7 @@ class Communicator extends Component {
     }
 
     let completedRemindersList = [];
-    let queuedReminderList = []
+    let queuedReminderList = [];
     props.twilio.forEach(reminder => {
       if (reminder.completed) {
         completedRemindersList.push(reminder);
@@ -43,7 +43,7 @@ class Communicator extends Component {
       queuedReminderList: queuedReminderList
     };
 
-    props.headerLocation('Communicator');
+    props.headerLocation("Communicator");
     this.handleReminderSubmission = this.handleReminderSubmission.bind(this);
   }
 
@@ -81,36 +81,54 @@ class Communicator extends Component {
     this.props.fetchReminders();
   }
 
+  renderTopRow(){
+    return(
+      <Grid.Row className="grid_spacing">
+        <Grid.Column>
+          <div className="div_for_cards">
+            <TextCard />
+          </div>
+        </Grid.Column>
+        <Grid.Column>
+          <div className="div_for_cards">
+            <EmailCard />
+          </div>
+        </Grid.Column>
+      </Grid.Row>
+    )
+  }
+
+  renderBottomRow(){
+    return(
+      <Grid.Row>
+        <Grid.Column>
+          <Reminder
+            edit={false}
+            handleReminderSubmission={this.handleReminderSubmission}
+          />
+        </Grid.Column>
+        <Grid.Column>
+          <QueueReminders
+            data={this.state.queuedReminderList}
+            handleDeleteQueueReminder={this.handleDeleteQueueReminder.bind(
+              this
+            )}
+            handleEditQueueReminder={this.handleEditQueueReminder.bind(
+              this
+            )}
+          />
+          {/* <CompletedReminders data={this.state.completedRemindersList} /> */}
+        </Grid.Column>
+      </Grid.Row>
+    )
+  }
+
   renderCommunicator() {
     return (
       <div className="div_communicator">
-        <Grid columns={3} style={{width:"100%"}}>
-          <Grid.Row className="grid_spacing">
-            <Reminder
-              edit={false}
-              handleReminderSubmission={this.handleReminderSubmission}
-            />
-            <Grid.Column>
-              <QueueReminders
-                data={this.state.queuedReminderList}
-                handleDeleteQueueReminder={this.handleDeleteQueueReminder.bind(
-                  this
-                )}
-                handleEditQueueReminder={this.handleEditQueueReminder.bind(
-                  this
-                )}
-              />
-              <CompletedReminders data={this.state.completedRemindersList} />
-            </Grid.Column>
-            <Grid.Column>
-              <div className="div_for_cards">
-                <TextCard />
-              </div>
-              <div className="div_for_cards">
-                <EmailCard />
-              </div>
-            </Grid.Column>
-          </Grid.Row>
+        <Grid columns={2} style={{ width: "100%" }}>
+          {this.renderBottomRow()}
+          {this.renderTopRow()}
         </Grid>
       </div>
     );
@@ -118,7 +136,7 @@ class Communicator extends Component {
 
   render() {
     return (
-      <div>
+      <div style={{marginTop: "1em"}}>
         {this.state.hasPhoneNumber ? (
           this.renderCommunicator()
         ) : (

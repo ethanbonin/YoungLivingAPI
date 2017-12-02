@@ -7,7 +7,8 @@ import {
   Button,
   Segment,
   Label,
-  Divider
+  Divider,
+  Message
 } from "semantic-ui-react";
 import "input-moment/dist/input-moment.css";
 import "./datepicker.css";
@@ -39,14 +40,14 @@ class InputDate extends Component {
         reminderMessage: "",
         dimmer: false,
         edit: props.edit,
-        selectedDay: null
+        selectedDay: null,
+        selectDateMessage: ""
       };
     }
     this.handleDayClick = this.handleDayClick.bind(this);
   }
 
   handleSave = () => {
-    console.log("Saving", this.state.m.format(), this.state.reminderMessage);
     this.props.handleCallBackReminder(
       this.state._id,
       this.state.m.format(),
@@ -74,17 +75,25 @@ class InputDate extends Component {
       .year(year)
       .month(month)
       .date(day);
-    this.setState({ m: date_time_picked });
+    this.setState({
+      m: date_time_picked,
+      selectDateMessage: date_time_picked.format("llll")
+    });
     this.setState({
       selectedDay: selected ? undefined : day_picked
     });
   }
 
   handleTimeChange(value) {
-    let date_time_picked = this.state.m;
-    date_time_picked.hour(value.hour());
-    date_time_picked.minute(value.minute());
-    this.setState({ m: date_time_picked });
+    if (value !== null) {
+      let date_time_picked = this.state.m;
+      date_time_picked.hour(value.hour());
+      date_time_picked.minute(value.minute());
+      this.setState({
+        m: date_time_picked,
+        selectDateMessage: date_time_picked.format("llll")
+      });
+    }
   }
 
   renderDimmer() {
@@ -161,6 +170,19 @@ class InputDate extends Component {
     );
   }
 
+  renderDateMessage() {
+    if (this.state.selectDateMessage !== "") {
+      return (
+        <Message info className="date_message">
+          <Message.Content>The date you have chosen is: </Message.Content>
+          <Message.Header>{this.state.selectDateMessage}</Message.Header>
+        </Message>
+      );
+    } else {
+      return null;
+    }
+  }
+
   render() {
     const style = {
       width: "100%"
@@ -181,6 +203,8 @@ class InputDate extends Component {
           />
         </Segment>
         {this.renderDatePicker()}
+        {this.renderTimePicker()}
+        {this.renderDateMessage()}
         <Button
           size="large"
           color="blue"

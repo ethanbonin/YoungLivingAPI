@@ -4,7 +4,7 @@ import {Card, Image } from "semantic-ui-react";
 
 const EmailCard = () => {
   return (
-    <Card fluid size="large" style={{margin: "auto", marginTop: "5em"}} as={Link} to={`/dashboard/emailcommunicator`}>
+    <Card fluid size="large" style={{margin: "auto"}} as={Link} to={`/dashboard/emailcommunicator`}>
       <Image src={'https://images.unsplash.com/photo-1485119584289-30ca2b38c67e?auto=format&fit=crop&w=3900&q=60&ixid=dW5zcGxhc2guY29tOzs7Ozs%3D'} />
       <Card.Content>
         <Card.Header>Email Communicator</Card.Header>
