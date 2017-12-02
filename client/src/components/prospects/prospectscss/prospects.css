@@ -44,6 +44,7 @@
 .close_deal_div {
   margin: auto;
   width: 100%;
+  margin-bottom: 0.2em;
 }
 
 .close_deal_segment {
@@ -60,4 +61,9 @@
   width: 100%;
   text-align: center;
   margin-top: 1em;
+}
+
+.searchbar_div {
+  background-color: black !important;
+  height: 6em;
 }

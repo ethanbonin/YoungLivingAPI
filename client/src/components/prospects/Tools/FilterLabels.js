@@ -41,6 +41,8 @@ class FilterLabels extends Component {
               <Dropdown.Item
                 key={option.value}
                 {...option}
+                label={{content: option.text, color: "violet", size:"large"}}
+                text={""}
                 onClick={() => this.handleFilterSelect(option)}
               />
             ))}

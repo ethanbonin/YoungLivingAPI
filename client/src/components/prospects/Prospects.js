@@ -453,7 +453,7 @@ class Prospects extends Component {
 
   renderTools() {
     return (
-      <div className="">
+      <div className="searchbar_div">
         <Searchbar
           prospects={this.props.prospects}
           handleSearchResults={this.handleSearchResults}
@@ -496,7 +496,7 @@ class Prospects extends Component {
   renderClosedListTools() {
     const closed_list = this.state.closedProspectList;
     return (
-      <div>
+      <div className="searchbar_div">
         <Searchbar
           prospects={closed_list}
           closedSearch={true}
@@ -523,12 +523,12 @@ class Prospects extends Component {
           </Table>
         </Segment>
         <Segment style={{ marginTop: "5em" }}>
-          {this.renderClosedListTools()}
           <div className="close_deal_div">
             <Label color="green" className="closed_deal_label" size="massive">
               CLOSED PROSPECTS
             </Label>
           </div>
+          {this.renderClosedListTools()}
           <Table celled size="large">
             <Table.Header>
               <Table.Row>{this.renderHeaders()}</Table.Row>
