@@ -1,3 +1,25 @@
 .tabs {
   height: 500px;
 }
+
+.save_button {
+  width: 100%;
+}
+
+.date_picker_div {
+  text-align: center;
+}
+
+.reminder_text {
+  width: 100%;
+  text-align: center;
+}
+
+.time_picker {
+  width: 100%;
+}
+
+span input {
+  text-align: center;
+  font-size: 32px;
+}

@@ -1,9 +1,23 @@
 import React, { Component } from "react";
 import moment from "moment";
-import InputMoment from "input-moment";
-import { Dimmer, Header, Transition } from "semantic-ui-react";
+import {
+  Dimmer,
+  Header,
+  Transition,
+  Button,
+  Segment,
+  Label,
+  Divider
+} from "semantic-ui-react";
 import "input-moment/dist/input-moment.css";
 import "./datepicker.css";
+
+import DayPicker from "react-day-picker";
+import "react-day-picker/lib/style.css";
+
+import TimePicker from "rc-time-picker";
+import "rc-time-picker/assets/index.css";
+
 var ObjectID = require("bson-objectid");
 
 class InputDate extends Component {
@@ -15,7 +29,8 @@ class InputDate extends Component {
         m: moment(props.reminder.time),
         reminderMessage: props.reminder.reminderMessage,
         dimmer: false,
-        edit: props.edit
+        edit: props.edit,
+        selectedDay: null
       };
     } else {
       this.state = {
@@ -23,24 +38,23 @@ class InputDate extends Component {
         m: moment(),
         reminderMessage: "",
         dimmer: false,
-        edit: props.edit
+        edit: props.edit,
+        selectedDay: null
       };
     }
+    this.handleDayClick = this.handleDayClick.bind(this);
   }
 
-  handleChange = m => {
-    this.setState({ m });
-  };
-
   handleSave = () => {
+    console.log("Saving", this.state.m.format(), this.state.reminderMessage);
     this.props.handleCallBackReminder(
       this.state._id,
       this.state.m.format(),
       this.state.reminderMessage
     );
     this.setState({ reminderMessage: "" });
-    this.setState({_id: ObjectID.generate()});
-    this.setState({m: moment()});
+    this.setState({ _id: ObjectID.generate() });
+    this.setState({ m: moment() });
     this.setState({ dimmer: true });
     setTimeout(
       function() {
@@ -49,6 +63,29 @@ class InputDate extends Component {
       2000
     );
   };
+
+  handleDayClick(day_picked, { selected }) {
+    let date_time_picked = this.state.m;
+    let moment_year_month_day = moment(day_picked);
+    let year = moment_year_month_day.year();
+    let month = moment_year_month_day.month();
+    let day = moment_year_month_day.date();
+    date_time_picked
+      .year(year)
+      .month(month)
+      .date(day);
+    this.setState({ m: date_time_picked });
+    this.setState({
+      selectedDay: selected ? undefined : day_picked
+    });
+  }
+
+  handleTimeChange(value) {
+    let date_time_picked = this.state.m;
+    date_time_picked.hour(value.hour());
+    date_time_picked.minute(value.minute());
+    this.setState({ m: date_time_picked });
+  }
 
   renderDimmer() {
     const content = (
@@ -81,6 +118,49 @@ class InputDate extends Component {
     return null;
   }
 
+  renderDatePicker() {
+    return (
+      <Segment>
+        <Label size="big" color="grey" className="reminder_text">
+          Select Date
+        </Label>
+        <div className="date_picker_div">
+          <DayPicker
+            selectedDays={this.state.selectedDay}
+            onDayClick={this.handleDayClick}
+          />
+          <p>
+            {this.state.selectedDay
+              ? this.state.selectedDay.toLocaleDateString()
+              : "Please select a day 👻"}
+          </p>
+        </div>
+      </Segment>
+    );
+  }
+
+  renderTimePicker() {
+    return (
+      <Segment>
+        <Label size="big" color="grey" className="reminder_text">
+          Select Time
+        </Label>
+        <Divider />
+        <TimePicker
+          focusOnOpen={true}
+          showSecond={false}
+          defaultValue={moment()
+            .hour(0)
+            .minute(0)}
+          className="time_picker "
+          onChange={this.handleTimeChange.bind(this)}
+          format={"h:mm a"}
+          use12Hours
+        />
+      </Segment>
+    );
+  }
+
   render() {
     const style = {
       width: "100%"
@@ -93,21 +173,21 @@ class InputDate extends Component {
       <div className="app">
         {this.renderDimmer()}
         {this.renderHeader()}
-        <input
-          placeholder="Reminder Message Here"
-          value={this.state.reminderMessage}
-          onChange={e => this.setState({ reminderMessage: e.target.value })}
-        />
-        <div className="input">
-          <input type="text" value={this.state.m.format("llll")} readOnly />
-        </div>
-        <InputMoment
-          style={style}
-          className={"options"}
-          moment={this.state.m}
-          onChange={this.handleChange}
-          minStep={5}
-          onSave={this.handleSave.bind(this)}
+        <Segment>
+          <input
+            placeholder="Reminder Message Here"
+            value={this.state.reminderMessage}
+            onChange={e => this.setState({ reminderMessage: e.target.value })}
+          />
+        </Segment>
+        {this.renderDatePicker()}
+        <Button
+          size="large"
+          color="blue"
+          icon="check"
+          content={"SAVE"}
+          className="save_button"
+          onClick={this.handleSave.bind(this)}
         />
       </div>
     );

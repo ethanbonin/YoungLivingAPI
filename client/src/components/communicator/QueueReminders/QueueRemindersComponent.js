@@ -52,7 +52,7 @@ const QueueReminders = data => {
               <List.Description>{reminder.reminderMessage}</List.Description>
             </List.Content>
             <div className="center_buttons">
-              {renderPopUp(reminder)}
+              {/* {renderPopUp(reminder)} */}
               <Button color="red" onClick={() => handleDeleteClick(reminder)}>
                 Delete
               </Button>

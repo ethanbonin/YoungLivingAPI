@@ -84,7 +84,7 @@ class Communicator extends Component {
   renderCommunicator() {
     return (
       <div className="div_communicator">
-        <Grid columns={3}>
+        <Grid columns={3} style={{width:"100%"}}>
           <Grid.Row className="grid_spacing">
             <Reminder
               edit={false}
