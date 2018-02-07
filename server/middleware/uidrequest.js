@@ -1,6 +1,6 @@
 var rp = require("request-promise");
 var request = require("request");
-const {  new_members, about_to_go_inactive } = require('./data_values');
+const {  new_members, about_to_go_inactive, report_data } = require('./data_values');
 
 var uidrequest = (req, res, next) => {
   var _body = choose_values(req.body.ext_option);
@@ -34,6 +34,8 @@ const choose_values = function(option){
     return new_members.values;
     case 1:
     return about_to_go_inactive.values;
+    case 2:
+    return report_data.values;
     default:
     return new_members.values;
   }

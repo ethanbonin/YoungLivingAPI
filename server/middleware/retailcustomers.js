@@ -5,7 +5,7 @@ var csvjson = require("csvjson");
 var retailcustomers = (req, res, next) => {
   var _body = {
     reportid: "all-retail",
-    periodid: req.body.values.periodid,
+    periodid: req.body.periodid,
     sortby: "",
     sortdesc: 1,
     pagenumber: 1,
@@ -14,7 +14,7 @@ var retailcustomers = (req, res, next) => {
     reportname: "Retail Customers",
     columns: [{ id: "memberid" }, { id: "name" }]
   };
-  var periodid = req.body.values.periodid;
+  var periodid = req.body.periodid;
   const options = {
     method: "POST",
     uri: "https://www.youngliving.com/vo.dlv.api//reportdata/v2/load",

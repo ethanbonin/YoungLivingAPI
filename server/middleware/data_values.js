@@ -76,7 +76,95 @@ const about_to_go_inactive = {
   }
 };
 
+const report_data = {
+  values: {
+    reportid: "all",
+    periodid: 440,
+    sortby: "",
+    sortdesc: 1,
+    pagenumber: 1,
+    download: "true",
+    format: "CSV",
+    reportname: "Members (Distributors)",
+    columns: [
+      {
+        id: "name"
+      },
+      {
+        id: "level"
+      },
+      {
+        id: "memberid"
+      },
+      {
+        id: "pv"
+      },
+      {
+        id: "ogv"
+      },
+      {
+        id: "pgv"
+      },
+      {
+        id: "autoship"
+      },
+      {
+        id: "email"
+      },
+      {
+        id: "signupdate"
+      },
+      {
+        id: "lastorderdate"
+      },
+      {
+        id: "previousrank"
+      },
+      {
+        id: "pvassistant"
+      },
+      {
+        id: "hasautoship"
+      },
+      {
+        id: "sponsorid"
+      },
+      {
+        id: "lastorderpv"
+      },
+      {
+        id: "currentrank"
+      },
+      {
+        id: "forecastpv"
+      },
+      {
+        id: "status"
+      },
+      {
+        id: "address"
+      },
+      {
+        id: "scheduledpv"
+      },
+      {
+        id: "rankchange"
+      },
+      {
+        id: "highestpaidrank"
+      },
+      {
+        id: "enrollerid"
+      },
+      {
+        id: "autoshippv"
+      }
+    ]
+  }
+};
+
 module.exports = {
   new_members,
-  about_to_go_inactive
+  about_to_go_inactive,
+  report_data
 };
